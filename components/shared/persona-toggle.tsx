@@ -2,27 +2,26 @@
 
 import { cn } from "@/lib/utils";
 
-export type Persona = "brand" | "event" | "admin";
+export type PersonaOption<T extends string> = {
+  value: T;
+  label: string;
+};
 
-const PERSONA_OPTIONS: { value: Persona; label: string }[] = [
-  { value: "brand", label: "Brand" },
-  { value: "event", label: "Event" },
-  { value: "admin", label: "Admin" },
-];
-
-type PersonaToggleProps = {
-  value: Persona;
-  onChange: (next: Persona) => void;
+type PersonaToggleProps<T extends string> = {
+  value: T;
+  onChange: (next: T) => void;
+  options: PersonaOption<T>[];
   className?: string;
   ariaLabel?: string;
 };
 
-export function PersonaToggle({
+export function PersonaToggle<T extends string>({
   value,
   onChange,
+  options,
   className,
   ariaLabel = "Select persona",
-}: PersonaToggleProps) {
+}: PersonaToggleProps<T>) {
   return (
     <div
       role="radiogroup"
@@ -32,7 +31,7 @@ export function PersonaToggle({
         className,
       )}
     >
-      {PERSONA_OPTIONS.map((option) => {
+      {options.map((option) => {
         const active = option.value === value;
         return (
           <button

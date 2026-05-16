@@ -4,64 +4,157 @@ import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 
 import { cn } from "@/lib/utils";
-import { PersonaToggle, type Persona } from "@/components/shared/persona-toggle";
+import {
+  PersonaToggle,
+  type PersonaOption,
+} from "@/components/shared/persona-toggle";
+import { createClient } from "@/lib/supabase/client";
+import type { Persona, WaitlistInsert } from "@/lib/supabase/types";
 
-type WaitlistFormData = {
-  persona: Persona;
-  email: string;
-  brandName?: string;
-  eventName?: string;
-  region?: "APAC" | "GCC";
-  orgName?: string;
-  role?: string;
-};
+const PERSONA_OPTIONS: PersonaOption<Persona>[] = [
+  { value: "event", label: "Event" },
+  { value: "brand", label: "Brand" },
+];
 
-type WaitlistFormProps = {
-  onSubmit?: (data: WaitlistFormData) => Promise<void> | void;
-  className?: string;
-};
+const VERTICALS = [
+  "Music festival",
+  "Conference",
+  "Fashion show",
+  "Wellness event",
+  "Sports event",
+  "Other",
+];
+
+const EVENT_SIZES = [
+  "Under 1,000",
+  "1,000 – 10,000",
+  "10,000 – 50,000",
+  "50,000+",
+];
+
+const SPONSOR_TARGET_BUDGETS = [
+  "Under $50K",
+  "$50K – $250K",
+  "$250K – $1M",
+  "$1M+",
+];
+
+const REGIONS = ["APAC", "GCC", "Both"];
+
+const BUDGET_TIERS = [
+  "Under $100K",
+  "$100K – $500K",
+  "$500K – $5M",
+  "$5M+",
+];
 
 const inputClass =
   "h-10 w-full rounded-md border border-gray-200 bg-white px-3 text-body text-gray-900 placeholder:text-gray-400 focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-600/20";
 
+const selectClass = cn(inputClass, "appearance-none pr-8");
+
 const labelClass = "text-caption font-medium uppercase text-gray-500";
 
-export function WaitlistForm({ onSubmit, className }: WaitlistFormProps) {
-  const [persona, setPersona] = useState<Persona>("brand");
+type WaitlistFormProps = {
+  source?: string;
+  className?: string;
+};
+
+export function WaitlistForm({
+  source = "waitlist_form",
+  className,
+}: WaitlistFormProps) {
+  const [persona, setPersona] = useState<Persona>("event");
   const [email, setEmail] = useState("");
-  const [brandName, setBrandName] = useState("");
+  const [notes, setNotes] = useState("");
+
+  // Event fields
   const [eventName, setEventName] = useState("");
-  const [region, setRegion] = useState<"APAC" | "GCC">("APAC");
-  const [orgName, setOrgName] = useState("");
-  const [role, setRole] = useState("");
+  const [eventVertical, setEventVertical] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
+  const [eventSize, setEventSize] = useState("");
+  const [sponsorTargetBudget, setSponsorTargetBudget] = useState("");
+
+  // Brand fields
+  const [companyName, setCompanyName] = useState("");
+  const [targetVertical, setTargetVertical] = useState("");
+  const [regionFocus, setRegionFocus] = useState("");
+  const [budgetTier, setBudgetTier] = useState("");
+
   const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
 
   function reset() {
     setEmail("");
-    setBrandName("");
+    setNotes("");
     setEventName("");
-    setRegion("APAC");
-    setOrgName("");
-    setRole("");
+    setEventVertical("");
+    setEventLocation("");
+    setEventSize("");
+    setSponsorTargetBudget("");
+    setCompanyName("");
+    setTargetVertical("");
+    setRegionFocus("");
+    setBudgetTier("");
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleSubmit(formEvent: React.FormEvent<HTMLFormElement>) {
+    formEvent.preventDefault();
+    setErrorMessage(null);
+    setDuplicate(false);
     setSubmitting(true);
 
-    const data: WaitlistFormData = {
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedNotes = notes.trim();
+
+    const payload: WaitlistInsert = {
+      email: trimmedEmail,
       persona,
-      email,
-      ...(persona === "brand" && { brandName }),
-      ...(persona === "event" && { eventName, region }),
-      ...(persona === "admin" && { orgName, role }),
+      notes: trimmedNotes || null,
+      source,
+      ...(persona === "event"
+        ? {
+            event_name: eventName.trim(),
+            event_vertical: eventVertical,
+            event_location: eventLocation.trim(),
+            event_size: eventSize,
+            sponsor_target_budget: sponsorTargetBudget,
+          }
+        : {
+            company_name: companyName.trim(),
+            target_vertical: targetVertical,
+            region_focus: regionFocus,
+            budget_tier: budgetTier,
+          }),
     };
 
     try {
-      await onSubmit?.(data);
-      setOpen(true);
-      reset();
+      const supabase = createClient();
+      const { error } = await supabase.from("waitlist").insert(payload);
+
+      if (error) {
+        if (error.code === "23505") {
+          setDuplicate(true);
+          setOpen(true);
+          reset();
+        } else {
+          console.error("Waitlist insert failed", error);
+          setErrorMessage(
+            "Something went wrong on our end. Please try again in a moment.",
+          );
+        }
+      } else {
+        setDuplicate(false);
+        setOpen(true);
+        reset();
+      }
+    } catch (caught) {
+      console.error("Waitlist insert threw", caught);
+      setErrorMessage(
+        "We could not reach our servers. Check your connection and try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -78,7 +171,11 @@ export function WaitlistForm({ onSubmit, className }: WaitlistFormProps) {
       >
         <div className="flex flex-col gap-2">
           <span className={labelClass}>I am a</span>
-          <PersonaToggle value={persona} onChange={setPersona} />
+          <PersonaToggle
+            value={persona}
+            onChange={setPersona}
+            options={PERSONA_OPTIONS}
+          />
         </div>
 
         <label className="flex flex-col gap-2">
@@ -94,20 +191,6 @@ export function WaitlistForm({ onSubmit, className }: WaitlistFormProps) {
           />
         </label>
 
-        {persona === "brand" ? (
-          <label className="flex flex-col gap-2">
-            <span className={labelClass}>Brand or company</span>
-            <input
-              type="text"
-              required
-              placeholder="Samsung"
-              value={brandName}
-              onChange={(event) => setBrandName(event.target.value)}
-              className={inputClass}
-            />
-          </label>
-        ) : null}
-
         {persona === "event" ? (
           <>
             <label className="flex flex-col gap-2">
@@ -121,47 +204,175 @@ export function WaitlistForm({ onSubmit, className }: WaitlistFormProps) {
                 className={inputClass}
               />
             </label>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <label className="flex flex-col gap-2">
+                <span className={labelClass}>Vertical</span>
+                <select
+                  required
+                  value={eventVertical}
+                  onChange={(event) => setEventVertical(event.target.value)}
+                  className={selectClass}
+                >
+                  <option value="" disabled>
+                    Select…
+                  </option>
+                  {VERTICALS.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="flex flex-col gap-2">
+                <span className={labelClass}>Location</span>
+                <input
+                  type="text"
+                  required
+                  placeholder="Dubai"
+                  value={eventLocation}
+                  onChange={(event) => setEventLocation(event.target.value)}
+                  className={inputClass}
+                />
+              </label>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <label className="flex flex-col gap-2">
+                <span className={labelClass}>Event size</span>
+                <select
+                  required
+                  value={eventSize}
+                  onChange={(event) => setEventSize(event.target.value)}
+                  className={selectClass}
+                >
+                  <option value="" disabled>
+                    Select…
+                  </option>
+                  {EVENT_SIZES.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="flex flex-col gap-2">
+                <span className={labelClass}>Sponsor budget target</span>
+                <select
+                  required
+                  value={sponsorTargetBudget}
+                  onChange={(event) =>
+                    setSponsorTargetBudget(event.target.value)
+                  }
+                  className={selectClass}
+                >
+                  <option value="" disabled>
+                    Select…
+                  </option>
+                  {SPONSOR_TARGET_BUDGETS.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </>
+        ) : (
+          <>
             <label className="flex flex-col gap-2">
-              <span className={labelClass}>Region</span>
-              <select
-                value={region}
-                onChange={(event) =>
-                  setRegion(event.target.value as "APAC" | "GCC")
-                }
+              <span className={labelClass}>Company</span>
+              <input
+                type="text"
+                required
+                placeholder="Samsung"
+                value={companyName}
+                onChange={(event) => setCompanyName(event.target.value)}
                 className={inputClass}
+              />
+            </label>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <label className="flex flex-col gap-2">
+                <span className={labelClass}>Target vertical</span>
+                <select
+                  required
+                  value={targetVertical}
+                  onChange={(event) => setTargetVertical(event.target.value)}
+                  className={selectClass}
+                >
+                  <option value="" disabled>
+                    Select…
+                  </option>
+                  {VERTICALS.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="flex flex-col gap-2">
+                <span className={labelClass}>Region focus</span>
+                <select
+                  required
+                  value={regionFocus}
+                  onChange={(event) => setRegionFocus(event.target.value)}
+                  className={selectClass}
+                >
+                  <option value="" disabled>
+                    Select…
+                  </option>
+                  {REGIONS.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <label className="flex flex-col gap-2">
+              <span className={labelClass}>Annual budget</span>
+              <select
+                required
+                value={budgetTier}
+                onChange={(event) => setBudgetTier(event.target.value)}
+                className={selectClass}
               >
-                <option value="APAC">APAC</option>
-                <option value="GCC">GCC</option>
+                <option value="" disabled>
+                  Select…
+                </option>
+                {BUDGET_TIERS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
               </select>
             </label>
           </>
-        ) : null}
+        )}
 
-        {persona === "admin" ? (
-          <>
-            <label className="flex flex-col gap-2">
-              <span className={labelClass}>Organization</span>
-              <input
-                type="text"
-                required
-                placeholder="Internal team or partner agency"
-                value={orgName}
-                onChange={(event) => setOrgName(event.target.value)}
-                className={inputClass}
-              />
-            </label>
-            <label className="flex flex-col gap-2">
-              <span className={labelClass}>Role</span>
-              <input
-                type="text"
-                required
-                placeholder="Operations lead"
-                value={role}
-                onChange={(event) => setRole(event.target.value)}
-                className={inputClass}
-              />
-            </label>
-          </>
+        <label className="flex flex-col gap-2">
+          <span className={labelClass}>Notes (optional)</span>
+          <textarea
+            rows={3}
+            placeholder="Anything else we should know?"
+            value={notes}
+            onChange={(event) => setNotes(event.target.value)}
+            className={cn(inputClass, "h-auto py-2 leading-snug")}
+          />
+        </label>
+
+        {errorMessage ? (
+          <p
+            role="alert"
+            className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-body text-destructive"
+          >
+            {errorMessage}
+          </p>
         ) : null}
 
         <button
@@ -182,11 +393,12 @@ export function WaitlistForm({ onSubmit, className }: WaitlistFormProps) {
           <Dialog.Overlay className="fixed inset-0 z-50 bg-gray-900/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
           <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-gray-200 bg-white p-8 data-[state=open]:animate-in data-[state=closed]:animate-out">
             <Dialog.Title className="text-h2 font-medium text-gray-900">
-              You are on the list
+              {duplicate ? "You are already on the list" : "You are on the list"}
             </Dialog.Title>
             <Dialog.Description className="mt-3 text-body text-gray-600">
-              Thanks for the interest. We will reach out as soon as early access
-              opens for your region.
+              {duplicate
+                ? "We already have this email saved for that persona. We will reach out as access opens for your region."
+                : "Thanks for the interest. We will reach out as soon as early access opens for your region."}
             </Dialog.Description>
             <div className="mt-6 flex justify-end">
               <Dialog.Close asChild>
