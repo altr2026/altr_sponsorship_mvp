@@ -138,23 +138,37 @@ export default function HomePage({ searchParams }: HomePageProps) {
     <>
       {/* STEP 0 — the hook */}
       <section className="relative overflow-hidden">
+        {/* grid overlay */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-altr-pink/10 blur-3xl"
+          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
         />
+        {/* teal glow — top right */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/3 top-2/3 -z-10 h-72 w-72 -translate-y-1/2 rounded-full bg-altr-lime/10 blur-3xl"
+          className="pointer-events-none absolute -right-[100px] -top-[180px] -z-10 h-[400px] w-[400px] rounded-full opacity-[0.35] blur-[60px]"
+          style={{ background: "#1D9E75" }}
+        />
+        {/* lime glow — bottom left */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-[150px] -left-[80px] -z-10 h-[300px] w-[300px] rounded-full opacity-[0.15] blur-[60px]"
+          style={{ background: "#C8F04A" }}
         />
         <div className="container px-6 pb-12 pt-20 sm:pb-16 sm:pt-28 md:pt-36">
           <div className="space-y-6">
             <span className="inline-flex items-center gap-2 text-caption font-medium text-altr-lime">
-              <span aria-hidden="true" className="h-2 w-2 bg-altr-pink" />
+              <span aria-hidden="true" className="h-2 w-2 bg-altr-lime" />
               {hero.eyebrow}
             </span>
             <h1 className="max-w-5xl text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] text-altr-white sm:text-[64px] md:text-[80px]">
               {hero.titleLead}{" "}
-              <span className="block text-altr-lime sm:inline">
+              <span className="block text-teal-600 sm:inline">
                 {hero.titleAccent}
               </span>
             </h1>
@@ -166,7 +180,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
               href="/demo"
-              className="inline-flex h-12 items-center gap-1.5 rounded-md bg-altr-lime px-6 text-body font-medium text-altr-black transition-colors hover:brightness-110"
+              className="inline-flex h-12 items-center gap-1.5 rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-colors hover:brightness-110"
             >
               See how it works
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -188,8 +202,8 @@ export default function HomePage({ searchParams }: HomePageProps) {
                 aria-hidden="true"
                 className="relative inline-flex h-2 w-2 items-center justify-center"
               >
-                <span className="absolute inset-0 animate-ping rounded-full bg-altr-pink opacity-60" />
-                <span className="relative inline-block h-2 w-2 rounded-full bg-altr-pink" />
+                <span className="absolute inset-0 animate-ping rounded-full bg-teal-500 opacity-60" />
+                <span className="relative inline-block h-2 w-2 rounded-full bg-teal-500" />
               </span>
               <span className="font-medium text-altr-white">Live</span>
               <span className="text-altr-mute" aria-hidden="true">·</span>
@@ -199,7 +213,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
             </div>
             <Link
               href="/brands#events"
-              className="hidden text-caption font-medium text-altr-lime transition-colors hover:underline sm:inline"
+              className="hidden text-caption font-medium text-teal-400 transition-colors hover:underline sm:inline"
             >
               Browse all →
             </Link>
@@ -218,7 +232,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                     className="flex w-[300px] shrink-0 flex-col gap-3 rounded-lg border border-altr-line2 bg-altr-black p-5 transition-colors hover:border-altr-mute"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-caption font-medium text-altr-lime">
+                      <span className="text-caption font-medium text-teal-400">
                         {event.vertical}
                       </span>
                       <span className="font-mono text-caption text-altr-mute">
