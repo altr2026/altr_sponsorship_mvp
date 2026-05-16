@@ -3,9 +3,16 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
-  { label: "Events", href: "/events" },
-  { label: "Brands", href: "/brands" },
+type NavLink = {
+  label: string;
+  href: string;
+  disabled?: boolean;
+};
+
+const NAV_LINKS: NavLink[] = [
+  { label: "For Events", href: "/events" },
+  { label: "For Brands", href: "/brands" },
+  { label: "For Agencies", href: "/agencies", disabled: true },
   { label: "Insights", href: "/insights" },
   { label: "About", href: "/about" },
 ];
@@ -38,15 +45,28 @@ export function TopNav({ className }: TopNavProps) {
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-body text-altr-muteSoft transition-colors hover:text-altr-white"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.disabled ? (
+              <span
+                key={link.href}
+                aria-disabled="true"
+                className="inline-flex cursor-not-allowed items-center gap-1.5 text-body text-altr-mute"
+              >
+                {link.label}
+                <span className="rounded border border-altr-line2 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-altr-mute">
+                  Soon
+                </span>
+              </span>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-body text-altr-muteSoft transition-colors hover:text-altr-white"
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <Link
