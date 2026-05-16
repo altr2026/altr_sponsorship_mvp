@@ -16,13 +16,13 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 rounded-lg border border-gray-200 bg-gray-50 p-6",
+        "flex flex-col gap-2 rounded-lg border border-altr-line2 bg-altr-panel p-6",
         className,
       )}
     >
-      <span className="text-caption font-medium text-gray-500">{caption}</span>
-      <span className="text-stat font-medium text-gray-900">{value}</span>
-      <span className="text-caption text-gray-600">{context}</span>
+      <span className="text-caption font-medium text-altr-mute">{caption}</span>
+      <span className="text-stat font-medium text-altr-white">{value}</span>
+      <span className="text-caption text-altr-muteSoft">{context}</span>
     </div>
   );
 }

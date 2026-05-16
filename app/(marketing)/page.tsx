@@ -11,6 +11,7 @@ import {
   ListPlus,
 } from "lucide-react";
 
+import { EarlyAccessDialog } from "@/components/shared/early-access-dialog";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { WaitlistForm } from "@/components/shared/waitlist-form";
 import { events } from "@/lib/mock-data/events";
@@ -25,7 +26,8 @@ const HERO_DEFAULT = {
   title: "Sponsorship that pays for itself.",
   subtitle:
     "Discover events, deal directly with brands, settle on XRPL in three seconds, measure ROI on-chain.",
-  primaryCta: { label: "Get early access", href: "#waitlist" },
+  primaryCtaLabel: "Get early access",
+  defaultPersona: "brand" as const,
 };
 
 const HERO_EVENT = {
@@ -33,7 +35,8 @@ const HERO_EVENT = {
   title: "Your sponsorship desk, simplified.",
   subtitle:
     "List once. Match with vetted brands. Get paid faster — settled on XRPL in three seconds.",
-  primaryCta: { label: "List your event", href: "#waitlist" },
+  primaryCtaLabel: "List your event",
+  defaultPersona: "event" as const,
 };
 
 const PATHS = [
@@ -136,32 +139,41 @@ export default function HomePage({ searchParams }: HomePageProps) {
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-altr-pink/20 blur-3xl"
+          className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-altr-pink/10 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/3 top-2/3 -z-10 h-72 w-72 -translate-y-1/2 rounded-full bg-teal-500/10 blur-3xl"
         />
         <div className="container px-6 pb-12 pt-20 text-center sm:pb-16 sm:pt-28 md:pt-36">
           <div className="space-y-6">
-            <span className="inline-flex items-center gap-2 text-caption font-medium text-teal-700">
+            <span className="inline-flex items-center gap-2 text-caption font-medium text-teal-400">
               <span aria-hidden="true" className="h-2 w-2 bg-altr-pink" />
               {hero.eyebrow}
             </span>
-            <h1 className="mx-auto max-w-5xl text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] text-gray-900 sm:text-[64px] md:text-[80px]">
+            <h1 className="mx-auto max-w-5xl text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] text-altr-white sm:text-[64px] md:text-[80px]">
               {hero.title}
             </h1>
-            <p className="mx-auto max-w-xl text-body text-gray-600">
+            <p className="mx-auto max-w-xl text-body text-altr-muteSoft">
               {hero.subtitle}
             </p>
           </div>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-5">
-            <Link
-              href={hero.primaryCta.href}
-              className="inline-flex h-12 items-center rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-colors hover:bg-teal-700"
+            <EarlyAccessDialog
+              source="hero_cta"
+              defaultPersona={hero.defaultPersona}
             >
-              {hero.primaryCta.label}
-            </Link>
+              <button
+                type="button"
+                className="inline-flex h-12 items-center rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-colors hover:bg-teal-500"
+              >
+                {hero.primaryCtaLabel}
+              </button>
+            </EarlyAccessDialog>
             <Link
               href="#how-it-works"
-              className="inline-flex items-center gap-1.5 text-body font-medium text-gray-900 transition-colors hover:text-teal-700"
+              className="inline-flex items-center gap-1.5 text-body font-medium text-altr-white transition-colors hover:text-teal-400"
             >
               See how it works
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -170,7 +182,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </div>
 
         {/* Live event marquee */}
-        <div className="border-y border-gray-200 bg-white py-8">
+        <div className="border-y border-altr-line2 bg-altr-panel py-8">
           <div className="container mb-5 flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-caption">
               <span
@@ -180,15 +192,15 @@ export default function HomePage({ searchParams }: HomePageProps) {
                 <span className="absolute inset-0 animate-ping rounded-full bg-altr-pink opacity-60" />
                 <span className="relative inline-block h-2 w-2 rounded-full bg-altr-pink" />
               </span>
-              <span className="font-medium text-gray-900">Live</span>
-              <span className="text-gray-400" aria-hidden="true">·</span>
-              <span className="text-gray-500">
+              <span className="font-medium text-altr-white">Live</span>
+              <span className="text-altr-mute" aria-hidden="true">·</span>
+              <span className="text-altr-muteSoft">
                 {events.length} events accepting sponsors across APAC and GCC
               </span>
             </div>
             <Link
               href="/brands#events"
-              className="hidden text-caption font-medium text-teal-700 transition-colors hover:underline sm:inline"
+              className="hidden text-caption font-medium text-teal-400 transition-colors hover:underline sm:inline"
             >
               Browse all →
             </Link>
@@ -204,38 +216,38 @@ export default function HomePage({ searchParams }: HomePageProps) {
                   <article
                     key={`${event.id}-${index}`}
                     aria-hidden={index >= events.length ? "true" : undefined}
-                    className="flex w-[300px] shrink-0 flex-col gap-3 rounded-lg border border-gray-200 bg-white p-5 transition-colors hover:border-gray-300"
+                    className="flex w-[300px] shrink-0 flex-col gap-3 rounded-lg border border-altr-line2 bg-altr-black p-5 transition-colors hover:border-altr-mute"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-caption font-medium text-teal-700">
+                      <span className="text-caption font-medium text-teal-400">
                         {event.vertical}
                       </span>
-                      <span className="font-mono text-caption text-gray-500">
+                      <span className="font-mono text-caption text-altr-mute">
                         {event.region}
                       </span>
                     </div>
                     <div>
-                      <h3 className="text-base font-medium tracking-tight">
+                      <h3 className="text-base font-medium tracking-tight text-altr-white">
                         {event.name}
                       </h3>
-                      <p className="mt-1 text-caption text-gray-500">
+                      <p className="mt-1 text-caption text-altr-mute">
                         {event.location}, {event.country}
                       </p>
                     </div>
-                    <div className="mt-auto flex items-center justify-between border-t border-gray-200 pt-3">
+                    <div className="mt-auto flex items-center justify-between border-t border-altr-line2 pt-3">
                       <div>
-                        <div className="font-mono text-caption text-gray-500">
+                        <div className="font-mono text-caption text-altr-mute">
                           Audience
                         </div>
-                        <div className="font-mono text-body tabular-nums text-gray-900">
+                        <div className="font-mono text-body tabular-nums text-altr-white">
                           {formatAttendees(event.attendees)}
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-mono text-caption text-gray-500">
+                        <div className="font-mono text-caption text-altr-mute">
                           Title
                         </div>
-                        <div className="font-mono text-body tabular-nums text-gray-900">
+                        <div className="font-mono text-body tabular-nums text-altr-white">
                           {titlePackage
                             ? formatTitlePrice(titlePackage.price)
                             : "—"}
@@ -250,7 +262,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </div>
       </section>
 
-      <section className="border-t border-gray-200">
+      <section className="border-t border-altr-line2">
         <div className="container space-y-12 py-24">
           <SectionHeading
             eyebrow="Three paths"
@@ -264,27 +276,29 @@ export default function HomePage({ searchParams }: HomePageProps) {
               const cardBody = (
                 <div
                   className={cn(
-                    "group flex h-full flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6 transition-colors",
-                    !path.comingSoon && "hover:border-gray-300 hover:bg-gray-50",
+                    "group flex h-full flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-panel p-6 transition-colors",
+                    !path.comingSoon && "hover:border-altr-mute hover:bg-altr-line",
                   )}
                 >
                   <div className="flex items-start justify-between">
                     <span
                       aria-hidden="true"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-50 text-teal-700 [&_svg]:h-5 [&_svg]:w-5"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-500/10 text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
                     >
                       <Icon />
                     </span>
                     {path.comingSoon ? (
-                      <span className="rounded-md border border-gray-200 px-2 py-0.5 text-caption text-gray-500">
+                      <span className="rounded-md border border-altr-line2 px-2 py-0.5 text-caption text-altr-mute">
                         Coming soon
                       </span>
                     ) : null}
                   </div>
-                  <h3>{path.title}</h3>
-                  <p className="text-body text-gray-600">{path.description}</p>
+                  <h3 className="text-altr-white">{path.title}</h3>
+                  <p className="text-body text-altr-muteSoft">
+                    {path.description}
+                  </p>
                   {!path.comingSoon ? (
-                    <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-body font-medium text-teal-700">
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-body font-medium text-teal-400">
                       Learn more
                       <ArrowRight
                         className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
@@ -301,7 +315,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                 <Link
                   key={path.title}
                   href={path.href}
-                  className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40"
+                  className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/40"
                 >
                   {cardBody}
                 </Link>
@@ -311,7 +325,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </div>
       </section>
 
-      <section id="how-it-works" className="border-t border-gray-200 bg-gray-50">
+      <section id="how-it-works" className="border-t border-altr-line2 bg-altr-panel">
         <div className="container space-y-12 py-24">
           <SectionHeading
             eyebrow="How it works"
@@ -324,22 +338,24 @@ export default function HomePage({ searchParams }: HomePageProps) {
               return (
                 <li key={step.title} className="flex flex-col gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-caption tabular-nums text-gray-500">
+                    <span className="font-mono text-caption tabular-nums text-altr-mute">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className="h-px flex-1 bg-gray-200"
+                      className="h-px flex-1 bg-altr-line2"
                       aria-hidden="true"
                     />
                     <span
                       aria-hidden="true"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-white text-teal-700 [&_svg]:h-5 [&_svg]:w-5"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-altr-black text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
                     >
                       <Icon />
                     </span>
                   </div>
-                  <h3>{step.title}</h3>
-                  <p className="text-body text-gray-600">{step.description}</p>
+                  <h3 className="text-altr-white">{step.title}</h3>
+                  <p className="text-body text-altr-muteSoft">
+                    {step.description}
+                  </p>
                 </li>
               );
             })}
@@ -347,14 +363,14 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </div>
       </section>
 
-      <section className="border-t border-gray-200">
+      <section className="border-t border-altr-line2">
         <div className="container max-w-3xl space-y-10 py-24">
           <SectionHeading
             eyebrow="Why we exist"
             title="Sponsorship is broken. We're fixing it."
           />
 
-          <div className="space-y-6 text-body text-gray-700">
+          <div className="space-y-6 text-body text-altr-muteSoft">
             <p>
               Sponsorship today still runs on PDF decks, three-week deal cycles,
               and SWIFT wires that arrive a week after the event ends. Brands
@@ -378,7 +394,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </div>
       </section>
 
-      <section className="border-t border-gray-200 bg-gray-50">
+      <section className="border-t border-altr-line2 bg-altr-panel">
         <div className="container space-y-12 py-24">
           <SectionHeading
             eyebrow="From the lab"
@@ -390,20 +406,20 @@ export default function HomePage({ searchParams }: HomePageProps) {
             {INSIGHTS.map((insight) => (
               <article
                 key={insight.title}
-                className="flex h-full flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6"
+                className="flex h-full flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-black p-6"
               >
-                <span className="text-caption font-medium text-teal-700">
+                <span className="text-caption font-medium text-teal-400">
                   {insight.tag}
                 </span>
-                <h3>{insight.title}</h3>
-                <p className="text-body text-gray-600">{insight.excerpt}</p>
-                <div className="mt-auto flex items-center justify-between border-t border-gray-200 pt-4">
-                  <span className="text-caption text-gray-500">
+                <h3 className="text-altr-white">{insight.title}</h3>
+                <p className="text-body text-altr-muteSoft">{insight.excerpt}</p>
+                <div className="mt-auto flex items-center justify-between border-t border-altr-line2 pt-4">
+                  <span className="text-caption text-altr-mute">
                     {insight.date}
                   </span>
                   <Link
                     href="/insights"
-                    className="inline-flex items-center gap-1 text-caption font-medium text-gray-700 hover:text-teal-700"
+                    className="inline-flex items-center gap-1 text-caption font-medium text-altr-muteSoft hover:text-teal-400"
                   >
                     Read more
                     <ArrowUpRight
@@ -419,7 +435,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
           <div className="flex justify-center">
             <Link
               href="/insights"
-              className="inline-flex items-center gap-1.5 text-body font-medium text-teal-700"
+              className="inline-flex items-center gap-1.5 text-body font-medium text-teal-400"
             >
               All insights
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -428,7 +444,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </div>
       </section>
 
-      <section id="waitlist" className="border-t border-gray-200">
+      <section id="waitlist" className="border-t border-altr-line2">
         <div className="container grid gap-12 py-24 md:grid-cols-[1fr_1fr]">
           <SectionHeading
             eyebrow="Early access"

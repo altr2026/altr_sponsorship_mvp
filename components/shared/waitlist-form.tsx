@@ -51,11 +51,11 @@ const BUDGET_TIERS = [
 ];
 
 const inputClass =
-  "h-10 w-full rounded-md border border-gray-200 bg-white px-3 text-body text-gray-900 placeholder:text-gray-400 focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-600/20";
+  "h-10 w-full rounded-md border border-altr-line2 bg-altr-black px-3 text-body text-altr-white placeholder:text-altr-mute focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/30";
 
 const selectClass = cn(inputClass, "appearance-none pr-8");
 
-const labelClass = "text-caption font-medium text-gray-700";
+const labelClass = "text-caption font-medium text-altr-muteSoft";
 
 type WaitlistFormProps = {
   source?: string;
@@ -72,14 +72,12 @@ export function WaitlistForm({
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
 
-  // Event fields
   const [eventName, setEventName] = useState("");
   const [eventVertical, setEventVertical] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [eventSize, setEventSize] = useState("");
   const [sponsorTargetBudget, setSponsorTargetBudget] = useState("");
 
-  // Brand fields
   const [companyName, setCompanyName] = useState("");
   const [targetVertical, setTargetVertical] = useState("");
   const [regionFocus, setRegionFocus] = useState("");
@@ -169,7 +167,7 @@ export function WaitlistForm({
       <form
         onSubmit={handleSubmit}
         className={cn(
-          "flex flex-col gap-5 rounded-lg border border-gray-200 bg-white p-6",
+          "flex flex-col gap-5 rounded-lg border border-altr-line2 bg-altr-panel p-6",
           className,
         )}
       >
@@ -373,7 +371,7 @@ export function WaitlistForm({
         {errorMessage ? (
           <p
             role="alert"
-            className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-body text-destructive"
+            className="rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-body text-red-300"
           >
             {errorMessage}
           </p>
@@ -382,24 +380,24 @@ export function WaitlistForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex h-11 items-center justify-center rounded-md bg-teal-600 px-5 text-body font-medium text-white transition-colors hover:bg-teal-700 disabled:opacity-60"
+          className="inline-flex h-11 items-center justify-center rounded-md bg-teal-600 px-5 text-body font-medium text-white transition-colors hover:bg-teal-500 disabled:opacity-60"
         >
           {submitting ? "Sending…" : "Request early access"}
         </button>
 
-        <p className="text-caption text-gray-500">
+        <p className="text-caption text-altr-mute">
           We will only use your email to share access details. No newsletters.
         </p>
       </form>
 
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 z-50 bg-gray-900/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-gray-200 bg-white p-8 data-[state=open]:animate-in data-[state=closed]:animate-out">
-            <Dialog.Title className="text-h2 font-medium text-gray-900">
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-altr-black/70 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[92vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-altr-line2 bg-altr-panel p-8 data-[state=open]:animate-in data-[state=closed]:animate-out">
+            <Dialog.Title className="text-h2 font-medium text-altr-white">
               {duplicate ? "You are already on the list" : "You are on the list"}
             </Dialog.Title>
-            <Dialog.Description className="mt-3 text-body text-gray-600">
+            <Dialog.Description className="mt-3 text-body text-altr-muteSoft">
               {duplicate
                 ? "We already have this email saved for that persona. We will reach out as access opens for your region."
                 : "Thanks for the interest. We will reach out as soon as early access opens for your region."}
@@ -408,7 +406,7 @@ export function WaitlistForm({
               <Dialog.Close asChild>
                 <button
                   type="button"
-                  className="inline-flex h-9 items-center rounded-md bg-gray-900 px-4 text-body font-medium text-white transition-colors hover:bg-gray-800"
+                  className="inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-500"
                 >
                   Close
                 </button>

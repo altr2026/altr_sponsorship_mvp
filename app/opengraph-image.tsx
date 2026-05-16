@@ -13,7 +13,7 @@ export default async function OpenGraphImage() {
         style={{
           width: "100%",
           height: "100%",
-          background: "#F1EFE8",
+          background: "#08080d",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -33,7 +33,7 @@ export default async function OpenGraphImage() {
             style={{
               fontSize: 30,
               fontWeight: 500,
-              color: "#2C2C2A",
+              color: "#f5f5f0",
               letterSpacing: "-0.02em",
             }}
           >
@@ -52,7 +52,7 @@ export default async function OpenGraphImage() {
           <span
             style={{
               fontSize: 26,
-              color: "#1D9E75",
+              color: "#41B888",
               fontWeight: 500,
             }}
           >
@@ -62,7 +62,7 @@ export default async function OpenGraphImage() {
             style={{
               fontSize: 92,
               fontWeight: 500,
-              color: "#2C2C2A",
+              color: "#f5f5f0",
               letterSpacing: "-0.04em",
               lineHeight: 1.02,
               margin: 0,
@@ -79,7 +79,7 @@ export default async function OpenGraphImage() {
             alignItems: "flex-end",
           }}
         >
-          <span style={{ fontSize: 22, color: "#6E6A5E" }}>
+          <span style={{ fontSize: 22, color: "#a5a5b0" }}>
             Discover · Deal · Settle on XRPL · Measure
           </span>
           <span
@@ -89,11 +89,11 @@ export default async function OpenGraphImage() {
               gap: 10,
               padding: "10px 18px",
               borderRadius: 8,
-              border: "1px solid #BAB1E6",
-              background: "#FFFFFF",
+              border: "1px solid rgba(65, 184, 136, 0.4)",
+              background: "rgba(65, 184, 136, 0.1)",
               fontSize: 18,
               fontWeight: 500,
-              color: "#423D94",
+              color: "#71CFA4",
             }}
           >
             <div
@@ -101,7 +101,7 @@ export default async function OpenGraphImage() {
                 width: 8,
                 height: 8,
                 borderRadius: 999,
-                background: "#534AB7",
+                background: "#41B888",
               }}
             />
             Built on XRPL

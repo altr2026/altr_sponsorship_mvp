@@ -124,7 +124,7 @@ export default function BrandsPage() {
         trustLine="Built for marketing teams across APAC and GCC"
       />
 
-      <section className="border-t border-gray-200 bg-gray-50">
+      <section className="border-t border-altr-line2 bg-altr-panel">
         <div className="container space-y-10 py-24">
           <SectionHeading
             eyebrow="The market"
@@ -132,17 +132,17 @@ export default function BrandsPage() {
             subtitle="Event counts and median sponsor pricing as we have catalogued so far."
           />
 
-          <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+          <div className="overflow-x-auto rounded-lg border border-altr-line2 bg-altr-panel">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="px-6 py-4 text-caption font-medium text-gray-500">
+                <tr className="border-b border-altr-line2">
+                  <th className="px-6 py-4 text-caption font-medium text-altr-mute">
                     Vertical
                   </th>
                   {REGIONS.map((region) => (
                     <th
                       key={region}
-                      className="px-6 py-4 text-caption font-medium text-gray-500"
+                      className="px-6 py-4 text-caption font-medium text-altr-mute"
                     >
                       {region}
                     </th>
@@ -155,21 +155,21 @@ export default function BrandsPage() {
                     key={vertical}
                     className={
                       index !== VERTICALS.length - 1
-                        ? "border-b border-gray-200"
+                        ? "border-b border-altr-line2"
                         : ""
                     }
                   >
-                    <td className="px-6 py-5 text-body font-medium text-gray-900">
+                    <td className="px-6 py-5 text-body font-medium text-altr-white">
                       {vertical}
                     </td>
                     {REGIONS.map((region) => {
                       const cell = MATRIX[vertical][region];
                       return (
                         <td key={region} className="px-6 py-5">
-                          <div className="text-body text-gray-900">
+                          <div className="text-body text-altr-white">
                             {cell.count} events
                           </div>
-                          <div className="font-mono text-caption tabular-nums text-gray-500">
+                          <div className="font-mono text-caption tabular-nums text-altr-mute">
                             {cell.range}
                           </div>
                         </td>
@@ -183,7 +183,7 @@ export default function BrandsPage() {
         </div>
       </section>
 
-      <section className="border-t border-gray-200">
+      <section className="border-t border-altr-line2">
         <div className="container space-y-12 py-24">
           <SectionHeading
             eyebrow="What you get"
@@ -196,16 +196,16 @@ export default function BrandsPage() {
               return (
                 <article
                   key={feature.title}
-                  className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6"
+                  className="flex flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-panel p-6"
                 >
                   <span
                     aria-hidden="true"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-50 text-teal-700 [&_svg]:h-5 [&_svg]:w-5"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-500/10 text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
                   >
                     <Icon />
                   </span>
                   <h3>{feature.title}</h3>
-                  <p className="text-body text-gray-600">
+                  <p className="text-body text-altr-muteSoft">
                     {feature.description}
                   </p>
                 </article>
@@ -215,7 +215,7 @@ export default function BrandsPage() {
         </div>
       </section>
 
-      <section id="events" className="border-t border-gray-200 bg-gray-50">
+      <section id="events" className="border-t border-altr-line2 bg-altr-panel">
         <div className="container space-y-12 py-24">
           <SectionHeading
             eyebrow="Featured events"
@@ -227,30 +227,30 @@ export default function BrandsPage() {
             {events.map((event) => (
               <article
                 key={event.id}
-                className="flex h-full flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6"
+                className="flex h-full flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-panel p-6"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-caption font-medium text-teal-700">
+                  <span className="text-caption font-medium text-teal-400">
                     {event.vertical}
                   </span>
-                  <span className="text-caption text-gray-500">
+                  <span className="text-caption text-altr-mute">
                     {event.region}
                   </span>
                 </div>
                 <h3>{event.name}</h3>
-                <p className="text-body text-gray-600">
+                <p className="text-body text-altr-muteSoft">
                   {event.location}, {event.country} · {event.date}
                 </p>
-                <div className="mt-auto flex items-center justify-between border-t border-gray-200 pt-4">
+                <div className="mt-auto flex items-center justify-between border-t border-altr-line2 pt-4">
                   <div>
-                    <div className="font-mono text-caption tabular-nums text-gray-500">
+                    <div className="font-mono text-caption tabular-nums text-altr-mute">
                       Audience
                     </div>
-                    <div className="font-mono text-body tabular-nums text-gray-900">
+                    <div className="font-mono text-body tabular-nums text-altr-white">
                       {formatAttendees(event.attendees)}
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1 text-caption font-medium text-gray-700">
+                  <span className="inline-flex items-center gap-1 text-caption font-medium text-altr-muteSoft">
                     Login to see details
                     <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                   </span>
@@ -261,22 +261,22 @@ export default function BrandsPage() {
         </div>
       </section>
 
-      <section className="border-t border-gray-200">
+      <section className="border-t border-altr-line2">
         <div className="container space-y-10 py-24">
           <SectionHeading
             eyebrow="Why ALTR"
             title="The difference, side by side."
           />
 
-          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-            <div className="grid grid-cols-[1fr_1fr_1fr] border-b border-gray-200 bg-gray-50">
-              <div className="px-6 py-4 text-caption font-medium text-gray-500">
+          <div className="overflow-hidden rounded-lg border border-altr-line2 bg-altr-panel">
+            <div className="grid grid-cols-[1fr_1fr_1fr] border-b border-altr-line2 bg-altr-panel">
+              <div className="px-6 py-4 text-caption font-medium text-altr-mute">
                 Category
               </div>
-              <div className="px-6 py-4 text-caption font-medium text-gray-500">
+              <div className="px-6 py-4 text-caption font-medium text-altr-mute">
                 The old way
               </div>
-              <div className="px-6 py-4 text-caption font-medium text-teal-700">
+              <div className="px-6 py-4 text-caption font-medium text-teal-400">
                 With ALTR
               </div>
             </div>
@@ -286,23 +286,23 @@ export default function BrandsPage() {
                 className={
                   "grid grid-cols-[1fr_1fr_1fr]" +
                   (index !== COMPARISON.length - 1
-                    ? " border-b border-gray-200"
+                    ? " border-b border-altr-line2"
                     : "")
                 }
               >
-                <div className="px-6 py-5 text-body font-medium text-gray-900">
+                <div className="px-6 py-5 text-body font-medium text-altr-white">
                   {row.category}
                 </div>
-                <div className="flex items-start gap-2 px-6 py-5 text-body text-gray-600">
+                <div className="flex items-start gap-2 px-6 py-5 text-body text-altr-muteSoft">
                   <X
-                    className="mt-0.5 h-4 w-4 shrink-0 text-gray-400"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-altr-mute"
                     aria-hidden="true"
                   />
                   <span>{row.old}</span>
                 </div>
-                <div className="flex items-start gap-2 px-6 py-5 text-body text-gray-900">
+                <div className="flex items-start gap-2 px-6 py-5 text-body text-altr-white">
                   <Check
-                    className="mt-0.5 h-4 w-4 shrink-0 text-teal-700"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-teal-400"
                     aria-hidden="true"
                   />
                   <span>{row.altr}</span>
@@ -313,7 +313,7 @@ export default function BrandsPage() {
         </div>
       </section>
 
-      <section id="waitlist" className="border-t border-gray-200 bg-gray-50">
+      <section id="waitlist" className="border-t border-altr-line2 bg-altr-panel">
         <div className="container grid gap-12 py-24 md:grid-cols-[1fr_1fr]">
           <SectionHeading
             eyebrow="Early access"

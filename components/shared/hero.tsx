@@ -36,21 +36,21 @@ export function Hero({
     >
       <div className="flex max-w-3xl flex-col gap-3">
         {eyebrow ? (
-          <span className="text-caption font-medium text-teal-700">
+          <span className="text-caption font-medium text-teal-400">
             {eyebrow}
           </span>
         ) : null}
-        <h1>{title}</h1>
+        <h1 className="text-altr-white">{title}</h1>
       </div>
 
       {subtitle ? (
-        <p className="max-w-2xl text-body text-gray-600">{subtitle}</p>
+        <p className="max-w-2xl text-body text-altr-muteSoft">{subtitle}</p>
       ) : null}
 
       <div className="mt-2 flex flex-wrap items-center gap-5">
         <Link
           href={primaryCta.href}
-          className="inline-flex h-11 items-center rounded-md bg-teal-600 px-5 text-body font-medium text-white transition-colors hover:bg-teal-700"
+          className="inline-flex h-11 items-center rounded-md bg-teal-600 px-5 text-body font-medium text-white transition-colors hover:bg-teal-500"
         >
           {primaryCta.label}
         </Link>
@@ -58,7 +58,7 @@ export function Hero({
         {secondaryLink ? (
           <Link
             href={secondaryLink.href}
-            className="inline-flex items-center gap-1.5 text-body font-medium text-gray-900 hover:text-teal-700"
+            className="inline-flex items-center gap-1.5 text-body font-medium text-altr-white hover:text-teal-400"
           >
             {secondaryLink.label}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -67,7 +67,7 @@ export function Hero({
       </div>
 
       {trustLine ? (
-        <p className="text-caption text-gray-500">{trustLine}</p>
+        <p className="text-caption text-altr-mute">{trustLine}</p>
       ) : null}
     </section>
   );

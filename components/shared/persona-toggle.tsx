@@ -27,7 +27,7 @@ export function PersonaToggle<T extends string>({
       role="radiogroup"
       aria-label={ariaLabel}
       className={cn(
-        "inline-flex items-center gap-1 rounded-md border border-gray-200 bg-white p-1",
+        "inline-flex items-center gap-1 rounded-md border border-altr-line2 bg-altr-black p-1",
         className,
       )}
     >
@@ -43,8 +43,8 @@ export function PersonaToggle<T extends string>({
             className={cn(
               "inline-flex h-8 items-center rounded-md px-3 text-body font-medium transition-colors",
               active
-                ? "bg-gray-900 text-white"
-                : "text-gray-600 hover:text-gray-900",
+                ? "bg-teal-600 text-white"
+                : "text-altr-muteSoft hover:text-altr-white",
             )}
           >
             {option.label}
