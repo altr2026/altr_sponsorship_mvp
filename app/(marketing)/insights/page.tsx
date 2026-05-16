@@ -67,7 +67,7 @@ export default function InsightsPage() {
             <div className="aspect-[16/6] w-full bg-altr-panel" aria-hidden="true" />
             <div className="space-y-4 p-8">
               <div className="flex items-center gap-3 text-caption text-altr-mute">
-                <span className="font-medium text-teal-400">{FEATURED.tag}</span>
+                <span className="font-medium text-altr-lime">{FEATURED.tag}</span>
                 <span aria-hidden="true">·</span>
                 <span>{FEATURED.date}</span>
                 <span aria-hidden="true">·</span>
@@ -79,7 +79,7 @@ export default function InsightsPage() {
               </p>
               <Link
                 href="/insights"
-                className="inline-flex items-center gap-1.5 text-body font-medium text-teal-400"
+                className="inline-flex items-center gap-1.5 text-body font-medium text-altr-lime"
               >
                 Read the report
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -102,7 +102,7 @@ export default function InsightsPage() {
                 key={post.title}
                 className="flex h-full flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-panel p-6"
               >
-                <span className="text-caption font-medium text-teal-400">
+                <span className="text-caption font-medium text-altr-lime">
                   {post.tag}
                 </span>
                 <h3>{post.title}</h3>
@@ -113,7 +113,7 @@ export default function InsightsPage() {
                   </span>
                   <Link
                     href="/insights"
-                    className="inline-flex items-center gap-1 text-caption font-medium text-altr-muteSoft hover:text-teal-400"
+                    className="inline-flex items-center gap-1 text-caption font-medium text-altr-muteSoft hover:text-altr-lime"
                   >
                     Read
                     <ArrowUpRight

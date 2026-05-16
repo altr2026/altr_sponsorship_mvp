@@ -144,17 +144,17 @@ export default function HomePage({ searchParams }: HomePageProps) {
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/3 top-2/3 -z-10 h-72 w-72 -translate-y-1/2 rounded-full bg-teal-500/10 blur-3xl"
+          className="pointer-events-none absolute left-1/3 top-2/3 -z-10 h-72 w-72 -translate-y-1/2 rounded-full bg-altr-lime/10 blur-3xl"
         />
         <div className="container px-6 pb-12 pt-20 sm:pb-16 sm:pt-28 md:pt-36">
           <div className="space-y-6">
-            <span className="inline-flex items-center gap-2 text-caption font-medium text-teal-400">
+            <span className="inline-flex items-center gap-2 text-caption font-medium text-altr-lime">
               <span aria-hidden="true" className="h-2 w-2 bg-altr-pink" />
               {hero.eyebrow}
             </span>
             <h1 className="max-w-5xl text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] text-altr-white sm:text-[64px] md:text-[80px]">
               {hero.titleLead}{" "}
-              <span className="block text-teal-400 sm:inline">
+              <span className="block text-altr-lime sm:inline">
                 {hero.titleAccent}
               </span>
             </h1>
@@ -166,7 +166,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
               href="/demo"
-              className="inline-flex h-12 items-center gap-1.5 rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-colors hover:bg-teal-500"
+              className="inline-flex h-12 items-center gap-1.5 rounded-md bg-altr-lime px-6 text-body font-medium text-altr-black transition-colors hover:brightness-110"
             >
               See how it works
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -199,7 +199,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
             </div>
             <Link
               href="/brands#events"
-              className="hidden text-caption font-medium text-teal-400 transition-colors hover:underline sm:inline"
+              className="hidden text-caption font-medium text-altr-lime transition-colors hover:underline sm:inline"
             >
               Browse all →
             </Link>
@@ -218,7 +218,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                     className="flex w-[300px] shrink-0 flex-col gap-3 rounded-lg border border-altr-line2 bg-altr-black p-5 transition-colors hover:border-altr-mute"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-caption font-medium text-teal-400">
+                      <span className="text-caption font-medium text-altr-lime">
                         {event.vertical}
                       </span>
                       <span className="font-mono text-caption text-altr-mute">
@@ -282,7 +282,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                   <div className="flex items-start justify-between">
                     <span
                       aria-hidden="true"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-500/10 text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-altr-lime/10 text-altr-lime [&_svg]:h-5 [&_svg]:w-5"
                     >
                       <Icon />
                     </span>
@@ -297,7 +297,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                     {path.description}
                   </p>
                   {!path.comingSoon ? (
-                    <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-body font-medium text-teal-400">
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-body font-medium text-altr-lime">
                       Learn more
                       <ArrowRight
                         className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
@@ -314,7 +314,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                 <Link
                   key={path.title}
                   href={path.href}
-                  className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/40"
+                  className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-altr-lime/40"
                 >
                   {cardBody}
                 </Link>
@@ -346,7 +346,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                     />
                     <span
                       aria-hidden="true"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-altr-black text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-altr-black text-altr-lime [&_svg]:h-5 [&_svg]:w-5"
                     >
                       <Icon />
                     </span>
@@ -407,7 +407,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                 key={insight.title}
                 className="flex h-full flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-black p-6"
               >
-                <span className="text-caption font-medium text-teal-400">
+                <span className="text-caption font-medium text-altr-lime">
                   {insight.tag}
                 </span>
                 <h3 className="text-altr-white">{insight.title}</h3>
@@ -418,7 +418,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
                   </span>
                   <Link
                     href="/insights"
-                    className="inline-flex items-center gap-1 text-caption font-medium text-altr-muteSoft hover:text-teal-400"
+                    className="inline-flex items-center gap-1 text-caption font-medium text-altr-muteSoft hover:text-altr-lime"
                   >
                     Read more
                     <ArrowUpRight
@@ -434,7 +434,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
           <div className="flex justify-center">
             <Link
               href="/insights"
-              className="inline-flex items-center gap-1.5 text-body font-medium text-teal-400"
+              className="inline-flex items-center gap-1.5 text-body font-medium text-altr-lime"
             >
               All insights
               <ArrowRight className="h-4 w-4" aria-hidden="true" />

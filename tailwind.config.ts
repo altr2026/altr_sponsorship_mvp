@@ -102,6 +102,7 @@ const config: Config = {
           yellow: "#ffd60a",
           green: "#3fb86b",
           pink: "#FF3DD1",
+          lime: "#C8F04A",
         },
       },
       fontSize: {

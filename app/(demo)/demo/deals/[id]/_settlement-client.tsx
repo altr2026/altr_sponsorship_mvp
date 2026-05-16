@@ -163,7 +163,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                 "rounded border px-2.5 py-1",
                 released
                   ? "border-altr-green/40 bg-altr-green/10 text-altr-green"
-                  : "border-altr-yellow/40 bg-altr-yellow/10 text-altr-yellow",
+                  : "border-altr-lime/40 bg-altr-lime/10 text-altr-lime",
               )}
             >
               Milestone 3 · {released ? "released" : "awaiting release"}
@@ -211,7 +211,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                 href={`https://testnet.xrpl.org/transactions/${deal.xrpl_tx_hash}`}
                 target="_blank"
                 rel="noreferrer"
-                className="font-mono text-[12px] uppercase tracking-[0.18em] text-altr-yellow hover:underline"
+                className="font-mono text-[12px] uppercase tracking-[0.18em] text-altr-lime hover:underline"
               >
                 Open in explorer ↗
               </a>
@@ -305,12 +305,12 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                     "rounded border-2 px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.22em] transition-all",
                     released
                       ? "border-altr-green bg-altr-green/15 text-altr-green"
-                      : "border-altr-yellow bg-altr-yellow text-altr-black hover:brightness-110 active:translate-y-[1px]",
+                      : "border-altr-lime bg-altr-lime text-altr-black hover:brightness-110 active:translate-y-[1px]",
                   )}
                   style={
                     released
                       ? undefined
-                      : { boxShadow: "0 0 24px -6px rgba(255, 214, 10, 0.5)" }
+                      : { boxShadow: "0 0 24px -6px rgba(200, 240, 74, 0.5)" }
                   }
                 >
                   {released ? (
@@ -395,7 +395,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
           </ol>
         </section>
 
-        <section className="rounded-2xl border border-altr-yellow/30 bg-altr-yellow/5 p-5 sm:p-6">
+        <section className="rounded-2xl border border-altr-lime/30 bg-altr-lime/5 p-5 sm:p-6">
           <div className="mb-3 space-y-1">
             <Kbd>Event settles to</Kbd>
             <div className="text-[13px] text-altr-muteSoft">
@@ -414,7 +414,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                   className={cn(
                     "rounded-lg border px-4 py-3 text-left transition-colors",
                     active
-                      ? "border-altr-yellow bg-altr-yellow/15"
+                      ? "border-altr-lime bg-altr-lime/15"
                       : "border-altr-line2 hover:border-altr-mute",
                   )}
                 >
@@ -436,7 +436,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                 {formatUsd(m3Amount)} {deal.currency}
               </div>
               <span className="text-altr-mute">→</span>
-              <div className="font-mono text-[16px] font-medium text-altr-yellow">
+              <div className="font-mono text-[16px] font-medium text-altr-lime">
                 {conversionLabel}
               </div>
             </div>
@@ -455,7 +455,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
           </Link>
           <Link
             href="/demo"
-            className="inline-flex h-11 items-center rounded-md bg-altr-yellow px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
+            className="inline-flex h-11 items-center rounded-md bg-altr-lime px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
           >
             Continue to dashboard →
           </Link>
@@ -478,7 +478,7 @@ function TimelineRow({ state, day, title, detail, chain }: TimelineRowProps) {
     "absolute -left-[26px] top-0 grid h-7 w-7 place-items-center rounded-full font-mono text-[11px] font-bold transition-all",
     state === "done" && "bg-altr-green text-altr-black",
     state === "active" &&
-      "bg-altr-yellow text-altr-black ring-4 ring-altr-yellow/25 animate-pulse",
+      "bg-altr-lime text-altr-black ring-4 ring-altr-lime/25 animate-pulse",
     state === "locked" && "bg-altr-line2 text-altr-mute",
   );
 

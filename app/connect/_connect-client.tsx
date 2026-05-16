@@ -222,7 +222,7 @@ export function ConnectClient() {
       <main className="flex flex-1 items-center justify-center px-6 py-12">
         <div className="w-full max-w-[480px] space-y-6">
           <div className="space-y-3 text-center">
-            <span className="inline-block text-caption font-medium text-teal-400">
+            <span className="inline-block text-caption font-medium text-altr-lime">
               Sign in
             </span>
             <h1 className="text-[clamp(28px,4vw,36px)] font-medium leading-[1.1] tracking-tight text-altr-white">
@@ -247,7 +247,7 @@ export function ConnectClient() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-altr-mute">
                   Connected via {wallet.source === "demo" ? "demo wallet" : wallet.source}
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-teal-500/40 bg-teal-500/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-teal-300">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-altr-lime/40 bg-altr-lime/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-altr-lime">
                   <Check className="h-3 w-3" aria-hidden="true" />
                   Active
                 </span>
@@ -263,7 +263,7 @@ export function ConnectClient() {
               <div className="flex flex-col gap-3 pt-2 sm:flex-row">
                 <Link
                   href="/demo/deals/dl_pbw_samsung"
-                  className="inline-flex h-11 flex-1 items-center justify-center gap-1.5 rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-500"
+                  className="inline-flex h-11 flex-1 items-center justify-center gap-1.5 rounded-md bg-altr-lime px-4 text-body font-medium text-altr-black transition-colors hover:brightness-110"
                 >
                   View live settlement
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -333,7 +333,7 @@ export function ConnectClient() {
                     className={cn(
                       "group flex w-full items-center justify-between gap-4 rounded-lg border bg-altr-panel p-4 text-left transition-colors disabled:opacity-60",
                       enabled
-                        ? "border-teal-500/40 hover:border-teal-400"
+                        ? "border-altr-lime/40 hover:border-teal-400"
                         : "border-altr-line2 hover:border-altr-mute",
                     )}
                   >
@@ -343,7 +343,7 @@ export function ConnectClient() {
                           {provider.label}
                         </span>
                         {provider.badge ? (
-                          <span className="rounded border border-teal-500/40 bg-teal-500/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-teal-300">
+                          <span className="rounded border border-altr-lime/40 bg-altr-lime/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-altr-lime">
                             {provider.badge}
                           </span>
                         ) : null}
@@ -359,7 +359,7 @@ export function ConnectClient() {
                     </div>
                     {isLoading ? (
                       <Loader2
-                        className="h-5 w-5 shrink-0 animate-spin text-teal-400"
+                        className="h-5 w-5 shrink-0 animate-spin text-altr-lime"
                         aria-hidden="true"
                       />
                     ) : (
@@ -367,7 +367,7 @@ export function ConnectClient() {
                         className={cn(
                           "h-4 w-4 shrink-0 transition-transform",
                           enabled
-                            ? "text-teal-400 group-hover:translate-x-0.5"
+                            ? "text-altr-lime group-hover:translate-x-0.5"
                             : "text-altr-mute",
                         )}
                         aria-hidden="true"

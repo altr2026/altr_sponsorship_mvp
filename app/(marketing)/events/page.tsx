@@ -164,7 +164,7 @@ export default function EventsPage() {
                     />
                     <span
                       aria-hidden="true"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-altr-panel text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-altr-panel text-altr-lime [&_svg]:h-5 [&_svg]:w-5"
                     >
                       <Icon />
                     </span>
@@ -195,7 +195,7 @@ export default function EventsPage() {
                 >
                   <span
                     aria-hidden="true"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-500/10 text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-altr-lime/10 text-altr-lime [&_svg]:h-5 [&_svg]:w-5"
                   >
                     <Icon />
                   </span>
@@ -254,7 +254,7 @@ export default function EventsPage() {
               <span className="text-caption text-altr-mute">
                 Based on 12+ similar events in APAC and GCC.
               </span>
-              <span className="text-caption font-medium text-teal-400">
+              <span className="text-caption font-medium text-altr-lime">
                 Available after listing
               </span>
             </div>

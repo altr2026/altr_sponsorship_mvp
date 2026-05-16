@@ -114,7 +114,7 @@ export default function AboutPage() {
                     className={
                       "text-caption font-medium " +
                       (phase.status === "Live"
-                        ? "text-teal-400"
+                        ? "text-altr-lime"
                         : "text-altr-mute")
                     }
                   >
@@ -132,7 +132,7 @@ export default function AboutPage() {
       <section className="border-t border-altr-line2">
         <div className="container grid gap-12 py-24 md:grid-cols-2">
           <div className="space-y-4">
-            <span className="text-caption font-medium text-teal-400">Team</span>
+            <span className="text-caption font-medium text-altr-lime">Team</span>
             <h2>Founders to be announced.</h2>
             <p className="text-body text-altr-muteSoft">
               ALTR is being built by a small team across Seoul and Dubai. Full
@@ -141,7 +141,7 @@ export default function AboutPage() {
           </div>
 
           <div className="space-y-4">
-            <span className="text-caption font-medium text-teal-400">
+            <span className="text-caption font-medium text-altr-lime">
               Investors
             </span>
             <h2>In conversation.</h2>

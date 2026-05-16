@@ -51,7 +51,7 @@ const BUDGET_TIERS = [
 ];
 
 const inputClass =
-  "h-10 w-full rounded-md border border-altr-line2 bg-altr-black px-3 text-body text-altr-white placeholder:text-altr-mute focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/30";
+  "h-10 w-full rounded-md border border-altr-line2 bg-altr-black px-3 text-body text-altr-white placeholder:text-altr-mute focus:border-altr-lime focus:outline-none focus:ring-2 focus:ring-altr-lime/30";
 
 const selectClass = cn(inputClass, "appearance-none pr-8");
 
@@ -380,7 +380,7 @@ export function WaitlistForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex h-11 items-center justify-center rounded-md bg-teal-600 px-5 text-body font-medium text-white transition-colors hover:bg-teal-500 disabled:opacity-60"
+          className="inline-flex h-11 items-center justify-center rounded-md bg-altr-lime px-5 text-body font-medium text-altr-black transition-colors hover:brightness-110 disabled:opacity-60"
         >
           {submitting ? "Sending…" : "Request early access"}
         </button>
@@ -406,7 +406,7 @@ export function WaitlistForm({
               <Dialog.Close asChild>
                 <button
                   type="button"
-                  className="inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-500"
+                  className="inline-flex h-9 items-center rounded-md bg-altr-lime px-4 text-body font-medium text-altr-black transition-colors hover:brightness-110"
                 >
                   Close
                 </button>

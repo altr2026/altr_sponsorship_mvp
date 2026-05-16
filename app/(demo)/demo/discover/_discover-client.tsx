@@ -203,7 +203,7 @@ export function DiscoverClient({ events }: DiscoverClientProps) {
             <button
               type="button"
               onClick={clearFilters}
-              className="mt-3 inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.18em] text-altr-yellow hover:underline"
+              className="mt-3 inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.18em] text-altr-lime hover:underline"
             >
               <X className="h-3 w-3" aria-hidden="true" />
               Clear filters
@@ -256,7 +256,7 @@ function Pill({
       className={cn(
         "rounded-md border px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors",
         active
-          ? "border-altr-yellow bg-altr-yellow/10 text-altr-yellow"
+          ? "border-altr-lime bg-altr-lime/10 text-altr-lime"
           : "border-altr-line2 text-altr-muteSoft hover:border-altr-mute hover:text-altr-white",
       )}
     >
@@ -272,7 +272,7 @@ function EventCard({ event }: { event: Event }) {
   return (
     <Link
       href={`/demo/events/${event.id}`}
-      className="group flex h-full flex-col gap-3 rounded-lg border border-altr-line2 bg-altr-panel p-5 transition-colors hover:border-altr-mute focus:outline-none focus-visible:border-altr-yellow"
+      className="group flex h-full flex-col gap-3 rounded-lg border border-altr-line2 bg-altr-panel p-5 transition-colors hover:border-altr-mute focus:outline-none focus-visible:border-altr-lime"
     >
       <div
         aria-hidden="true"
@@ -325,7 +325,7 @@ function EventCard({ event }: { event: Event }) {
           View
         </span>
         <ArrowRight
-          className="h-4 w-4 text-altr-yellow transition-transform group-hover:translate-x-0.5"
+          className="h-4 w-4 text-altr-lime transition-transform group-hover:translate-x-0.5"
           aria-hidden="true"
         />
       </div>

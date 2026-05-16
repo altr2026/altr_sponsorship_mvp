@@ -65,7 +65,7 @@ export default function DemoEntryPage() {
       <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
         <Link
           href="/demo/deals/dl_pbw_samsung"
-          className="inline-flex h-11 items-center rounded-md bg-altr-yellow px-5 font-mono text-[12px] font-bold uppercase tracking-[0.22em] text-altr-black transition-all hover:brightness-110 active:translate-y-[1px]"
+          className="inline-flex h-11 items-center rounded-md bg-altr-lime px-5 font-mono text-[12px] font-bold uppercase tracking-[0.22em] text-altr-black transition-all hover:brightness-110 active:translate-y-[1px]"
         >
           View settlement demo →
         </Link>

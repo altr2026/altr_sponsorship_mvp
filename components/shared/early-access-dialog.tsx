@@ -20,7 +20,7 @@ const PERSONA_OPTIONS: PersonaOption<EarlyAccessPersona>[] = [
 ];
 
 const inputClass =
-  "h-11 w-full rounded-md border border-altr-line2 bg-altr-black px-3 text-body text-altr-white placeholder:text-altr-mute focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/30";
+  "h-11 w-full rounded-md border border-altr-line2 bg-altr-black px-3 text-body text-altr-white placeholder:text-altr-mute focus:border-altr-lime focus:outline-none focus:ring-2 focus:ring-altr-lime/30";
 const labelClass = "text-caption font-medium text-altr-muteSoft";
 
 type EarlyAccessDialogProps = {
@@ -137,7 +137,7 @@ export function EarlyAccessDialog({
                 <button
                   type="button"
                   onClick={() => handleOpenChange(false)}
-                  className="inline-flex h-10 items-center rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-500"
+                  className="inline-flex h-10 items-center rounded-md bg-altr-lime px-4 text-body font-medium text-altr-black transition-colors hover:brightness-110"
                 >
                   Close
                 </button>
@@ -206,7 +206,7 @@ export function EarlyAccessDialog({
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-flex h-11 items-center justify-center rounded-md bg-teal-600 px-5 text-body font-medium text-white transition-colors hover:bg-teal-500 disabled:opacity-60"
+                className="inline-flex h-11 items-center justify-center rounded-md bg-altr-lime px-5 text-body font-medium text-altr-black transition-colors hover:brightness-110 disabled:opacity-60"
               >
                 {submitting ? "Sending…" : "Get early access"}
               </button>
@@ -216,7 +216,7 @@ export function EarlyAccessDialog({
                 <a
                   href="#waitlist"
                   onClick={() => handleOpenChange(false)}
-                  className="text-teal-400 hover:underline"
+                  className="text-altr-lime hover:underline"
                 >
                   full waitlist form
                 </a>

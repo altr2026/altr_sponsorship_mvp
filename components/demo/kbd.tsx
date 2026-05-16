@@ -7,7 +7,7 @@ type KbdProps = {
 };
 
 const TONE_CLASSES: Record<NonNullable<KbdProps["tone"]>, string> = {
-  yellow: "text-altr-yellow",
+  yellow: "text-altr-lime",
   mute: "text-altr-mute",
   green: "text-altr-green",
 };
