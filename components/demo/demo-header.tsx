@@ -37,7 +37,7 @@ export function DemoHeader() {
     <header className="border-b border-altr-line px-6 pb-4 pt-6 sm:pt-7 md:px-10">
       <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-4">
         <Link
-          href="/demo"
+          href="/"
           className="group flex items-center gap-3 transition-opacity hover:opacity-90"
         >
           <Image
@@ -46,11 +46,11 @@ export function DemoHeader() {
             width={1500}
             height={512}
             priority
-            className="h-7 w-auto"
+            className="h-6 w-auto"
           />
           <span
             aria-hidden="true"
-            className="hidden h-7 w-px bg-altr-line2 sm:block"
+            className="hidden h-6 w-px bg-altr-line2 sm:block"
           />
           <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-altr-mute sm:inline">
             Sponsorship OS · Demo v0.1

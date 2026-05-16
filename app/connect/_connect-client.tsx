@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Wallet } from "xrpl";
 import { ArrowRight, Check, ExternalLink, Loader2, LogOut, X } from "lucide-react";
@@ -206,12 +207,15 @@ export function ConnectClient() {
     <div className="flex min-h-screen flex-col bg-altr-black text-altr-white">
       <header className="border-b border-altr-line2 px-6 py-5 md:px-10">
         <div className="mx-auto flex max-w-[640px] items-center justify-between">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-altr-white"
-          >
-            <span>ALTR</span>
-            <span aria-hidden="true" className="h-2 w-2 bg-altr-pink" />
+          <Link href="/" className="inline-flex items-center">
+            <Image
+              src="/altr-logo-white.png"
+              alt="ALTR"
+              width={1500}
+              height={512}
+              priority
+              className="h-6 w-auto"
+            />
           </Link>
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-altr-mute">
             Connect · XRPL testnet

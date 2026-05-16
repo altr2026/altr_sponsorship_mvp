@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -24,12 +25,15 @@ export function TopNav({ className }: TopNavProps) {
       <div className="container flex h-full items-center justify-between gap-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-altr-white"
+          className="inline-flex items-center transition-opacity hover:opacity-90"
         >
-          <span>ALTR</span>
-          <span
-            aria-hidden="true"
-            className="h-2 w-2 bg-altr-pink"
+          <Image
+            src="/altr-logo-white.png"
+            alt="ALTR"
+            width={1500}
+            height={512}
+            priority
+            className="h-6 w-auto"
           />
         </Link>
 
