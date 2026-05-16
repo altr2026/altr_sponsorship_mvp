@@ -86,6 +86,20 @@ const config: Config = {
           800: "#34322D",
           900: "#2C2C2A",
         },
+
+        // ALTR demo subsection — dark / yellow / mono Bloomberg-terminal aesthetic.
+        // Used only by /demo/* routes (see app/(demo)/demo/layout.tsx).
+        altr: {
+          black: "#08080d",
+          panel: "#10101a",
+          line: "#1a1a26",
+          line2: "#26262f",
+          white: "#f5f5f0",
+          mute: "#5e5e6a",
+          muteSoft: "#a5a5b0",
+          yellow: "#ffd60a",
+          green: "#3fb86b",
+        },
       },
       fontSize: {
         // ALTR type scale
