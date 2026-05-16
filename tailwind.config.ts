@@ -122,6 +122,15 @@ const config: Config = {
         md: "8px",
         lg: "12px",
       },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 45s linear infinite",
+      },
       fontFamily: {
         sans: [
           "var(--font-inter)",
