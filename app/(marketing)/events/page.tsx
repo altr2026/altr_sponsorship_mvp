@@ -17,7 +17,7 @@ import { WaitlistForm } from "@/components/shared/waitlist-form";
 export const metadata: Metadata = {
   title: "For events",
   description:
-    "List once. Match with vetted brands. Get paid faster — milestone payouts settled on XRPL in three seconds.",
+    "List once. Match with vetted brands. Get paid faster — milestone payouts in seconds, not weeks.",
   alternates: { canonical: "/events" },
 };
 
@@ -83,7 +83,7 @@ const FEATURES = [
     icon: Receipt,
     title: "Payment automation",
     description:
-      "Milestone-based escrow on XRPL. Three-second settlement. Onchain proof.",
+      "Milestone-based payouts. Three-second settlement. Verifiable proof of delivery.",
   },
 ];
 
@@ -113,7 +113,7 @@ const FAQ = [
   },
   {
     q: "When do we get paid?",
-    a: "Each milestone releases on completion. For XRPL settlements that lands in your wallet the same day.",
+    a: "Each milestone releases on completion. In supported regions, funds land in your account the same day.",
   },
 ];
 
@@ -123,7 +123,7 @@ export default function EventsPage() {
       <Hero
         eyebrow="For event organizers"
         title="Your sponsorship desk, simplified."
-        subtitle="List once. Match with vetted brands. Get paid faster — with milestone payouts settled on XRPL."
+        subtitle="List once. Match with vetted brands. Get paid faster — milestone payouts in seconds, not weeks."
         primaryCta={{ label: "List your event", href: "#waitlist" }}
         secondaryLink={{ label: "See how it works", href: "#how-it-works" }}
         trustLine="12+ events already on the list"

@@ -88,7 +88,7 @@ export function Footer({ className }: FooterProps) {
               aria-hidden="true"
               className="h-1.5 w-1.5 rounded-full bg-teal-400"
             />
-            Built on XRPL
+            APAC + GCC
           </span>
         </div>
       </div>
