@@ -33,6 +33,10 @@ export type Event = {
   is_anchor_partner: boolean;
 };
 
+export function getEventById(id: string): Event | undefined {
+  return events.find((event) => event.id === id);
+}
+
 export const events: Event[] = [
   {
     id: "evt_pbw_2026",
