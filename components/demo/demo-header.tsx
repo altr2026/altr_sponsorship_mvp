@@ -1,25 +1,38 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
 const STEPS: Array<{
-  num: string;
+  num: "01" | "02" | "03" | "04";
   label: string;
   href: string;
   enabled: boolean;
 }> = [
-  { num: "01", label: "Discover", href: "/demo", enabled: false },
+  { num: "01", label: "Discover", href: "/demo/discover", enabled: true },
   { num: "02", label: "Deal", href: "/demo", enabled: false },
   { num: "03", label: "Settle", href: "/demo/deals/dl_pbw_samsung", enabled: true },
   { num: "04", label: "Dashboard", href: "/demo", enabled: false },
 ];
 
-type DemoHeaderProps = {
-  currentStep?: "01" | "02" | "03" | "04";
-};
+function deriveCurrentStep(
+  pathname: string | null,
+): "01" | "02" | "03" | "04" | null {
+  if (!pathname) return null;
+  if (pathname.startsWith("/demo/discover")) return "01";
+  if (pathname === "/demo/deals/new") return "02";
+  if (pathname.startsWith("/demo/deals")) return "03";
+  if (pathname.startsWith("/demo/dashboard")) return "04";
+  return null;
+}
 
-export function DemoHeader({ currentStep = "03" }: DemoHeaderProps) {
+export function DemoHeader() {
+  const pathname = usePathname();
+  const currentStep = deriveCurrentStep(pathname);
+
   return (
     <header className="border-b border-altr-line px-6 pb-4 pt-6 sm:pt-7 md:px-10">
       <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-4">
@@ -77,11 +90,8 @@ export function DemoHeader({ currentStep = "03" }: DemoHeaderProps) {
             );
 
             return (
-              <div
-                key={step.num}
-                className="flex items-center gap-2 sm:gap-3"
-              >
-                {step.enabled || isCurrent ? (
+              <div key={step.num} className="flex items-center gap-2 sm:gap-3">
+                {step.enabled ? (
                   <Link
                     href={step.href}
                     className="group flex cursor-pointer items-center gap-2.5"
