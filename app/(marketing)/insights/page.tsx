@@ -61,25 +61,25 @@ export default function InsightsPage() {
         secondaryLink={{ label: "Read the latest", href: "#featured" }}
       />
 
-      <section id="featured" className="border-t border-gray-200">
+      <section id="featured" className="border-t border-altr-line2">
         <div className="container py-24">
-          <article className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-            <div className="aspect-[16/6] w-full bg-gray-50" aria-hidden="true" />
+          <article className="overflow-hidden rounded-lg border border-altr-line2 bg-altr-panel">
+            <div className="aspect-[16/6] w-full bg-altr-panel" aria-hidden="true" />
             <div className="space-y-4 p-8">
-              <div className="flex items-center gap-3 text-caption text-gray-500">
-                <span className="font-medium text-teal-700">{FEATURED.tag}</span>
+              <div className="flex items-center gap-3 text-caption text-altr-mute">
+                <span className="font-medium text-teal-400">{FEATURED.tag}</span>
                 <span aria-hidden="true">·</span>
                 <span>{FEATURED.date}</span>
                 <span aria-hidden="true">·</span>
                 <span>{FEATURED.readTime}</span>
               </div>
               <h2>{FEATURED.title}</h2>
-              <p className="max-w-3xl text-body text-gray-600">
+              <p className="max-w-3xl text-body text-altr-muteSoft">
                 {FEATURED.excerpt}
               </p>
               <Link
                 href="/insights"
-                className="inline-flex items-center gap-1.5 text-body font-medium text-teal-700"
+                className="inline-flex items-center gap-1.5 text-body font-medium text-teal-400"
               >
                 Read the report
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -89,7 +89,7 @@ export default function InsightsPage() {
         </div>
       </section>
 
-      <section className="border-t border-gray-200 bg-gray-50">
+      <section className="border-t border-altr-line2 bg-altr-panel">
         <div className="container space-y-10 py-24">
           <SectionHeading
             eyebrow="More from the lab"
@@ -100,20 +100,20 @@ export default function InsightsPage() {
             {POSTS.map((post) => (
               <article
                 key={post.title}
-                className="flex h-full flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6"
+                className="flex h-full flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-panel p-6"
               >
-                <span className="text-caption font-medium text-teal-700">
+                <span className="text-caption font-medium text-teal-400">
                   {post.tag}
                 </span>
                 <h3>{post.title}</h3>
-                <p className="text-body text-gray-600">{post.excerpt}</p>
-                <div className="mt-auto flex items-center justify-between border-t border-gray-200 pt-4">
-                  <span className="text-caption text-gray-500">
+                <p className="text-body text-altr-muteSoft">{post.excerpt}</p>
+                <div className="mt-auto flex items-center justify-between border-t border-altr-line2 pt-4">
+                  <span className="text-caption text-altr-mute">
                     {post.date} · {post.readTime}
                   </span>
                   <Link
                     href="/insights"
-                    className="inline-flex items-center gap-1 text-caption font-medium text-gray-700 hover:text-teal-700"
+                    className="inline-flex items-center gap-1 text-caption font-medium text-altr-muteSoft hover:text-teal-400"
                   >
                     Read
                     <ArrowUpRight
@@ -128,7 +128,7 @@ export default function InsightsPage() {
         </div>
       </section>
 
-      <section id="newsletter" className="border-t border-gray-200">
+      <section id="newsletter" className="border-t border-altr-line2">
         <div className="container grid gap-12 py-24 md:grid-cols-[1fr_1fr]">
           <SectionHeading
             eyebrow="Newsletter"

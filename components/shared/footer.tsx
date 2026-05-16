@@ -36,7 +36,7 @@ export function Footer({ className }: FooterProps) {
   return (
     <footer
       className={cn(
-        "border-t border-gray-200 bg-gray-50",
+        "border-t border-altr-line2 bg-altr-panel",
         className,
       )}
     >
@@ -44,7 +44,7 @@ export function Footer({ className }: FooterProps) {
         <div className="space-y-3">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-gray-900"
+            className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-altr-white"
           >
             <span>ALTR</span>
             <span
@@ -52,14 +52,14 @@ export function Footer({ className }: FooterProps) {
               className="h-2 w-2 bg-altr-pink"
             />
           </Link>
-          <p className="max-w-xs text-body text-gray-600">
+          <p className="max-w-xs text-body text-altr-muteSoft">
             Sponsorship infrastructure for APAC and GCC live events.
           </p>
         </div>
 
         {FOOTER_GROUPS.map((group) => (
           <div key={group.heading} className="space-y-3">
-            <h4 className="text-caption font-medium text-gray-500">
+            <h4 className="text-caption font-medium text-altr-mute">
               {group.heading}
             </h4>
             <ul className="space-y-2">
@@ -67,7 +67,7 @@ export function Footer({ className }: FooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-body text-gray-600 transition-colors hover:text-gray-900"
+                    className="text-body text-altr-muteSoft transition-colors hover:text-altr-white"
                   >
                     {link.label}
                   </Link>
@@ -78,15 +78,15 @@ export function Footer({ className }: FooterProps) {
         ))}
       </div>
 
-      <div className="border-t border-gray-200">
+      <div className="border-t border-altr-line2">
         <div className="container flex flex-col items-start justify-between gap-3 py-6 md:flex-row md:items-center">
-          <p className="text-caption text-gray-500">
+          <p className="text-caption text-altr-mute">
             © {new Date().getFullYear()} ALTR. All rights reserved.
           </p>
-          <span className="inline-flex items-center gap-2 rounded-md border border-purple-200 bg-white px-3 py-1.5 text-caption font-medium text-purple-700">
+          <span className="inline-flex items-center gap-2 rounded-md border border-teal-500/40 bg-teal-500/10 px-3 py-1.5 text-caption font-medium text-teal-300">
             <span
               aria-hidden="true"
-              className="h-1.5 w-1.5 rounded-full bg-purple-600"
+              className="h-1.5 w-1.5 rounded-full bg-teal-400"
             />
             Built on XRPL
           </span>

@@ -23,14 +23,14 @@ export function TopNav({
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 h-16 w-full border-b border-gray-200 bg-background/95",
+        "sticky top-0 z-40 h-16 w-full border-b border-altr-line2 bg-altr-black/90 backdrop-blur",
         className,
       )}
     >
       <div className="container flex h-full items-center justify-between gap-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-gray-900"
+          className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-altr-white"
         >
           <span>ALTR</span>
           <span
@@ -44,7 +44,7 @@ export function TopNav({
             <Link
               key={link.href}
               href={link.href}
-              className="text-body text-gray-600 transition-colors hover:text-gray-900"
+              className="text-body text-altr-muteSoft transition-colors hover:text-altr-white"
             >
               {link.label}
             </Link>
@@ -53,7 +53,7 @@ export function TopNav({
 
         <Link
           href={ctaHref}
-          className="inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-700"
+          className="inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-500"
         >
           {ctaLabel}
         </Link>

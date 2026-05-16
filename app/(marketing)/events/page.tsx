@@ -129,7 +129,7 @@ export default function EventsPage() {
         trustLine="12+ events already on the list"
       />
 
-      <section className="border-t border-gray-200 bg-white">
+      <section className="border-t border-altr-line2 bg-altr-panel">
         <div className="container py-16">
           <div className="grid gap-6 md:grid-cols-3">
             {STATS.map((stat) => (
@@ -141,7 +141,7 @@ export default function EventsPage() {
 
       <section
         id="how-it-works"
-        className="border-t border-gray-200 bg-gray-50"
+        className="border-t border-altr-line2 bg-altr-panel"
       >
         <div className="container space-y-12 py-24">
           <SectionHeading
@@ -155,7 +155,7 @@ export default function EventsPage() {
               return (
                 <li key={step.title} className="flex flex-col gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-caption tabular-nums text-gray-500">
+                    <span className="font-mono text-caption tabular-nums text-altr-mute">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <span
@@ -164,13 +164,13 @@ export default function EventsPage() {
                     />
                     <span
                       aria-hidden="true"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-white text-teal-700 [&_svg]:h-5 [&_svg]:w-5"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-altr-panel text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
                     >
                       <Icon />
                     </span>
                   </div>
                   <h3>{step.title}</h3>
-                  <p className="text-body text-gray-600">{step.description}</p>
+                  <p className="text-body text-altr-muteSoft">{step.description}</p>
                 </li>
               );
             })}
@@ -178,7 +178,7 @@ export default function EventsPage() {
         </div>
       </section>
 
-      <section className="border-t border-gray-200">
+      <section className="border-t border-altr-line2">
         <div className="container space-y-12 py-24">
           <SectionHeading
             eyebrow="What you get"
@@ -191,16 +191,16 @@ export default function EventsPage() {
               return (
                 <article
                   key={feature.title}
-                  className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6"
+                  className="flex flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-panel p-6"
                 >
                   <span
                     aria-hidden="true"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-50 text-teal-700 [&_svg]:h-5 [&_svg]:w-5"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-teal-500/10 text-teal-400 [&_svg]:h-5 [&_svg]:w-5"
                   >
                     <Icon />
                   </span>
                   <h3>{feature.title}</h3>
-                  <p className="text-body text-gray-600">
+                  <p className="text-body text-altr-muteSoft">
                     {feature.description}
                   </p>
                 </article>
@@ -210,7 +210,7 @@ export default function EventsPage() {
         </div>
       </section>
 
-      <section className="border-t border-gray-200 bg-gray-50">
+      <section className="border-t border-altr-line2 bg-altr-panel">
         <div className="container space-y-10 py-24">
           <SectionHeading
             eyebrow="Pricing intelligence"
@@ -218,14 +218,14 @@ export default function EventsPage() {
             subtitle="Benchmarks from twelve plus events in the same vertical and region."
           />
 
-          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+          <div className="overflow-hidden rounded-lg border border-altr-line2 bg-altr-panel">
             <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="px-6 py-4 text-caption font-medium text-gray-500">
+                <tr className="border-b border-altr-line2">
+                  <th className="px-6 py-4 text-caption font-medium text-altr-mute">
                     Tier
                   </th>
-                  <th className="px-6 py-4 text-caption font-medium text-gray-500">
+                  <th className="px-6 py-4 text-caption font-medium text-altr-mute">
                     Median range
                   </th>
                 </tr>
@@ -236,25 +236,25 @@ export default function EventsPage() {
                     key={row.tier}
                     className={
                       index !== PRICING_TIERS.length - 1
-                        ? "border-b border-gray-200"
+                        ? "border-b border-altr-line2"
                         : ""
                     }
                   >
-                    <td className="px-6 py-4 text-body text-gray-900">
+                    <td className="px-6 py-4 text-body text-altr-white">
                       {row.tier}
                     </td>
-                    <td className="px-6 py-4 font-mono text-body tabular-nums text-gray-900">
+                    <td className="px-6 py-4 font-mono text-body tabular-nums text-altr-white">
                       {row.range}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div className="flex items-center justify-between border-t border-gray-200 px-6 py-4">
-              <span className="text-caption text-gray-500">
+            <div className="flex items-center justify-between border-t border-altr-line2 px-6 py-4">
+              <span className="text-caption text-altr-mute">
                 Based on 12+ similar events in APAC and GCC.
               </span>
-              <span className="text-caption font-medium text-teal-700">
+              <span className="text-caption font-medium text-teal-400">
                 Available after listing
               </span>
             </div>
@@ -262,36 +262,36 @@ export default function EventsPage() {
         </div>
       </section>
 
-      <section className="border-t border-gray-200">
+      <section className="border-t border-altr-line2">
         <div className="container max-w-3xl space-y-10 py-24">
           <SectionHeading
             eyebrow="FAQ"
             title="Common questions from event teams."
           />
 
-          <div className="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
+          <div className="divide-y divide-altr-line2 rounded-lg border border-altr-line2 bg-altr-panel">
             {FAQ.map((item) => (
               <details
                 key={item.q}
                 className="group px-6 py-5 [&_summary::-webkit-details-marker]:hidden"
               >
-                <summary className="flex cursor-pointer items-start justify-between gap-6 text-body font-medium text-gray-900">
+                <summary className="flex cursor-pointer items-start justify-between gap-6 text-body font-medium text-altr-white">
                   <span>{item.q}</span>
                   <span
                     aria-hidden="true"
-                    className="mt-1 text-caption text-gray-500 transition-transform group-open:rotate-45"
+                    className="mt-1 text-caption text-altr-mute transition-transform group-open:rotate-45"
                   >
                     +
                   </span>
                 </summary>
-                <p className="mt-3 text-body text-gray-600">{item.a}</p>
+                <p className="mt-3 text-body text-altr-muteSoft">{item.a}</p>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="waitlist" className="border-t border-gray-200 bg-gray-50">
+      <section id="waitlist" className="border-t border-altr-line2 bg-altr-panel">
         <div className="container grid gap-12 py-24 md:grid-cols-[1fr_1fr]">
           <SectionHeading
             eyebrow="Early access"

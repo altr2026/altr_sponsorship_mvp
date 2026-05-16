@@ -23,14 +23,19 @@ export function SectionHeading({
         className,
       )}
     >
-      <span className="text-caption font-medium text-teal-700">{eyebrow}</span>
-      <h2 className={cn("max-w-2xl", align === "center" && "mx-auto")}>
+      <span className="text-caption font-medium text-teal-400">{eyebrow}</span>
+      <h2
+        className={cn(
+          "max-w-2xl text-altr-white",
+          align === "center" && "mx-auto",
+        )}
+      >
         {title}
       </h2>
       {subtitle ? (
         <p
           className={cn(
-            "max-w-2xl text-body text-gray-600",
+            "max-w-2xl text-body text-altr-muteSoft",
             align === "center" && "mx-auto",
           )}
         >

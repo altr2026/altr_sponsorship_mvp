@@ -58,7 +58,7 @@ export default function AboutPage() {
 
       <section
         id="manifesto"
-        className="border-t border-gray-200"
+        className="border-t border-altr-line2"
       >
         <div className="container max-w-3xl space-y-10 py-24">
           <SectionHeading
@@ -66,7 +66,7 @@ export default function AboutPage() {
             title="Why we are building ALTR."
           />
 
-          <div className="space-y-6 text-body text-gray-700">
+          <div className="space-y-6 text-body text-altr-muteSoft">
             <p>
               Sponsorship is a hundred billion dollar global market that still
               runs on cold email, PDF decks, and SWIFT wires. Events lose deals
@@ -93,7 +93,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="roadmap" className="border-t border-gray-200 bg-gray-50">
+      <section id="roadmap" className="border-t border-altr-line2 bg-altr-panel">
         <div className="container space-y-12 py-24">
           <SectionHeading
             eyebrow="Roadmap"
@@ -105,48 +105,48 @@ export default function AboutPage() {
             {PHASES.map((phase) => (
               <li
                 key={phase.label}
-                className="flex h-full flex-col gap-3 rounded-lg border border-gray-200 bg-white p-6"
+                className="flex h-full flex-col gap-3 rounded-lg border border-altr-line2 bg-altr-panel p-6"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-caption tabular-nums text-gray-500">
+                  <span className="font-mono text-caption tabular-nums text-altr-mute">
                     {phase.label}
                   </span>
                   <span
                     className={
                       "text-caption font-medium " +
                       (phase.status === "Live"
-                        ? "text-teal-700"
-                        : "text-gray-500")
+                        ? "text-teal-400"
+                        : "text-altr-mute")
                     }
                   >
                     {phase.status}
                   </span>
                 </div>
                 <h3>{phase.title}</h3>
-                <p className="text-body text-gray-600">{phase.description}</p>
+                <p className="text-body text-altr-muteSoft">{phase.description}</p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      <section className="border-t border-gray-200">
+      <section className="border-t border-altr-line2">
         <div className="container grid gap-12 py-24 md:grid-cols-2">
           <div className="space-y-4">
-            <span className="text-caption font-medium text-teal-700">Team</span>
+            <span className="text-caption font-medium text-teal-400">Team</span>
             <h2>Founders to be announced.</h2>
-            <p className="text-body text-gray-600">
+            <p className="text-body text-altr-muteSoft">
               ALTR is being built by a small team across Seoul and Dubai. Full
               team and biographies will be added here closer to launch.
             </p>
           </div>
 
           <div className="space-y-4">
-            <span className="text-caption font-medium text-teal-700">
+            <span className="text-caption font-medium text-teal-400">
               Investors
             </span>
             <h2>In conversation.</h2>
-            <p className="text-body text-gray-600">
+            <p className="text-body text-altr-muteSoft">
               We are in active conversations with a small number of strategic
               partners. Announcements will land here when there is something
               concrete to share.
@@ -155,7 +155,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="border-t border-gray-200 bg-gray-50">
+      <section className="border-t border-altr-line2 bg-altr-panel">
         <div className="container grid gap-12 py-24 md:grid-cols-[1fr_1fr]">
           <SectionHeading
             eyebrow="Contact"
@@ -165,46 +165,46 @@ export default function AboutPage() {
           <div className="flex flex-col gap-3">
             <Link
               href="mailto:hello@altr.haus"
-              className="inline-flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-5 transition-colors hover:border-gray-300"
+              className="inline-flex items-center justify-between rounded-lg border border-altr-line2 bg-altr-panel px-6 py-5 transition-colors hover:border-altr-mute"
             >
               <div className="flex flex-col">
-                <span className="text-caption text-gray-500">Email</span>
+                <span className="text-caption text-altr-mute">Email</span>
                 <span className="text-body font-medium text-gray-900">
                   hello@altr.haus
                 </span>
               </div>
               <ArrowUpRight
-                className="h-4 w-4 text-gray-400"
+                className="h-4 w-4 text-altr-mute"
                 aria-hidden="true"
               />
             </Link>
             <Link
               href="https://twitter.com/altr2026"
-              className="inline-flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-5 transition-colors hover:border-gray-300"
+              className="inline-flex items-center justify-between rounded-lg border border-altr-line2 bg-altr-panel px-6 py-5 transition-colors hover:border-altr-mute"
             >
               <div className="flex flex-col">
-                <span className="text-caption text-gray-500">Twitter</span>
+                <span className="text-caption text-altr-mute">Twitter</span>
                 <span className="text-body font-medium text-gray-900">
                   @altr2026
                 </span>
               </div>
               <ArrowUpRight
-                className="h-4 w-4 text-gray-400"
+                className="h-4 w-4 text-altr-mute"
                 aria-hidden="true"
               />
             </Link>
             <Link
               href="https://linkedin.com/company/altr2026"
-              className="inline-flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-5 transition-colors hover:border-gray-300"
+              className="inline-flex items-center justify-between rounded-lg border border-altr-line2 bg-altr-panel px-6 py-5 transition-colors hover:border-altr-mute"
             >
               <div className="flex flex-col">
-                <span className="text-caption text-gray-500">LinkedIn</span>
+                <span className="text-caption text-altr-mute">LinkedIn</span>
                 <span className="text-body font-medium text-gray-900">
                   /company/altr2026
                 </span>
               </div>
               <ArrowUpRight
-                className="h-4 w-4 text-gray-400"
+                className="h-4 w-4 text-altr-mute"
                 aria-hidden="true"
               />
             </Link>
