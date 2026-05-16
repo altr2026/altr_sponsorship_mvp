@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Check } from "lucide-react";
 
 import { Kbd } from "@/components/demo/kbd";
 import { cn } from "@/lib/utils";
@@ -287,48 +288,80 @@ export function SettlementClient({ deal }: { deal: Deal }) {
               chain={released ? "on-chain" : undefined}
             />
 
-            {!released ? (
-              <li className="relative -ml-7">
-                <div className="flex items-center gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="h-px flex-1 bg-altr-line2"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setReleased(true)}
-                    className="rounded border-2 border-altr-yellow bg-altr-yellow px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-altr-black transition-all hover:brightness-110 active:translate-y-[1px]"
-                    style={{
-                      boxShadow: "0 0 24px -6px rgba(255, 214, 10, 0.5)",
-                    }}
-                  >
-                    ↓ Sign release &amp; run settlement
-                  </button>
-                  <span
-                    aria-hidden="true"
-                    className="h-px flex-1 bg-altr-line2"
-                  />
-                </div>
-              </li>
-            ) : null}
+            <li className="relative -ml-7">
+              <div className="flex items-center gap-3">
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "h-px flex-1 transition-colors duration-700",
+                    released ? "bg-altr-green/40" : "bg-altr-line2",
+                  )}
+                />
+                <button
+                  type="button"
+                  onClick={() => !released && setReleased(true)}
+                  disabled={released}
+                  className={cn(
+                    "rounded border-2 px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.22em] transition-all",
+                    released
+                      ? "border-altr-green bg-altr-green/15 text-altr-green"
+                      : "border-altr-yellow bg-altr-yellow text-altr-black hover:brightness-110 active:translate-y-[1px]",
+                  )}
+                  style={
+                    released
+                      ? undefined
+                      : { boxShadow: "0 0 24px -6px rgba(255, 214, 10, 0.5)" }
+                  }
+                >
+                  {released ? (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Check className="h-3 w-3" aria-hidden="true" />
+                      Release signed · settlement in progress
+                    </span>
+                  ) : (
+                    "↓ Sign release & run settlement"
+                  )}
+                </button>
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "h-px flex-1 transition-colors duration-700",
+                    released ? "bg-altr-green/40" : "bg-altr-line2",
+                  )}
+                />
+              </div>
+            </li>
 
             {POST_RELEASE.map((step, index) => {
               const revealed = released && revealedCount > index;
+              const isLatest = revealed && revealedCount === index + 1;
               return (
-                <li key={step.id} className="relative">
+                <li
+                  key={step.id}
+                  className={cn(
+                    "relative transition-all duration-500",
+                    isLatest && "animate-in fade-in-0 slide-in-from-left-2",
+                  )}
+                >
                   <span
                     className={cn(
-                      "absolute -left-[26px] top-0 grid h-7 w-7 place-items-center rounded-full font-mono text-[11px] font-bold transition-colors duration-300",
+                      "absolute -left-[26px] top-0 grid h-7 w-7 place-items-center rounded-full font-mono text-[11px] font-bold transition-all duration-500",
                       revealed
                         ? "bg-altr-green text-altr-black"
                         : "bg-altr-line2 text-altr-mute",
+                      isLatest && "ring-4 ring-altr-green/30",
                     )}
                   >
                     {revealed ? "✓" : step.letter}
                   </span>
                   <div className="flex flex-wrap items-baseline justify-between gap-3">
                     <div className="flex flex-wrap items-baseline gap-3">
-                      <span className="min-w-[50px] font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+                      <span
+                        className={cn(
+                          "min-w-[50px] font-mono text-[10px] uppercase tracking-[0.18em] transition-colors duration-300",
+                          isLatest ? "text-altr-green" : "text-altr-mute",
+                        )}
+                      >
                         {step.timepoint}
                       </span>
                       <span
