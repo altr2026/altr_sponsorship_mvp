@@ -1,7 +1,7 @@
 # ALTR Sponsorship MVP — Product Requirements Document
 
 > **For Claude Code · Project: altr_sponsorship_mvp**
-> **Reference repo:** `../altrdemo` (Next.js 14, xrpl, Supabase, Stripe, shadcn)
+> **Stack:** Next.js 14 (App Router), TypeScript, Tailwind, shadcn, Supabase, xrpl, Stripe
 > **Design inspiration:** anvara.com (flat, minimal, sentence case)
 
 ---
@@ -28,7 +28,7 @@
 - **Next.js 14** App Router + TypeScript
 - **Tailwind CSS** + **shadcn/ui** (Button installed)
 - **Supabase** (waitlist already wired)
-- **xrpl@3.1.0** (from altrdemo, to be integrated in /demo)
+- **xrpl@3.1.0** (to be integrated in /demo)
 - **Zustand** (state)
 - **Stripe** (for future Phase 2+)
 - **@anthropic-ai/sdk** (matching engine, later)
@@ -61,7 +61,7 @@
 
 ### Type scale
 
-- **font-sans:** matches altrdemo (verify `../altrdemo/app/layout.tsx`)
+- **font-sans:** Inter via next/font/google
 - **Weights:** 400 regular, 500 medium only — never 600/700
 - **h1:** 36px / 500 / line-height 1.2
 - **h2:** 24px / 500 / line-height 1.3
@@ -392,7 +392,7 @@ If `?role=event` query param, swap hero to event-focused copy automatically.
 ## 6. XRPL integration spec
 
 ### Stack
-- `xrpl@3.1.0` (verify from `../altrdemo/package.json`)
+- `xrpl@3.1.0` (already in package.json)
 - XRPL testnet
 - RLUSD as primary settlement asset
 - XRPL EVM sidechain for milestone escrow (Solidity)
@@ -549,7 +549,6 @@ Before marking each step complete:
 
 ## 11. Reference
 
-- **altrdemo repo:** `../altrdemo` — reuse: Supabase patterns, XRPL client, Stripe setup, font stack
 - **Anvara:** https://anvara.com — reference for: layout patterns, "Discover → Deal → Pay → Measure" flow, audience routes, anchor logo strip
 - **README:** `/README.md` — full business context, roadmap, market data
 - **Design philosophy:** Flat, minimal, sentence case, no decoration. Should feel like Stripe or Linear — utility-first, not flashy.

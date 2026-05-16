@@ -271,7 +271,7 @@ function EventCard({ event }: { event: Event }) {
 
   return (
     <Link
-      href="/demo/deals/dl_pbw_samsung"
+      href={`/demo/events/${event.id}`}
       className="group flex h-full flex-col gap-3 rounded-lg border border-altr-line2 bg-altr-panel p-5 transition-colors hover:border-altr-mute focus:outline-none focus-visible:border-altr-yellow"
     >
       <div
