@@ -9,9 +9,11 @@ import {
   type PersonaOption,
 } from "@/components/shared/persona-toggle";
 import { createClient } from "@/lib/supabase/client";
-import type { Persona, WaitlistInsert } from "@/lib/supabase/types";
+import type { WaitlistInsert } from "@/lib/supabase/types";
 
-const PERSONA_OPTIONS: PersonaOption<Persona>[] = [
+type WaitlistPersona = "event" | "brand";
+
+const PERSONA_OPTIONS: PersonaOption<WaitlistPersona>[] = [
   { value: "event", label: "Event" },
   { value: "brand", label: "Brand" },
 ];
@@ -57,14 +59,16 @@ const labelClass = "text-caption font-medium text-gray-700";
 
 type WaitlistFormProps = {
   source?: string;
+  defaultPersona?: WaitlistPersona;
   className?: string;
 };
 
 export function WaitlistForm({
   source = "waitlist_form",
+  defaultPersona = "event",
   className,
 }: WaitlistFormProps) {
-  const [persona, setPersona] = useState<Persona>("event");
+  const [persona, setPersona] = useState<WaitlistPersona>(defaultPersona);
   const [email, setEmail] = useState("");
   const [notes, setNotes] = useState("");
 

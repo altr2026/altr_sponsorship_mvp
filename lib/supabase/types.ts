@@ -1,4 +1,4 @@
-export type Persona = "event" | "brand";
+export type Persona = "event" | "brand" | "newsletter";
 
 export type WaitlistRow = {
   id: string;
