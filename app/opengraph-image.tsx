@@ -29,14 +29,6 @@ export default async function OpenGraphImage() {
             gap: 14,
           }}
         >
-          <div
-            style={{
-              width: 14,
-              height: 14,
-              borderRadius: 999,
-              background: "#1D9E75",
-            }}
-          />
           <span
             style={{
               fontSize: 30,
@@ -47,6 +39,13 @@ export default async function OpenGraphImage() {
           >
             ALTR
           </span>
+          <div
+            style={{
+              width: 18,
+              height: 18,
+              background: "#FF3DD1",
+            }}
+          />
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>

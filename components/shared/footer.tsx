@@ -44,9 +44,13 @@ export function Footer({ className }: FooterProps) {
         <div className="space-y-3">
           <Link
             href="/"
-            className="text-base font-medium tracking-tight text-gray-900"
+            className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-gray-900"
           >
-            ALTR
+            <span>ALTR</span>
+            <span
+              aria-hidden="true"
+              className="h-2 w-2 bg-altr-pink"
+            />
           </Link>
           <p className="max-w-xs text-body text-gray-600">
             Sponsorship infrastructure for APAC and GCC live events.

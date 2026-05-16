@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -22,18 +23,25 @@ export function DemoHeader({ currentStep = "03" }: DemoHeaderProps) {
   return (
     <header className="border-b border-altr-line px-6 pb-4 pt-6 sm:pt-7 md:px-10">
       <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-4">
-        <Link href="/demo" className="group flex items-center gap-3">
-          <div className="grid h-8 w-8 place-items-center rounded-md bg-altr-yellow font-mono text-[14px] font-bold tracking-tight text-altr-black transition-transform group-hover:scale-105">
-            A
-          </div>
-          <div>
-            <div className="text-[13px] font-medium tracking-tight text-altr-white">
-              ALTR
-            </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-altr-mute">
-              Sponsorship OS · Demo v0.1
-            </div>
-          </div>
+        <Link
+          href="/demo"
+          className="group flex items-center gap-3 transition-opacity hover:opacity-90"
+        >
+          <Image
+            src="/altr-logo-white.png"
+            alt="ALTR"
+            width={1500}
+            height={512}
+            priority
+            className="h-7 w-auto"
+          />
+          <span
+            aria-hidden="true"
+            className="hidden h-7 w-px bg-altr-line2 sm:block"
+          />
+          <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-altr-mute sm:inline">
+            Sponsorship OS · Demo v0.1
+          </span>
         </Link>
 
         <Link
