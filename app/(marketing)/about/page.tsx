@@ -33,14 +33,14 @@ const PHASES = [
   },
   {
     label: "Phase 3",
-    title: "XRPL milestone settlement",
-    description: "Onchain escrow with RLUSD, three-second settlement, public proof.",
+    title: "Milestone settlement",
+    description: "Three-second settlement. Verifiable proof of delivery for every milestone.",
     status: "Q1 2027",
   },
   {
     label: "Phase 4",
     title: "Sponsorship financing",
-    description: "Onchain reputation unlocks BNPL credit for events with track record.",
+    description: "Reputation-based credit unlocks financing for events with a track record.",
     status: "Q2 2027",
   },
 ];
@@ -82,12 +82,11 @@ export default function AboutPage() {
               window we are building into.
             </p>
             <p>
-              We built ALTR on XRPL because settlement should take three
-              seconds, not five days. Onchain memos let brands and events share
-              a single source of truth for what was agreed and what was paid —
-              without trusting a middleman with the money. Once settlement is
-              proven, onchain reputation unlocks the financing that turns this
-              from a marketplace into infrastructure.
+              Settlement should take three seconds, not five days. We built
+              ALTR so brands and events share a single source of truth for
+              every deal — without the lag, the fees, and the trust gap of
+              cross-border wires. Once settlement is proven, reputation-based
+              credit turns this from a marketplace into infrastructure.
             </p>
           </div>
         </div>

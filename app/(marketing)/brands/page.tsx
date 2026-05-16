@@ -92,7 +92,7 @@ const COMPARISON: Array<{ category: string; old: string; altr: string }> = [
   {
     category: "Settlement",
     old: "SWIFT wires, 5 day clearing",
-    altr: "XRPL settlement in 3 seconds",
+    altr: "Settlement in 3 seconds",
   },
   {
     category: "Fees",
@@ -102,7 +102,7 @@ const COMPARISON: Array<{ category: string; old: string; altr: string }> = [
   {
     category: "ROI",
     old: "Self-reported impressions in a Google Sheet",
-    altr: "Onchain proof of delivery and live ROI dashboard",
+    altr: "Verifiable proof of delivery and live ROI dashboard",
   },
 ];
 

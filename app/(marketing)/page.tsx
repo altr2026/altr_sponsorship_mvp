@@ -21,19 +21,21 @@ export const metadata: Metadata = {
 };
 
 const HERO_DEFAULT = {
-  eyebrow: "Sponsorship OS for APAC + GCC",
-  title: "Sponsorship that pays for itself.",
+  eyebrow: "Sponsorship OS · APAC + GCC",
+  titleLead: "Match. Deal.",
+  titleAccent: "Settle in 3 seconds.",
   subtitle:
-    "Discover events, deal directly with brands, settle on XRPL in three seconds, measure ROI on-chain.",
+    "Match with the right brands. Close deals faster. Prove ROI every time.",
   primaryCtaLabel: "Get early access",
   defaultPersona: "brand" as const,
 };
 
 const HERO_EVENT = {
   eyebrow: "For event organizers",
-  title: "Your sponsorship desk, simplified.",
+  titleLead: "Your sponsorship desk,",
+  titleAccent: "simplified.",
   subtitle:
-    "List once. Match with vetted brands. Get paid faster — settled on XRPL in three seconds.",
+    "List once. Match with vetted brands. Get paid faster.",
   primaryCtaLabel: "List your event",
   defaultPersona: "event" as const,
 };
@@ -82,7 +84,7 @@ const STEPS = [
     icon: BadgeCheck,
     title: "Settle and measure",
     description:
-      "Milestone payouts on XRPL. Onchain receipts. ROI you can show your board.",
+      "Milestone payouts. Verifiable receipts. ROI you can show your board.",
   },
 ];
 
@@ -151,7 +153,10 @@ export default function HomePage({ searchParams }: HomePageProps) {
               {hero.eyebrow}
             </span>
             <h1 className="mx-auto max-w-5xl text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] text-altr-white sm:text-[64px] md:text-[80px]">
-              {hero.title}
+              {hero.titleLead}{" "}
+              <span className="block text-teal-400 sm:inline">
+                {hero.titleAccent}
+              </span>
             </h1>
             <p className="mx-auto max-w-xl text-body text-altr-muteSoft">
               {hero.subtitle}
@@ -379,10 +384,10 @@ export default function HomePage({ searchParams }: HomePageProps) {
               better tools.
             </p>
             <p>
-              We built on XRPL because settlement should take three seconds, not
-              five days. Onchain memos let brands and events share a single
-              source of truth for what was agreed and paid — without trusting a
-              middleman with the funds.
+              Settlement should take three seconds, not five days. We built
+              ALTR so brands and events share a single source of truth for
+              every deal — without the lag, the fees, and the trust gap of
+              cross-border wires.
             </p>
           </div>
         </div>
