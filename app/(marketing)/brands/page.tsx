@@ -225,12 +225,13 @@ export default function BrandsPage() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {events.map((event) => (
-              <article
+              <Link
                 key={event.id}
-                className="flex h-full flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-panel p-6"
+                href={`/demo/events/${event.id}`}
+                className="group flex h-full flex-col gap-4 rounded-lg border border-altr-line2 bg-altr-panel p-6 transition-colors hover:border-altr-mute focus:outline-none focus-visible:border-teal-500"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-caption font-medium text-altr-lime">
+                  <span className="text-caption font-medium text-teal-400">
                     {event.vertical}
                   </span>
                   <span className="text-caption text-altr-mute">
@@ -250,12 +251,15 @@ export default function BrandsPage() {
                       {formatAttendees(event.attendees)}
                     </div>
                   </div>
-                  <span className="inline-flex items-center gap-1 text-caption font-medium text-altr-muteSoft">
-                    Login to see details
-                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span className="inline-flex items-center gap-1 text-caption font-medium text-altr-white">
+                    View details
+                    <ArrowRight
+                      className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
                   </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
