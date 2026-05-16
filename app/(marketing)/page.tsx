@@ -146,24 +146,24 @@ export default function HomePage({ searchParams }: HomePageProps) {
           aria-hidden="true"
           className="pointer-events-none absolute left-1/3 top-2/3 -z-10 h-72 w-72 -translate-y-1/2 rounded-full bg-teal-500/10 blur-3xl"
         />
-        <div className="container px-6 pb-12 pt-20 text-center sm:pb-16 sm:pt-28 md:pt-36">
+        <div className="container px-6 pb-12 pt-20 sm:pb-16 sm:pt-28 md:pt-36">
           <div className="space-y-6">
             <span className="inline-flex items-center gap-2 text-caption font-medium text-teal-400">
               <span aria-hidden="true" className="h-2 w-2 bg-altr-pink" />
               {hero.eyebrow}
             </span>
-            <h1 className="mx-auto max-w-5xl text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] text-altr-white sm:text-[64px] md:text-[80px]">
+            <h1 className="max-w-5xl text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] text-altr-white sm:text-[64px] md:text-[80px]">
               {hero.titleLead}{" "}
               <span className="block text-teal-400 sm:inline">
                 {hero.titleAccent}
               </span>
             </h1>
-            <p className="mx-auto max-w-xl text-body text-altr-muteSoft">
+            <p className="max-w-xl text-body text-altr-muteSoft">
               {hero.subtitle}
             </p>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link
               href="/demo"
               className="inline-flex h-12 items-center gap-1.5 rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-colors hover:bg-teal-500"
