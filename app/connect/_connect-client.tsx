@@ -15,10 +15,11 @@ const SOCIAL_PROVIDERS: Array<{
   id: PersonalProvider;
   label: string;
   letter: string;
+  enabled: boolean;
 }> = [
-  { id: "google", label: "Continue with Google", letter: "G" },
-  { id: "apple", label: "Continue with Apple", letter: "" },
-  { id: "twitter", label: "Continue with X", letter: "X" },
+  { id: "google", label: "Continue with Google", letter: "G", enabled: true },
+  { id: "apple", label: "Continue with Apple", letter: "", enabled: false },
+  { id: "twitter", label: "Continue with X", letter: "X", enabled: false },
 ];
 
 const PERSONAL_DOMAINS = new Set([
@@ -43,11 +44,15 @@ const PERSONAL_DOMAINS = new Set([
   "126.com",
 ]);
 
-export function ConnectClient() {
+type ConnectClientProps = {
+  initialError?: string | null;
+};
+
+export function ConnectClient({ initialError = null }: ConnectClientProps = {}) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(initialError);
 
   async function continueWithEmail(formEvent: React.FormEvent<HTMLFormElement>) {
     formEvent.preventDefault();
@@ -75,12 +80,35 @@ export function ConnectClient() {
     }
   }
 
-  function continueWithProvider(id: PersonalProvider) {
-    setSubmitting(id);
+  async function continueWithProvider(id: PersonalProvider) {
     setError(null);
-    // Web3Auth-style abstraction lives behind these buttons in production.
-    // For the demo, route straight to /demo; sign-up is non-blocking.
-    setTimeout(() => router.push("/demo"), 400);
+    setSubmitting(id);
+
+    if (id !== "google") {
+      setSubmitting(null);
+      setError("Apple and X sign-in are coming soon. Use Google or email for now.");
+      return;
+    }
+
+    try {
+      const supabase = createClient();
+      const origin = window.location.origin;
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${origin}/auth/callback?next=/demo`,
+        },
+      });
+      if (oauthError) throw oauthError;
+      // signInWithOAuth triggers a redirect; the spinner stays until the
+      // browser navigates to Google.
+    } catch (caught) {
+      console.error("Google OAuth start failed", caught);
+      setSubmitting(null);
+      setError(
+        "Couldn't start Google sign-in. Try again, or use your work email below.",
+      );
+    }
   }
 
   function continueAsGuest() {
@@ -123,26 +151,43 @@ export function ConnectClient() {
             </p>
           </div>
 
+          {error ? (
+            <p
+              role="alert"
+              className="rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-caption text-red-300"
+            >
+              {error}
+            </p>
+          ) : null}
+
           <div className="space-y-2">
             {SOCIAL_PROVIDERS.map((provider) => {
               const loading = submitting === provider.id;
+              const isDisabled = !provider.enabled || !!submitting;
               return (
                 <button
                   key={provider.id}
                   type="button"
-                  disabled={!!submitting}
+                  disabled={isDisabled}
                   onClick={() => continueWithProvider(provider.id)}
+                  aria-disabled={!provider.enabled || undefined}
                   className={cn(
                     "group flex w-full items-center gap-3 rounded-md border border-altr-line2 bg-altr-panel px-4 py-3",
                     "text-body font-medium text-altr-white transition-colors",
-                    "hover:border-altr-mute disabled:opacity-60",
+                    provider.enabled
+                      ? "hover:border-altr-mute disabled:opacity-60"
+                      : "cursor-not-allowed opacity-50",
                   )}
                 >
                   <span className="grid h-6 w-6 place-items-center rounded-full bg-altr-black text-[12px] font-bold text-altr-muteSoft">
                     {provider.letter}
                   </span>
                   <span className="flex-1 text-left">{provider.label}</span>
-                  {loading ? (
+                  {!provider.enabled ? (
+                    <span className="rounded border border-altr-line2 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-altr-mute">
+                      Soon
+                    </span>
+                  ) : loading ? (
                     <Loader2 className="h-4 w-4 animate-spin text-teal-400" />
                   ) : (
                     <ArrowRight className="h-4 w-4 text-altr-mute group-hover:text-altr-white" />
@@ -171,14 +216,6 @@ export function ConnectClient() {
               disabled={!!submitting}
               className="h-11 w-full rounded-md border border-altr-line2 bg-altr-black px-3 text-body text-altr-white placeholder:text-altr-mute focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/30 disabled:opacity-60"
             />
-            {error ? (
-              <p
-                role="alert"
-                className="rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-caption text-red-300"
-              >
-                {error}
-              </p>
-            ) : null}
             <button
               type="submit"
               disabled={!!submitting || !email}
