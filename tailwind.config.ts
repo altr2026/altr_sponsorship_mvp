@@ -89,6 +89,8 @@ const config: Config = {
 
         // ALTR demo subsection — dark / yellow / mono Bloomberg-terminal aesthetic.
         // Used only by /demo/* routes (see app/(demo)/demo/layout.tsx).
+        // Exception: altr.pink is the cross-theme brand mark, used in both
+        // marketing nav/footer and on the logo composition.
         altr: {
           black: "#08080d",
           panel: "#10101a",
@@ -99,6 +101,7 @@ const config: Config = {
           muteSoft: "#a5a5b0",
           yellow: "#ffd60a",
           green: "#3fb86b",
+          pink: "#FF3DD1",
         },
       },
       fontSize: {

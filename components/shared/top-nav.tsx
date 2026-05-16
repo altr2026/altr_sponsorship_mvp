@@ -30,9 +30,13 @@ export function TopNav({
       <div className="container flex h-full items-center justify-between gap-8">
         <Link
           href="/"
-          className="text-base font-medium tracking-tight text-gray-900"
+          className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-gray-900"
         >
-          ALTR
+          <span>ALTR</span>
+          <span
+            aria-hidden="true"
+            className="h-2 w-2 bg-altr-pink"
+          />
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
