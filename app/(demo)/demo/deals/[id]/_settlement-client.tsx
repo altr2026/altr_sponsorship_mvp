@@ -467,7 +467,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
           </div>
         </section>
 
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
           <Link
             href="/demo"
             className="text-[12px] text-altr-mute transition-colors hover:text-altr-white"
@@ -475,10 +475,10 @@ export function SettlementClient({ deal }: { deal: Deal }) {
             ← Back to demo entry
           </Link>
           <Link
-            href="/demo"
-            className="inline-flex h-11 items-center rounded-md bg-altr-lime px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
+            href={`/demo/deals/${deal.id}/poe`}
+            className="inline-flex h-11 items-center gap-2 rounded-md bg-altr-lime px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
           >
-            Continue to dashboard →
+            Mint Proof of Engagement →
           </Link>
         </div>
       </div>
