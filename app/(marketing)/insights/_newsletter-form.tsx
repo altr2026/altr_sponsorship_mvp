@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 const inputClass =
-  "h-11 w-full rounded-md border border-gray-200 bg-white px-3 text-body text-gray-900 placeholder:text-gray-400 focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-600/20";
+  "h-11 w-full rounded-md border border-gray-200 bg-white px-3 text-body text-gray-900 placeholder:text-gray-400 focus:border-altr-lime focus:outline-none focus:ring-2 focus:ring-altr-lime/30";
 
 type NewsletterFormProps = {
   className?: string;
@@ -92,7 +92,7 @@ export function NewsletterForm({ className }: NewsletterFormProps) {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex h-11 items-center justify-center rounded-md bg-teal-600 px-5 text-body font-medium text-white transition-colors hover:bg-teal-700 disabled:opacity-60"
+            className="inline-flex h-11 items-center justify-center rounded-md bg-altr-lime px-5 text-body font-medium text-altr-black transition-colors hover:brightness-110 disabled:opacity-60"
           >
             {submitting ? "Subscribing…" : "Subscribe"}
           </button>

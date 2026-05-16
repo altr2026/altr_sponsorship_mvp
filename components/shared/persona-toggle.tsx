@@ -43,7 +43,7 @@ export function PersonaToggle<T extends string>({
             className={cn(
               "inline-flex h-8 items-center rounded-md px-3 text-body font-medium transition-colors",
               active
-                ? "bg-teal-600 text-white"
+                ? "bg-altr-lime text-altr-black"
                 : "text-altr-muteSoft hover:text-altr-white",
             )}
           >

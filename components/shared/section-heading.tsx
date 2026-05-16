@@ -23,7 +23,7 @@ export function SectionHeading({
         className,
       )}
     >
-      <span className="text-caption font-medium text-teal-400">{eyebrow}</span>
+      <span className="text-caption font-medium text-altr-lime">{eyebrow}</span>
       <h2
         className={cn(
           "max-w-2xl text-altr-white",

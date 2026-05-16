@@ -36,7 +36,7 @@ export function Hero({
     >
       <div className="flex max-w-3xl flex-col gap-3">
         {eyebrow ? (
-          <span className="text-caption font-medium text-teal-400">
+          <span className="text-caption font-medium text-altr-lime">
             {eyebrow}
           </span>
         ) : null}
@@ -50,7 +50,7 @@ export function Hero({
       <div className="mt-2 flex flex-wrap items-center gap-5">
         <Link
           href={primaryCta.href}
-          className="inline-flex h-11 items-center rounded-md bg-teal-600 px-5 text-body font-medium text-white transition-colors hover:bg-teal-500"
+          className="inline-flex h-11 items-center rounded-md bg-altr-lime px-5 text-body font-medium text-altr-black transition-colors hover:brightness-110"
         >
           {primaryCta.label}
         </Link>
@@ -58,7 +58,7 @@ export function Hero({
         {secondaryLink ? (
           <Link
             href={secondaryLink.href}
-            className="inline-flex items-center gap-1.5 text-body font-medium text-altr-white hover:text-teal-400"
+            className="inline-flex items-center gap-1.5 text-body font-medium text-altr-white hover:text-altr-lime"
           >
             {secondaryLink.label}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />

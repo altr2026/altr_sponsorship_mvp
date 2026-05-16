@@ -83,7 +83,7 @@ export function Footer({ className }: FooterProps) {
           <p className="text-caption text-altr-mute">
             © {new Date().getFullYear()} ALTR. All rights reserved.
           </p>
-          <span className="inline-flex items-center gap-2 rounded-md border border-teal-500/40 bg-teal-500/10 px-3 py-1.5 text-caption font-medium text-teal-300">
+          <span className="inline-flex items-center gap-2 rounded-md border border-altr-lime/40 bg-altr-lime/10 px-3 py-1.5 text-caption font-medium text-altr-lime">
             <span
               aria-hidden="true"
               className="h-1.5 w-1.5 rounded-full bg-teal-400"

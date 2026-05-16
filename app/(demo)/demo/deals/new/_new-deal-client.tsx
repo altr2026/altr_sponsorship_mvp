@@ -120,7 +120,7 @@ export function NewDealClient({ event, initialTier }: NewDealClientProps) {
                     className={cn(
                       "flex flex-col gap-2 rounded-lg border bg-altr-black p-4 text-left transition-colors",
                       active
-                        ? "border-altr-yellow"
+                        ? "border-altr-lime"
                         : "border-altr-line2 hover:border-altr-mute",
                     )}
                   >
@@ -195,7 +195,7 @@ export function NewDealClient({ event, initialTier }: NewDealClientProps) {
                     className={cn(
                       "flex flex-col gap-1.5 rounded-lg border bg-altr-black p-4 text-left transition-colors",
                       active
-                        ? "border-altr-yellow"
+                        ? "border-altr-lime"
                         : "border-altr-line2 hover:border-altr-mute",
                     )}
                   >
@@ -219,7 +219,7 @@ export function NewDealClient({ event, initialTier }: NewDealClientProps) {
 
         {/* Sticky preview */}
         <aside className="space-y-5">
-          <section className="sticky top-6 space-y-4 rounded-lg border border-altr-yellow/30 bg-altr-yellow/5 p-5 sm:p-6">
+          <section className="sticky top-6 space-y-4 rounded-lg border border-altr-lime/30 bg-altr-lime/5 p-5 sm:p-6">
             <Kbd>Deal preview</Kbd>
             <div className="space-y-3 font-mono text-[13px] tabular-nums">
               <PreviewRow label="Tier" value={tier} mono />
@@ -243,9 +243,9 @@ export function NewDealClient({ event, initialTier }: NewDealClientProps) {
               type="button"
               onClick={handleInitiate}
               disabled={initiating}
-              className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-md bg-altr-yellow px-5 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-altr-black transition-all hover:brightness-110 disabled:opacity-70"
+              className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-md bg-altr-lime px-5 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-altr-black transition-all hover:brightness-110 disabled:opacity-70"
               style={{
-                boxShadow: "0 0 24px -6px rgba(255, 214, 10, 0.5)",
+                boxShadow: "0 0 24px -6px rgba(200, 240, 74, 0.5)",
               }}
             >
               {initiating ? (
@@ -297,7 +297,7 @@ function PreviewRow({
         className={cn(
           mono && "font-mono",
           emphasis
-            ? "text-[18px] font-medium text-altr-yellow"
+            ? "text-[18px] font-medium text-altr-lime"
             : "text-altr-white",
         )}
       >

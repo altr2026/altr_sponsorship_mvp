@@ -72,7 +72,7 @@ export function DemoHeader() {
             const numberClass = cn(
               "grid h-7 w-7 place-items-center rounded-full font-mono text-[10px] font-bold transition-all",
               isCurrent
-                ? "bg-altr-yellow text-altr-black ring-4 ring-altr-yellow/25"
+                ? "bg-altr-lime text-altr-black ring-4 ring-altr-lime/25"
                 : "bg-altr-line2 text-altr-mute",
             );
             const labelClass = cn(

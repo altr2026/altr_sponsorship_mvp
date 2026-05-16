@@ -74,7 +74,7 @@ export default function EventDetailPage({ params }: PageProps) {
             Vetted by ALTR
           </span>
           {event.is_anchor_partner ? (
-            <span className="rounded border border-altr-yellow/40 bg-altr-yellow/10 px-2.5 py-1 text-altr-yellow">
+            <span className="rounded border border-altr-lime/40 bg-altr-lime/10 px-2.5 py-1 text-altr-lime">
               Anchor partner
             </span>
           ) : null}
@@ -132,7 +132,7 @@ export default function EventDetailPage({ params }: PageProps) {
               className={cn(
                 "flex h-full flex-col gap-3 rounded-lg border bg-altr-black p-5",
                 pkg.tier === "Title"
-                  ? "border-altr-yellow/50"
+                  ? "border-altr-lime/50"
                   : "border-altr-line2",
               )}
             >
@@ -149,7 +149,7 @@ export default function EventDetailPage({ params }: PageProps) {
                   <li key={perk} className="flex items-start gap-2">
                     <span
                       aria-hidden="true"
-                      className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-altr-yellow"
+                      className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-altr-lime"
                     />
                     <span>{perk}</span>
                   </li>
@@ -160,7 +160,7 @@ export default function EventDetailPage({ params }: PageProps) {
                 className={cn(
                   "mt-auto inline-flex h-10 items-center justify-center gap-1.5 rounded-md font-mono text-[11px] font-bold uppercase tracking-[0.22em] transition-all",
                   pkg.tier === "Title"
-                    ? "bg-altr-yellow text-altr-black hover:brightness-110"
+                    ? "bg-altr-lime text-altr-black hover:brightness-110"
                     : "border border-altr-line2 text-altr-muteSoft hover:border-altr-mute hover:text-altr-white",
                 )}
               >
@@ -181,7 +181,7 @@ export default function EventDetailPage({ params }: PageProps) {
         </Link>
         <Link
           href={`/demo/deals/new?event=${event.id}&tier=Title`}
-          className="inline-flex h-11 items-center gap-1.5 rounded-md bg-altr-yellow px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
+          className="inline-flex h-11 items-center gap-1.5 rounded-md bg-altr-lime px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
         >
           Make an offer
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
