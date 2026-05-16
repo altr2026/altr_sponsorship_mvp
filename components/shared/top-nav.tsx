@@ -51,12 +51,20 @@ export function TopNav({
           ))}
         </nav>
 
-        <Link
-          href={ctaHref}
-          className="inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-500"
-        >
-          {ctaLabel}
-        </Link>
+        <div className="flex items-center gap-5">
+          <Link
+            href="/connect"
+            className="hidden text-body text-altr-muteSoft transition-colors hover:text-altr-white sm:inline"
+          >
+            Sign in
+          </Link>
+          <Link
+            href={ctaHref}
+            className="inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-500"
+          >
+            {ctaLabel}
+          </Link>
+        </div>
       </div>
     </header>
   );
