@@ -3,10 +3,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { label: "Product", href: "/#product" },
-  { label: "Demo", href: "/demo" },
-  { label: "Partners", href: "/partners" },
-  { label: "Pitch", href: "/#pitch" },
+  { label: "Events", href: "/events" },
+  { label: "Brands", href: "/brands" },
+  { label: "Insights", href: "/insights" },
+  { label: "About", href: "/about" },
 ];
 
 type TopNavProps = {

@@ -6,16 +6,15 @@ const FOOTER_GROUPS: Array<{ heading: string; links: { label: string; href: stri
   {
     heading: "Product",
     links: [
-      { label: "Demo", href: "/demo" },
-      { label: "Partners", href: "/partners" },
-      { label: "Pricing", href: "/#pricing" },
+      { label: "Events", href: "/events" },
+      { label: "Brands", href: "/brands" },
+      { label: "Insights", href: "/insights" },
     ],
   },
   {
     heading: "Company",
     links: [
-      { label: "About", href: "/#about" },
-      { label: "Pitch deck", href: "/#pitch" },
+      { label: "About", href: "/about" },
       { label: "Contact", href: "mailto:hello@altr.haus" },
     ],
   },
