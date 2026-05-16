@@ -27,6 +27,8 @@ function deriveCurrentStep(pathname: string | null): StepNum | null {
   if (pathname.startsWith("/demo/discover")) return "01";
   if (pathname.startsWith("/demo/events/")) return "01";
   if (pathname === "/demo/deals/new") return "02";
+  // POE mint sits under /demo/deals/[id]/poe — Measurement (Step 14 NFTokenMint).
+  if (/^\/demo\/deals\/[^/]+\/poe(\/|$)/.test(pathname)) return "05";
   if (pathname.startsWith("/demo/deals/")) return "03";
   if (pathname.startsWith("/demo/activation")) return "04";
   if (pathname.startsWith("/demo/measurement")) return "05";
