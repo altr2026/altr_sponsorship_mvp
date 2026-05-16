@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -42,14 +43,13 @@ export function Footer({ className }: FooterProps) {
     >
       <div className="container grid gap-12 py-16 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div className="space-y-3">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-base font-medium tracking-tight text-altr-white"
-          >
-            <span>ALTR</span>
-            <span
-              aria-hidden="true"
-              className="h-2 w-2 bg-altr-pink"
+          <Link href="/" className="inline-flex items-center">
+            <Image
+              src="/altr-logo-white.png"
+              alt="ALTR"
+              width={1500}
+              height={512}
+              className="h-6 w-auto"
             />
           </Link>
           <p className="max-w-xs text-body text-altr-muteSoft">
