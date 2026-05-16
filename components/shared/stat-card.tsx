@@ -20,9 +20,7 @@ export function StatCard({
         className,
       )}
     >
-      <span className="text-caption font-medium uppercase text-gray-500">
-        {caption}
-      </span>
+      <span className="text-caption font-medium text-gray-500">{caption}</span>
       <span className="text-stat font-medium text-gray-900">{value}</span>
       <span className="text-caption text-gray-600">{context}</span>
     </div>

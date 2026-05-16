@@ -56,7 +56,7 @@ export function Footer({ className }: FooterProps) {
 
         {FOOTER_GROUPS.map((group) => (
           <div key={group.heading} className="space-y-3">
-            <h4 className="text-caption font-medium uppercase text-gray-500">
+            <h4 className="text-caption font-medium text-gray-500">
               {group.heading}
             </h4>
             <ul className="space-y-2">
@@ -80,7 +80,7 @@ export function Footer({ className }: FooterProps) {
           <p className="text-caption text-gray-500">
             © {new Date().getFullYear()} ALTR. All rights reserved.
           </p>
-          <span className="inline-flex items-center gap-2 rounded-md border border-purple-200 bg-white px-3 py-1.5 text-caption font-medium uppercase text-purple-700">
+          <span className="inline-flex items-center gap-2 rounded-md border border-purple-200 bg-white px-3 py-1.5 text-caption font-medium text-purple-700">
             <span
               aria-hidden="true"
               className="h-1.5 w-1.5 rounded-full bg-purple-600"

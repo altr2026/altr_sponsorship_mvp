@@ -53,7 +53,7 @@ const inputClass =
 
 const selectClass = cn(inputClass, "appearance-none pr-8");
 
-const labelClass = "text-caption font-medium uppercase text-gray-500";
+const labelClass = "text-caption font-medium text-gray-700";
 
 type WaitlistFormProps = {
   source?: string;
