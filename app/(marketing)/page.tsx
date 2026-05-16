@@ -11,6 +11,7 @@ import {
   ListPlus,
 } from "lucide-react";
 
+import { EarlyAccessDialog } from "@/components/shared/early-access-dialog";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { WaitlistForm } from "@/components/shared/waitlist-form";
 import { events } from "@/lib/mock-data/events";
@@ -178,13 +179,18 @@ export default function HomePage({ searchParams }: HomePageProps) {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link
-              href="/demo"
-              className="inline-flex h-12 items-center gap-1.5 rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-colors hover:brightness-110"
+            <EarlyAccessDialog
+              source="hero_see_how"
+              defaultPersona={hero.defaultPersona}
             >
-              See how it works
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+              <button
+                type="button"
+                className="inline-flex h-12 items-center gap-1.5 rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-all hover:brightness-110"
+              >
+                See how it works
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </EarlyAccessDialog>
             <Link
               href="#waitlist"
               className="inline-flex h-12 items-center rounded-md border border-altr-line2 px-6 text-body font-medium text-altr-white transition-colors hover:border-altr-mute"
