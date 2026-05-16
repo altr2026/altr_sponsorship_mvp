@@ -18,9 +18,15 @@ const SOCIAL_PROVIDERS: Array<{
   enabled: boolean;
 }> = [
   { id: "google", label: "Continue with Google", letter: "G", enabled: true },
-  { id: "apple", label: "Continue with Apple", letter: "", enabled: false },
-  { id: "twitter", label: "Continue with X", letter: "X", enabled: false },
+  { id: "apple", label: "Continue with Apple", letter: "", enabled: true },
+  { id: "twitter", label: "Continue with X", letter: "X", enabled: true },
 ];
+
+const PROVIDER_LABEL: Record<PersonalProvider, string> = {
+  google: "Google",
+  apple: "Apple",
+  twitter: "X",
+};
 
 const PERSONAL_DOMAINS = new Set([
   "gmail.com",
@@ -84,29 +90,23 @@ export function ConnectClient({ initialError = null }: ConnectClientProps = {}) 
     setError(null);
     setSubmitting(id);
 
-    if (id !== "google") {
-      setSubmitting(null);
-      setError("Apple and X sign-in are coming soon. Use Google or email for now.");
-      return;
-    }
-
     try {
       const supabase = createClient();
       const origin = window.location.origin;
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+        provider: id,
         options: {
           redirectTo: `${origin}/auth/callback?next=/demo`,
         },
       });
       if (oauthError) throw oauthError;
       // signInWithOAuth triggers a redirect; the spinner stays until the
-      // browser navigates to Google.
+      // browser navigates to the provider.
     } catch (caught) {
-      console.error("Google OAuth start failed", caught);
+      console.error(`${PROVIDER_LABEL[id]} OAuth start failed`, caught);
       setSubmitting(null);
       setError(
-        "Couldn't start Google sign-in. Try again, or use your work email below.",
+        `Couldn't start ${PROVIDER_LABEL[id]} sign-in. Try again, or use your work email below.`,
       );
     }
   }
