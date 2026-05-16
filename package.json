@@ -23,6 +23,7 @@
   "homepage": "https://github.com/altr2026/altr_sponsorship_mvp#readme",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
+    "@pinata/sdk": "^2.1.0",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.13",
