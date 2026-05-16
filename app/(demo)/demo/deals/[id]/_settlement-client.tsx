@@ -476,6 +476,12 @@ export function SettlementClient({ deal }: { deal: Deal }) {
           </Link>
           <div className="flex flex-wrap items-center gap-2">
             <Link
+              href={`/demo/deals/${deal.id}/activation`}
+              className="inline-flex h-11 items-center gap-2 rounded-md border border-altr-line2 px-5 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-muteSoft transition-all hover:border-altr-mute hover:text-altr-white"
+            >
+              Activation brief & proof →
+            </Link>
+            <Link
               href={`/demo/deals/${deal.id}/escrow`}
               className="inline-flex h-11 items-center gap-2 rounded-md border border-altr-line2 px-5 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-muteSoft transition-all hover:border-altr-mute hover:text-altr-white"
             >
