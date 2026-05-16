@@ -55,33 +55,55 @@ export function EarlyAccessDialog({
   async function handleSubmit(formEvent: React.FormEvent<HTMLFormElement>) {
     formEvent.preventDefault();
     setError(null);
+
+    const trimmed = email.trim().toLowerCase();
+    const domain = trimmed.split("@")[1] ?? "";
+    const PERSONAL_DOMAINS = new Set([
+      "gmail.com",
+      "googlemail.com",
+      "yahoo.com",
+      "yahoo.co.kr",
+      "hotmail.com",
+      "outlook.com",
+      "live.com",
+      "icloud.com",
+      "me.com",
+      "aol.com",
+      "proton.me",
+      "protonmail.com",
+      "naver.com",
+      "daum.net",
+      "kakao.com",
+      "hanmail.net",
+      "qq.com",
+      "163.com",
+      "126.com",
+    ]);
+    if (!domain || PERSONAL_DOMAINS.has(domain)) {
+      setError(
+        "Please use your work email (personal addresses like gmail / naver / yahoo not accepted).",
+      );
+      return;
+    }
+
     setSubmitting(true);
 
     const payload: WaitlistInsert = {
-      email: email.trim().toLowerCase(),
+      email: trimmed,
       persona,
       source,
     };
 
+    // Best-effort save; never block the demo flow on backend errors.
     try {
       const supabase = createClient();
-      const { error: insertError } = await supabase
-        .from("waitlist")
-        .insert(payload);
-
-      if (insertError && insertError.code !== "23505") {
-        console.error("Account create failed", insertError);
-        setError("Something went wrong. Try again in a moment.");
-        return;
-      }
-
-      setOpen(false);
-      router.push("/demo");
+      await supabase.from("waitlist").insert(payload);
     } catch (caught) {
-      console.error("Account create threw", caught);
-      setError("Network error. Check your connection and try again.");
+      console.warn("Account create save failed (non-blocking)", caught);
     } finally {
       setSubmitting(false);
+      setOpen(false);
+      router.push("/demo");
     }
   }
 
@@ -110,8 +132,8 @@ export function EarlyAccessDialog({
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2">
-                <span aria-hidden="true" className="h-2 w-2 bg-altr-lime" />
-                <span className="text-caption font-medium text-altr-lime">
+                <span aria-hidden="true" className="h-2 w-2 bg-teal-500" />
+                <span className="text-caption font-medium text-teal-400">
                   Sign in · ALTR
                 </span>
               </div>
