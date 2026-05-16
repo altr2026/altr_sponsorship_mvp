@@ -156,7 +156,7 @@ export default function EventDetailPage({ params }: PageProps) {
                 ))}
               </ul>
               <Link
-                href="/demo/deals/dl_pbw_samsung"
+                href={`/demo/deals/new?event=${event.id}&tier=${pkg.tier}`}
                 className={cn(
                   "mt-auto inline-flex h-10 items-center justify-center gap-1.5 rounded-md font-mono text-[11px] font-bold uppercase tracking-[0.22em] transition-all",
                   pkg.tier === "Title"
@@ -180,7 +180,7 @@ export default function EventDetailPage({ params }: PageProps) {
           ← Back to discover
         </Link>
         <Link
-          href="/demo/deals/dl_pbw_samsung"
+          href={`/demo/deals/new?event=${event.id}&tier=Title`}
           className="inline-flex h-11 items-center gap-1.5 rounded-md bg-altr-yellow px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
         >
           Make an offer
