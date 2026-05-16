@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -14,6 +15,10 @@ import { Hero } from "@/components/shared/hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { WaitlistForm } from "@/components/shared/waitlist-form";
 import { cn } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const HERO_DEFAULT = {
   eyebrow: "Sponsorship OS for APAC + GCC",

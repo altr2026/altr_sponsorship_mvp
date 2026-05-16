@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 
 import { Footer } from "@/components/shared/footer";
+import { PostHogProvider } from "@/components/shared/posthog-provider";
 import { TopNav } from "@/components/shared/top-nav";
 
 import "./globals.css";
@@ -18,10 +19,54 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
 });
 
+const APP_URL =
+  process.env.NEXT_PUBLIC_APP_URL ??
+  "https://altr-sponsorship-mvp.vercel.app";
+
+const DEFAULT_TITLE = "ALTR — Sponsorship OS";
+const DEFAULT_DESCRIPTION =
+  "Sponsorship infrastructure for APAC and GCC live events, settled on XRPL. Discover events, deal directly with brands, settle in three seconds, measure ROI.";
+
 export const metadata: Metadata = {
-  title: "ALTR — Sponsorship OS",
-  description:
-    "Sponsorship infrastructure for APAC and GCC live events, settled on XRPL.",
+  metadataBase: new URL(APP_URL),
+  title: {
+    default: DEFAULT_TITLE,
+    template: "%s — ALTR",
+  },
+  description: DEFAULT_DESCRIPTION,
+  applicationName: "ALTR",
+  authors: [{ name: "ALTR" }],
+  keywords: [
+    "sponsorship",
+    "XRPL",
+    "APAC",
+    "GCC",
+    "live events",
+    "brand sponsorship",
+    "RLUSD",
+  ],
+  openGraph: {
+    type: "website",
+    siteName: "ALTR",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    url: APP_URL,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    creator: "@altr2026",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  alternates: {
+    canonical: APP_URL,
+  },
 };
 
 export default function RootLayout({
@@ -36,9 +81,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col font-sans">
-        <TopNav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <PostHogProvider>
+          <TopNav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </PostHogProvider>
       </body>
     </html>
   );
