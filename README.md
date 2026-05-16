@@ -24,21 +24,19 @@ This MVP demonstrates the full vision: **brand-to-event deals settled on XRPL in
 
 The global sponsorship market is **$100B+** and still runs on:
 
-- **Cold emails and handshake deals** — no centralized discovery
-- **PDF sponsorship decks** — no standardized pricing
-- **SWIFT wires** — $5,000+ in fees, 5-day settlement for a $250K deal
-- **One-shot payments** — events take all risk, brands take all leverage
-- **No ROI measurement** — sponsors can't justify renewals
+- Cold emails and handshake deals — no centralized discovery
+- PDF sponsorship decks — no standardized pricing
+- SWIFT wires — $5,000+ in fees, 5-day settlement for a $250K deal
+- One-shot payments — both sides take risk, no recourse
+- No ROI measurement — sponsors can't justify renewals
 
-Anvara is solving this in the US for sports and OOH. **APAC and GCC are wide open**, growing at 12–14% CAGR, with no dominant platform.
+Anvara is solving this in the US for sports and OOH. APAC and GCC are wide open, growing at 12-14% CAGR, with no dominant platform.
 
 ---
 
 ## What we built
 
 ### The flow
-
-A brand initiates a sponsorship deal with an event. ALTR routes the entire flow on XRPL:
 
 ```
 Brand (KR) → ALTR Hub (XRPL escrow) → Event (Ultra Korea)
@@ -55,16 +53,14 @@ Versus SWIFT: 5 days, $5,000+, lump sum risk.
 
 ### Six core screens
 
-1. **Discover** — Brands browse curated events (filter by vertical, geo, audience, budget)
-2. **Deal flow** — Initiate a sponsorship, configure milestones, lock RLUSD in XRPL escrow
-3. **Live tx** — Watch the actual XRPL transaction settle on testnet (link to explorer)
-4. **Event dashboard** — Sponsor queue, audience insights, pricing benchmarks
-5. **ROI dashboard** — Post-event measurement (impressions, EMV, conversions, ROI multiple)
-6. **Financing layer** — On-chain reputation score unlocks BNPL (event gets sponsor money early)
+1. Discover — Brands browse curated events
+2. Deal flow — Initiate, configure milestones, lock RLUSD in XRPL escrow
+3. Live tx — Watch the actual XRPL transaction settle on testnet
+4. Event dashboard — Sponsor queue, audience insights, pricing benchmarks
+5. ROI dashboard — Post-event measurement
+6. Financing layer — On-chain reputation unlocks BNPL
 
-### Why XRPL specifically
-
-ALTR's profile — cross-border + multi-party + high-frequency + GCC focus — makes XRPL the optimal rail. We compared:
+### Why XRPL
 
 | | USDC (Base) | XRPL (RLUSD) | SWIFT |
 |---|---|---|---|
@@ -75,115 +71,103 @@ ALTR's profile — cross-border + multi-party + high-frequency + GCC focus — m
 | Native FX | No | **Yes** (XRPL DEX) | No |
 | Smart contracts | EVM L2 | **Hooks + EVM sidechain** | None |
 
-XRPL is the only rail that handles all four well for our use case. Long-term, ALTR runs a **dual-rail architecture** — XRPL for GCC and high-volume corridors, USDC on Base for US/EU brand familiarity. The MVP focuses on XRPL because it's where ALTR's unique value creates the biggest difference.
+Long-term, ALTR runs a **dual-rail architecture** — XRPL for GCC and high-volume corridors, USDC on Base for US/EU brand familiarity. The MVP focuses on XRPL because it's where ALTR's unique value creates the biggest difference.
 
 ---
 
 ## Traction
 
-This is not a thought experiment. ALTR has confirmed event partners across 4 verticals:
-
 - **Ultra Music Festival** — global music IP
-- **Wanderlust** — wellness events across SEA
-- **Multiple Philippines conferences** — B2B and tech
-- **Fashion show partners** — APAC and GCC
-
-Plus an investor network in GCC (UAE, KSA) and access to local agencies in SEA.
-
-Phase 0 of the actual rollout begins with these partners turning into ALTR's first deal flow.
+- **Wanderlust 108** — wellness events across SEA
+- **Philippine Blockchain Week 2026** — 15,000+ attendees, SMX Manila, June 19-21
+- **Dubai Design Week 2026** — November 2026
+- Investor network across UAE, KSA, and Korea
 
 ---
 
-## Business model
+## Business model — Services-led SaaS
 
-ALTR runs on a **two-track** structure that funds itself before VC capital is needed:
+ALTR runs on a services-led SaaS model. Track A (matching/concierge) and Track B (SaaS product) operate in parallel from Phase 1 onwards. Track A's deal data feeds Track B's product learning in real-time — no 18-month lag between data collection and product evolution.
 
-### Track A — Concierge service (today)
+### Phase 0–1 Revenue (Services-heavy)
 
-- Sponsorship matching commission: **10–15% per deal**
-- Marketing consulting (decks, pitch, packaging): **$5K–$30K per project**
-- Bundled influencer packages: **+30–50% on deal size**
+- **Sponsorship matching commission:** 15–25% per deal
+  - Sourcing 5–8% + Negotiation 3–5% + Execution 5–8% + ROI reporting 2–4%
+- **Marketing consulting:** $5–30K per project
+- **SaaS beta (ROI dashboard):** $500–2K/month (from M9)
+- **Brand premium tier:** $1–3K/month (from M12)
+- **Bundled influencer packages:** +30–50% premium on deal size
 
-### Track B — Tech platform (Phase 2 onwards)
+### Phase 2+ Revenue (Platform-heavy)
 
-- SaaS subscription for events (ROI dashboard): **$500–$5K/month**
-- Marketplace take rate (escrow + settlement): **0.5–1% of GMV**
-- Data/insights API for enterprise: **$10K–$100K/year**
-- Sponsorship financing (Phase 4): **2–3% per 30 days BNPL** + insurance premiums
-
-Track A funds Track B's R&D. Track A's deal data becomes Track B's moat.
+- Marketplace take rate: 0.5–1% of GMV
+- SaaS subscription: $500–5K/month
+- White-label for agencies: $2–10K/month + revshare
+- Float yield on USDC escrow: 4.1% APY
+- Data/insights API: $10–100K/year (Phase 3)
+- Sponsorship financing: 2–3% per 30 days BNPL (Phase 3)
 
 ---
 
 ## Roadmap
 
-ALTR follows a 5-phase strategic plan. Each phase has a clear funding gate and proof point.
+4-phase plan with funded gates.
 
 ### Phase 0 — MVP / Market test
-> _Now → Month 3 · "Community first, product later"_
+> _Now → Month 3 · "Community first, anchor 확보"_
 
 **Goals**
 - Waitlist 500+ (300 events, 200 brands)
 - First paying deals 3–5 via anchors
-- Tier 1 data schema (audience + pricing benchmarks)
 - This MVP + investor pitch complete
 
 **Build**
-- `altr.haus` marketing + waitlist
-- `demo.altr.haus` (XRPL testnet MVP — this repo)
-- `altr.haus/events` partner pitch view
-- Notion/Airtable deal CRM
+- altr.haus marketing + waitlist
+- demo.altr.haus (XRPL testnet MVP — this repo)
+- altr.haus/events partner pitch view
 
-**Revenue model:** Track A only (commission + consulting)
+**Revenue:** Commission 15–25% + Consulting
 **Metrics:** $50–150K revenue · 2–3 team · bootstrapped
 
 ---
 
-### Phase 1 — Consulting scale
-> _Month 3 → 9 · "Track A scale, data asset accumulation"_
+### Phase 1 — Dual Track Scale (★ merged)
+> _Month 3 → 18 · "매칭이 데이터를 만들고, 데이터가 product를 만든다"_
 
-**Goals**
+Track A (Matching) and Track B (SaaS) run in parallel. The deal data from Track A becomes Track B's training input, eliminating the typical services-to-product data lag.
+
+**Track A · Concierge Matching**
 - SEA 5 countries (SG, MNL, BKK, JKT, SEL)
-- 15–20 paying deals closed
-- 3–5 case studies published
-- Influencer bundled packages launched
+- GCC entry (Dubai first, leveraging investor network)
+- 30–50 paying deals closed
+- Influencer bundled packages
+- 5–8 case studies published
 
-**Build**
-- Internal deal management (Retool)
-- Pricing benchmark DB v1 (by vertical)
-- Standard audience-data collection forms
-- Auto-generated sponsorship deck templates
-- Post-event ROI report templates
-
-**Revenue model:** Commission 10–15% + Consulting $5–30K + Bundled deals +30–50% premium. Brands still free.
-**Metrics:** $500K–1M ARR · 5–7 team · optional Pre-Seed $500K–1M
-
----
-
-### Phase 2 — SaaS hybrid + GCC entry
-> _Month 9 → 18 · "Productization begins + Seed funding"_
-
-**Goals**
-- SaaS MVP (ROI dashboard) launched
-- First GCC deal closed (Dubai or Riyadh)
-- SaaS beta: 10–15 events using the product
-- Seed $2–5M raised (GCC + APAC VCs)
-- Brand-side self-serve discovery beta
-
-**Build**
-- ROI Dashboard SaaS (real product, not Retool)
-- Brand discovery portal (filter, search)
-- **Stripe Connect + Bridge integration** (fiat on-ramp + USDC settlement)
-- Audience matching engine v1 (basic ML)
+**Track B · SaaS development (parallel)**
+- Pricing intelligence DB v1 → v2 (evolving with Track A data)
+- ROI Dashboard SaaS MVP (M9 launch)
+- Audience matching engine v1
+- Brand discovery portal beta
+- Stripe Connect + Bridge integration (M12+)
 - Multi-language UI (EN/KR/JP/AR)
 
-**Revenue model:** Commission + Event SaaS $500–2K/mo + Brand premium $1–3K/mo + Bundled 12–18%
-**Metrics:** $1.5–3M ARR · 12–18 team · Seed $2–5M
+**Critical milestones**
+- M9: SaaS MVP first paying customer (transition from Track A)
+- M12: GCC first deal + Stripe Connect integrated
+- M15: Seed $2–5M raised (GCC + APAC VCs)
+- M18: ARR $1.5–3M, SaaS active users 20+
+
+**Revenue (staircase)**
+- M3–9: Commission 15–25% + Consulting
+- M9–12: + SaaS beta $500–2K/month
+- M12–18: + Brand premium $1–3K/month, Bundled 15–25%
+
+**Metrics:** $1.5–3M ARR · 5–7 → 12–18 team · Seed $2–5M
 
 ---
 
-### Phase 3 — Marketplace + Payment hub
-> _Month 18 → 30 · "Two-sided marketplace + Series A"_
+### Phase 2 — Marketplace + Payment Hub
+> _Month 18 → 30 · "양면 마켓플레이스 + Series A"_
 
 **Goals**
 - 100+ events listed, 50+ brand accounts
@@ -194,18 +178,19 @@ ALTR follows a 5-phase strategic plan. Each phase has a clear funding gate and p
 
 **Build**
 - Marketplace listing + inbound offer system
-- **XRPL + USDC dual-rail escrow** (production)
+- XRPL + USDC dual-rail escrow (production)
 - Milestone smart contract automation
 - Multi-currency off-ramp (Nium, Ripple Payments)
 - White-label dashboard for agencies
 - Influencer marketplace integration
 
-**Revenue model:** Marketplace take rate 0.5–1% of GMV + White-label $2–10K/mo + revshare + Float yield on USDC escrow (4%+ APY)
+**Revenue model:** Marketplace take rate 0.5–1% of GMV + White-label + Float yield. Commission retained only for enterprise deals.
+
 **Metrics:** $5–10M ARR · GMV $50–100M · 30–50 team
 
 ---
 
-### Phase 4 — Sponsorship financing
+### Phase 3 — Sponsorship financing
 > _Month 30+ · "The Stripe + Bloomberg of sponsorship"_
 
 **Goals**
@@ -213,16 +198,16 @@ ALTR follows a 5-phase strategic plan. Each phase has a clear funding gate and p
 - Sponsorship financing products launched
 - Data API enterprise licenses (5+)
 - Series B or strategic exit
-- Anvara partnership or acquisition
 
 **Build**
 - On-chain reputation scoring engine
-- BNPL / Factoring (advance sponsor cash before deal closes)
-- Performance insurance (with reinsurance partners)
+- BNPL / Factoring (advance sponsor cash)
+- Performance insurance
 - Data API for enterprise (Nielsen-style)
 - Cross-border FX settlement product
 
-**Revenue model:** BNPL 2–3% per 30 days + Insurance 1–3% of deal + Data API $10–100K/year + FX spread 0.3–0.5% + all prior revenue streams maintained
+**Revenue model:** BNPL 2–3% per 30 days + Insurance 1–3% + Data API $10–100K/year + FX 0.3–0.5% spread + all prior revenue streams maintained.
+
 **Metrics:** $20M+ ARR · GMV $200M+ · 80–150 team
 
 ---
@@ -232,125 +217,80 @@ ALTR follows a 5-phase strategic plan. Each phase has a clear funding gate and p
 | Transition | Required proof |
 |---|---|
 | Phase 0 → 1 | Waitlist 300+, paying deals 3+ |
-| Phase 1 → 2 | ARR $500K + 3+ case studies |
-| Phase 2 → 3 | First GCC deal + SaaS beta 10+ |
-| Phase 3 → 4 | GMV $50M + take rate validated |
+| Phase 1 → 2 | ARR $1.5M + SaaS active users 20+ + GCC first deal |
+| Phase 2 → 3 | GMV $50M + take rate validated + GCC 4 countries |
+
+### Why merging Phase 1+2 works
+
+**Data synergy** — Deal data from Track A immediately feeds Track B's pricing benchmark DB, matching engine, and ROI metrics. No 18-month lag.
+
+**Capital efficiency** — Track A's revenue funds Track B's R&D. Bootstrapped runway extends, Seed closes at higher valuation due to traction.
+
+**VC narrative** — "Services-led SaaS" is a proven model (Palantir, Scale AI). Day-1 revenue + data moat = strong Seed positioning.
 
 ---
 
 ## Market
 
-- **Sponsorship market globally:** $100B+
+- **Global sponsorship:** $100B+
 - **APAC sponsorship CAGR:** ~10% (fragmented, no dominant platform)
-- **GCC event management:** $6.88B in 2025 → $9.11B by 2031, sponsorship segment growing at **12.3% CAGR**
-- **Saudi Arabia alone:** 40% of GCC influencer market, Vision 2030 driving event boom
+- **GCC event management:** $6.88B in 2025 → $9.11B by 2031, 12.3% CAGR
+- **Saudi Arabia:** 40% of GCC influencer market, Vision 2030 driving event boom
 - **Anvara** (US incumbent) does not operate in APAC or GCC
-
-The white space is real and the timing is now.
 
 ---
 
 ## Technical architecture
 
 ### Stack
-
-- **Frontend:** Next.js 14 (App Router) + TypeScript + Tailwind + shadcn/ui
-- **Backend:** Next.js API routes + Supabase (Postgres, Auth, Realtime)
-- **Blockchain:** XRPL testnet (`xrpl.js`) + RLUSD + XRPL EVM sidechain for Solidity contracts
-- **Smart contracts:** Solidity (milestone escrow) on XRPL EVM sidechain
-- **Payment orchestration:** Ripple Payments SDK (production path)
-- **Analytics:** PostHog
-- **Deploy:** Vercel + custom domain
+- Next.js 14 (App Router) + TypeScript + Tailwind + shadcn/ui
+- Supabase (Postgres, Auth, Realtime)
+- xrpl@3.1.0 + RLUSD + XRPL EVM sidechain
+- Solidity milestone escrow
+- Ripple Payments SDK (production path)
+- Vercel + custom domain
 
 ### Repository structure
 
 ```
-altr_sponsorship_demo/
+altr_sponsorship_mvp/
 ├── apps/
-│   ├── demo/              # demo.altr.haus — grant/investor view
-│   ├── partners/          # altr.haus/events — event partner view
-│   └── marketing/         # altr.haus — landing + waitlist
+│   ├── demo/              # demo.altr.haus
+│   ├── partners/          # altr.haus/events
+│   └── marketing/         # altr.haus
 ├── packages/
 │   ├── ui/                # shared shadcn components
 │   ├── design-system/     # tokens, themes
-│   ├── xrpl-client/       # XRPL wrapper (wallet, escrow, tx tracking)
+│   ├── xrpl-client/       # XRPL wrapper
 │   ├── contracts/         # Solidity milestone escrow
 │   └── db/                # Supabase schema + types
-├── content/
-│   └── insights/          # MDX blog posts
 └── docs/
-    ├── architecture.md
-    ├── pitch.md
-    └── demo-script.md
 ```
-
-### Smart contract flow
-
-The milestone escrow contract holds RLUSD until predefined conditions trigger release. Each milestone is:
-
-```solidity
-struct Milestone {
-    uint256 amount;        // RLUSD amount
-    uint256 unlockTime;    // earliest release timestamp
-    bool requiresApproval; // sponsor sign-off needed
-    address arbiter;       // ALTR or 3rd party for disputes
-    Status status;         // Pending | Released | Disputed
-}
-```
-
-Brand funds → contract holds → milestone conditions met → ALTR (or smart contract directly) releases to event wallet → XRPL bridge swaps to local fiat off-ramp.
 
 ### Multi-currency / multi-rail
 
 - **Primary:** RLUSD on XRPL (low fee, GCC corridors)
-- **Secondary (Phase 2+):** USDC on Base (US/EU brand familiarity, Stripe Connect)
-- **Off-ramp:** Local fiat via Ripple Payments partners (KRW, PHP, AED, SAR, IDR, SGD, JPY)
-- **Auto-routing:** Pick optimal rail per deal based on corridor and amount
+- **Secondary (Phase 1 late / Phase 2):** USDC on Base via Stripe Connect
+- **Off-ramp:** Local fiat via Ripple Payments partners
+- **Auto-routing:** Optimal rail per deal based on corridor and amount
 
 ---
 
 ## Running locally
 
-### Prerequisites
-
-- Node.js 20+
-- pnpm
-- An XRPL testnet wallet ([faucet](https://xrpl.org/xrp-testnet-faucet.html))
-- A Supabase project (free tier works)
-
-### Setup
-
 ```bash
-git clone https://github.com/altr2026/altr_sponsorship_demo.git
-cd altr_sponsorship_demo
+git clone https://github.com/altr2026/altr_sponsorship_mvp.git
+cd altr_sponsorship_mvp
 
 pnpm install
 cp .env.example .env.local
 # fill in XRPL_WALLET_SEED, SUPABASE_URL, SUPABASE_ANON_KEY
 
 pnpm db:migrate
-pnpm db:seed       # loads mock events, brands, deals
+pnpm db:seed
 
-pnpm dev           # all apps
-pnpm dev:demo      # demo only
-pnpm dev:partners  # event partner view only
+pnpm dev
 ```
-
-Open:
-- Demo (grant submission): `http://localhost:3000`
-- Event partners: `http://localhost:3001`
-- Marketing site: `http://localhost:3002`
-
-### Trying the demo flow
-
-1. Open the demo at `localhost:3000`
-2. Switch role to **Brand** (top-right toggle)
-3. Browse events → select "Ultra Korea 2026"
-4. Click **Initiate deal** → configure milestones → confirm
-5. Watch the XRPL escrow transaction settle in ~3 seconds
-6. Click the tx hash to view on XRPL testnet explorer
-7. Switch role to **Event** → see the incoming deal + payout schedule
-8. Click **Trigger M1 release** to simulate milestone completion
 
 ---
 
@@ -358,7 +298,7 @@ Open:
 
 | | Status |
 |---|---|
-| End-to-end deal flow (brand → event) | ✅ Working |
+| End-to-end deal flow | ✅ Working |
 | RLUSD escrow on XRPL testnet | ✅ Working |
 | Milestone-based release | ✅ Working (4 milestones) |
 | Live XRPL explorer integration | ✅ Working |
@@ -367,8 +307,7 @@ Open:
 | Sponsorship BNPL/financing | ✅ MVP (mock) |
 | Event partner view | ✅ Working |
 | Real auth + KYC | ❌ Out of scope for MVP |
-| Production payment processing | ❌ Out of scope (testnet only) |
-| Influencer marketplace | ❌ Out of scope (consulting only at this phase) |
+| Production payment processing | ❌ Testnet only |
 
 ---
 
@@ -376,41 +315,19 @@ Open:
 
 ### For XRP Grant reviewers
 
-The MVP at `demo.altr.haus` demonstrates the full vision. A 5-minute walkthrough is in [`docs/demo-script.md`](docs/demo-script.md). XRPL is not bolted on — it solves a real corridor + cost + smart-contract problem that ALTR's APAC/GCC focus uniquely benefits from. Specifically, Ripple's existing UAE/Saudi banking corridors are the single biggest reason ALTR's GCC strategy is feasible.
+The MVP at `demo.altr.haus` demonstrates the full vision. XRPL is not bolted on — it solves a real corridor + cost + smart-contract problem that ALTR's APAC/GCC focus uniquely benefits from. Ripple's existing UAE/Saudi banking corridors are the single biggest reason ALTR's GCC strategy is feasible.
 
 ### For investors
 
-ALTR has confirmed anchor partnerships (Ultra, Wanderlust, multiple conferences), a two-track business model that funds itself before VC capital is needed, and a credible path from concierge service to marketplace to financial infrastructure. See the pitch in [`docs/pitch.md`](docs/pitch.md). Currently exploring **Seed $2–5M** to enter Phase 2 (SaaS hybrid + GCC entry).
+ALTR has confirmed anchor partnerships, a services-led SaaS model with built-in data moat, and a 4-phase path from concierge to marketplace to financial infrastructure. Currently exploring **Seed $2–5M** during Phase 1 (Dual Track Scale).
 
 ### For developer partners
 
-We're open to contributions in:
-
-- **XRPL Hooks** — native escrow logic (alternative to EVM sidechain)
-- **Local fiat off-ramps** — additional APAC/GCC corridors via Ripple Payments
-- **ROI measurement** — better integration with ticketing platforms and social listening
-- **Multi-language UI** — Korean, Japanese, Bahasa, Arabic
-
-Open an issue or DM. The codebase is intentionally clean and well-typed to make contribution easy.
-
----
-
-<a name="pitch"></a>
-## Pitch
-
-Full pitch in [`docs/pitch.md`](docs/pitch.md). 10 slides, matches the 5-minute demo walkthrough.
-
----
-
-<a name="docs"></a>
-## Documentation
-
-- [`docs/architecture.md`](docs/architecture.md) — full system design
-- [`docs/demo-script.md`](docs/demo-script.md) — 5-min walkthrough
-- [`docs/business-model.md`](docs/business-model.md) — two-track BM detail
-- [`docs/roadmap.md`](docs/roadmap.md) — 5-phase plan in depth
-- [`docs/market-analysis.md`](docs/market-analysis.md) — APAC/GCC sizing
-- [`docs/xrpl-integration.md`](docs/xrpl-integration.md) — RLUSD, escrow, Ripple Payments
+Contributions welcome in:
+- XRPL Hooks (native escrow logic)
+- Local fiat off-ramps (additional APAC/GCC corridors)
+- ROI measurement integrations
+- Multi-language UI (Korean, Japanese, Bahasa, Arabic)
 
 ---
 
@@ -418,13 +335,9 @@ Full pitch in [`docs/pitch.md`](docs/pitch.md). 10 slides, matches the 5-minute 
 
 To be added.
 
----
-
 ## License
 
 MIT — see [LICENSE](LICENSE)
-
----
 
 ## Contact
 
