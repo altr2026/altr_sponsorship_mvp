@@ -1,8 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import { Hero } from "@/components/shared/hero";
 import { SectionHeading } from "@/components/shared/section-heading";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Building the sponsorship OS for APAC and GCC — manifesto, roadmap, and team behind ALTR.",
+  alternates: { canonical: "/about" },
+};
 
 const PHASES = [
   {

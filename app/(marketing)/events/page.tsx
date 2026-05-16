@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   BadgeCheck,
   BarChart3,
@@ -12,6 +13,13 @@ import { Hero } from "@/components/shared/hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { StatCard } from "@/components/shared/stat-card";
 import { WaitlistForm } from "@/components/shared/waitlist-form";
+
+export const metadata: Metadata = {
+  title: "For events",
+  description:
+    "List once. Match with vetted brands. Get paid faster — milestone payouts settled on XRPL in three seconds.",
+  alternates: { canonical: "/events" },
+};
 
 const STATS = [
   {

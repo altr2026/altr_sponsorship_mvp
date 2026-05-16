@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -13,6 +14,13 @@ import { Hero } from "@/components/shared/hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { WaitlistForm } from "@/components/shared/waitlist-form";
 import { events } from "@/lib/mock-data/events";
+
+export const metadata: Metadata = {
+  title: "For brands",
+  description:
+    "Every sponsorship in one place. Transparent pricing, verified audience data, and ROI you can prove across APAC and GCC.",
+  alternates: { canonical: "/brands" },
+};
 
 const VERTICALS = ["Music", "Conference", "Fashion", "Wellness"] as const;
 const REGIONS = ["SEA", "KR + JP", "GCC"] as const;

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -5,6 +6,13 @@ import { Hero } from "@/components/shared/hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 
 import { NewsletterForm } from "./_newsletter-form";
+
+export const metadata: Metadata = {
+  title: "Insights",
+  description:
+    "Monthly market data, pricing benchmarks, and analysis on sponsorship in APAC and GCC.",
+  alternates: { canonical: "/insights" },
+};
 
 const FEATURED = {
   tag: "Market data",
