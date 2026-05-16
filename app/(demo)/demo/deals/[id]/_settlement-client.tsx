@@ -294,7 +294,13 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                   aria-hidden="true"
                   className={cn(
                     "h-px flex-1 transition-colors duration-700",
-                    released ? "bg-altr-green/40" : "bg-altr-line2",
+                    !released && "bg-altr-line2",
+                    released &&
+                      revealedCount < POST_RELEASE.length &&
+                      "bg-altr-lime/40",
+                    released &&
+                      revealedCount >= POST_RELEASE.length &&
+                      "bg-teal-500/40",
                   )}
                 />
                 <button
@@ -303,9 +309,14 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                   disabled={released}
                   className={cn(
                     "rounded border-2 px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.22em] transition-all",
-                    released
-                      ? "border-altr-green bg-altr-green/15 text-altr-green"
-                      : "border-altr-lime bg-altr-lime text-altr-black hover:brightness-110 active:translate-y-[1px]",
+                    !released &&
+                      "border-altr-lime bg-altr-lime text-altr-black hover:brightness-110 active:translate-y-[1px]",
+                    released &&
+                      revealedCount < POST_RELEASE.length &&
+                      "border-altr-lime bg-altr-lime/15 text-altr-lime",
+                    released &&
+                      revealedCount >= POST_RELEASE.length &&
+                      "border-teal-500 bg-teal-600/15 text-teal-400",
                   )}
                   style={
                     released
@@ -316,7 +327,9 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                   {released ? (
                     <span className="inline-flex items-center gap-1.5">
                       <Check className="h-3 w-3" aria-hidden="true" />
-                      Release signed · settlement in progress
+                      {revealedCount >= POST_RELEASE.length
+                        ? "Settlement complete"
+                        : "Release signed · settlement in progress"}
                     </span>
                   ) : (
                     "↓ Sign release & run settlement"
@@ -326,7 +339,13 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                   aria-hidden="true"
                   className={cn(
                     "h-px flex-1 transition-colors duration-700",
-                    released ? "bg-altr-green/40" : "bg-altr-line2",
+                    !released && "bg-altr-line2",
+                    released &&
+                      revealedCount < POST_RELEASE.length &&
+                      "bg-altr-lime/40",
+                    released &&
+                      revealedCount >= POST_RELEASE.length &&
+                      "bg-teal-500/40",
                   )}
                 />
               </div>
@@ -346,10 +365,10 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                   <span
                     className={cn(
                       "absolute -left-[26px] top-0 grid h-7 w-7 place-items-center rounded-full font-mono text-[11px] font-bold transition-all duration-500",
-                      revealed
-                        ? "bg-altr-green text-altr-black"
-                        : "bg-altr-line2 text-altr-mute",
-                      isLatest && "ring-4 ring-altr-green/30",
+                      !revealed && "bg-altr-line2 text-altr-mute",
+                      revealed && !isLatest && "bg-teal-600 text-white",
+                      isLatest &&
+                        "bg-altr-lime text-altr-black ring-4 ring-altr-lime/40",
                     )}
                   >
                     {revealed ? "✓" : step.letter}
@@ -359,7 +378,9 @@ export function SettlementClient({ deal }: { deal: Deal }) {
                       <span
                         className={cn(
                           "min-w-[50px] font-mono text-[10px] uppercase tracking-[0.18em] transition-colors duration-300",
-                          isLatest ? "text-altr-green" : "text-altr-mute",
+                          isLatest && "text-altr-lime",
+                          revealed && !isLatest && "text-teal-400",
+                          !revealed && "text-altr-mute",
                         )}
                       >
                         {step.timepoint}
