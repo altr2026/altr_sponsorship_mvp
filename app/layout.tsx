@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 
-import { Footer } from "@/components/shared/footer";
 import { PostHogProvider } from "@/components/shared/posthog-provider";
-import { TopNav } from "@/components/shared/top-nav";
 
 import "./globals.css";
 
@@ -80,12 +78,8 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} scroll-smooth`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-screen flex-col font-sans">
-        <PostHogProvider>
-          <TopNav />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </PostHogProvider>
+      <body className="font-sans">
+        <PostHogProvider>{children}</PostHogProvider>
       </body>
     </html>
   );
