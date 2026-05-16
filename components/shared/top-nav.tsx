@@ -10,16 +10,10 @@ const NAV_LINKS = [
 ];
 
 type TopNavProps = {
-  ctaHref?: string;
-  ctaLabel?: string;
   className?: string;
 };
 
-export function TopNav({
-  ctaHref = "/#waitlist",
-  ctaLabel = "Get early access",
-  className,
-}: TopNavProps) {
+export function TopNav({ className }: TopNavProps) {
   return (
     <header
       className={cn(
@@ -51,20 +45,12 @@ export function TopNav({
           ))}
         </nav>
 
-        <div className="flex items-center gap-5">
-          <Link
-            href="/connect"
-            className="hidden text-body text-altr-muteSoft transition-colors hover:text-altr-white sm:inline"
-          >
-            Sign in
-          </Link>
-          <Link
-            href={ctaHref}
-            className="inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-body font-medium text-white transition-colors hover:bg-teal-500"
-          >
-            {ctaLabel}
-          </Link>
-        </div>
+        <Link
+          href="/connect"
+          className="text-body text-altr-muteSoft transition-colors hover:text-altr-white"
+        >
+          Sign in
+        </Link>
       </div>
     </header>
   );
