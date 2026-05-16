@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Wallet } from "xrpl";
-import { ArrowRight, Check, Loader2, LogOut } from "lucide-react";
+import { ArrowRight, Check, ExternalLink, Loader2, LogOut, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -15,20 +15,28 @@ type WalletState = {
   connectedAt: string;
 };
 
+type XummPayload = {
+  uuid: string;
+  qrPng: string;
+  nextAlways: string;
+};
+
 const STORAGE_KEY = "altr.wallet";
+const POLL_INTERVAL = 2000;
+const POLL_TIMEOUT_MS = 3 * 60 * 1000;
 
 const PROVIDERS: Array<{
   id: WalletSource;
   label: string;
   description: string;
-  status: "available" | "coming_soon";
+  status: "available" | "live" | "coming_soon";
   badge?: string;
 }> = [
   {
     id: "xumm",
     label: "Xaman (Xumm)",
     description: "Sign on your phone. The most-used XRPL wallet.",
-    status: "coming_soon",
+    status: "live",
     badge: "Recommended",
   },
   {
@@ -52,15 +60,13 @@ const PROVIDERS: Array<{
   },
 ];
 
-function shortenAddress(addr: string) {
-  if (addr.length <= 14) return addr;
-  return addr.slice(0, 8) + "…" + addr.slice(-6);
-}
-
 export function ConnectClient() {
   const [wallet, setWallet] = useState<WalletState | null>(null);
   const [loading, setLoading] = useState<WalletSource | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [xumm, setXumm] = useState<XummPayload | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pollStartRef = useRef<number>(0);
 
   useEffect(() => {
     try {
@@ -69,47 +75,126 @@ export function ConnectClient() {
         const parsed = JSON.parse(stored) as WalletState;
         if (parsed?.address) setWallet(parsed);
       }
-    } catch {
-      // ignore malformed storage
-    }
+    } catch {}
   }, []);
+
+  function stopPolling() {
+    if (pollRef.current) {
+      clearInterval(pollRef.current);
+      pollRef.current = null;
+    }
+  }
+
+  useEffect(() => stopPolling, []);
 
   function persist(next: WalletState | null) {
     setWallet(next);
     try {
-      if (next) {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } else {
-        window.localStorage.removeItem(STORAGE_KEY);
+      if (next) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      else window.localStorage.removeItem(STORAGE_KEY);
+    } catch {}
+  }
+
+  async function startXummPolling(payload: XummPayload) {
+    pollStartRef.current = Date.now();
+    stopPolling();
+    pollRef.current = setInterval(async () => {
+      if (Date.now() - pollStartRef.current > POLL_TIMEOUT_MS) {
+        stopPolling();
+        setXumm(null);
+        setError("Sign request timed out. Try again.");
+        return;
       }
-    } catch {
-      // ignore quota / private-mode failures
+      try {
+        const res = await fetch(
+          `/api/auth/xumm/status?uuid=${encodeURIComponent(payload.uuid)}`,
+          { cache: "no-store" },
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.cancelled || data.expired) {
+          stopPolling();
+          setXumm(null);
+          setError(
+            data.expired ? "Sign request expired." : "Sign request cancelled.",
+          );
+        } else if (data.signed && data.account) {
+          stopPolling();
+          setXumm(null);
+          persist({
+            address: data.account,
+            source: "xumm",
+            connectedAt: new Date().toISOString(),
+          });
+        }
+      } catch (caught) {
+        console.error("Xumm poll failed", caught);
+      }
+    }, POLL_INTERVAL);
+  }
+
+  async function handleXumm() {
+    setError(null);
+    setLoading("xumm");
+    try {
+      const res = await fetch("/api/auth/xumm/create", { method: "POST" });
+      const data = await res.json();
+      if (res.status === 503) {
+        setError(
+          "Xaman keys are not configured yet. Use Generate demo wallet for now.",
+        );
+        return;
+      }
+      if (!res.ok || !data.uuid) {
+        setError(data.message ?? "Could not start Xaman sign request.");
+        return;
+      }
+      const payload: XummPayload = {
+        uuid: data.uuid,
+        qrPng: data.qrPng,
+        nextAlways: data.nextAlways,
+      };
+      setXumm(payload);
+      startXummPolling(payload);
+    } catch (caught) {
+      console.error("Xumm create failed", caught);
+      setError("Network error reaching Xaman.");
+    } finally {
+      setLoading(null);
     }
+  }
+
+  function cancelXumm() {
+    stopPolling();
+    setXumm(null);
   }
 
   function handleConnect(provider: WalletSource) {
     setError(null);
-    if (provider !== "demo") {
-      setError(
-        `${provider === "xumm" ? "Xaman" : provider === "crossmark" ? "Crossmark" : "GemWallet"} integration is in progress. Use the demo wallet below to walk through the flow.`,
-      );
+    if (provider === "demo") {
+      setLoading("demo");
+      try {
+        const generated = Wallet.generate();
+        persist({
+          address: generated.address,
+          source: "demo",
+          connectedAt: new Date().toISOString(),
+        });
+      } catch (caught) {
+        console.error("Demo wallet generation failed", caught);
+        setError("Could not generate a demo wallet. Please try again.");
+      } finally {
+        setLoading(null);
+      }
       return;
     }
-
-    setLoading("demo");
-    try {
-      const generated = Wallet.generate();
-      persist({
-        address: generated.address,
-        source: "demo",
-        connectedAt: new Date().toISOString(),
-      });
-    } catch (caught) {
-      console.error("Demo wallet generation failed", caught);
-      setError("Could not generate a demo wallet. Please try again.");
-    } finally {
-      setLoading(null);
+    if (provider === "xumm") {
+      void handleXumm();
+      return;
     }
+    setError(
+      `${provider === "crossmark" ? "Crossmark" : "GemWallet"} integration is in progress. Use the demo wallet below to walk through the flow.`,
+    );
   }
 
   function handleDisconnect() {
@@ -141,12 +226,18 @@ export function ConnectClient() {
               Sign in
             </span>
             <h1 className="text-[clamp(28px,4vw,36px)] font-medium leading-[1.1] tracking-tight text-altr-white">
-              {wallet ? "Wallet connected." : "Connect your XRP wallet."}
+              {wallet
+                ? "Wallet connected."
+                : xumm
+                  ? "Scan with Xaman."
+                  : "Connect your XRP wallet."}
             </h1>
             <p className="text-body text-altr-muteSoft">
               {wallet
                 ? "You're ready to browse events, sign deals, and watch settlements clear on XRPL."
-                : "Connect a wallet to sign deals, fund escrows, and receive payouts on XRPL. Your keys never leave your device."}
+                : xumm
+                  ? "Open the Xaman app on your phone, scan the QR, and approve the sign-in."
+                  : "Connect a wallet to sign deals, fund escrows, and receive payouts on XRPL. Your keys never leave your device."}
             </p>
           </div>
 
@@ -192,11 +283,47 @@ export function ConnectClient() {
                 </p>
               ) : null}
             </div>
+          ) : xumm ? (
+            <div className="space-y-4 rounded-lg border border-altr-line2 bg-altr-panel p-6">
+              <div className="flex justify-center">
+                <img
+                  src={xumm.qrPng}
+                  alt="Xaman sign request QR code"
+                  width={240}
+                  height={240}
+                  className="rounded-md border border-altr-line2 bg-white p-3"
+                />
+              </div>
+              <div className="flex items-center justify-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-altr-mute">
+                <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
+                Waiting for signature
+              </div>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <a
+                  href={xumm.nextAlways}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-md border border-altr-line2 px-4 text-body font-medium text-altr-muteSoft transition-colors hover:border-altr-mute hover:text-altr-white"
+                >
+                  Open in Xaman
+                  <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                </a>
+                <button
+                  type="button"
+                  onClick={cancelXumm}
+                  className="inline-flex h-10 items-center justify-center gap-1.5 rounded-md border border-altr-line2 px-4 text-body font-medium text-altr-muteSoft transition-colors hover:border-altr-mute hover:text-altr-white"
+                >
+                  <X className="h-4 w-4" aria-hidden="true" />
+                  Cancel
+                </button>
+              </div>
+            </div>
           ) : (
             <div className="space-y-3">
               {PROVIDERS.map((provider) => {
                 const isLoading = loading === provider.id;
-                const isAvailable = provider.status === "available";
+                const enabled =
+                  provider.status === "available" || provider.status === "live";
                 return (
                   <button
                     key={provider.id}
@@ -205,7 +332,7 @@ export function ConnectClient() {
                     disabled={isLoading}
                     className={cn(
                       "group flex w-full items-center justify-between gap-4 rounded-lg border bg-altr-panel p-4 text-left transition-colors disabled:opacity-60",
-                      isAvailable
+                      enabled
                         ? "border-teal-500/40 hover:border-teal-400"
                         : "border-altr-line2 hover:border-altr-mute",
                     )}
@@ -220,7 +347,7 @@ export function ConnectClient() {
                             {provider.badge}
                           </span>
                         ) : null}
-                        {!isAvailable ? (
+                        {!enabled ? (
                           <span className="rounded border border-altr-line2 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-altr-mute">
                             Coming soon
                           </span>
@@ -239,7 +366,7 @@ export function ConnectClient() {
                       <ArrowRight
                         className={cn(
                           "h-4 w-4 shrink-0 transition-transform",
-                          isAvailable
+                          enabled
                             ? "text-teal-400 group-hover:translate-x-0.5"
                             : "text-altr-mute",
                         )}
