@@ -11,9 +11,9 @@ import {
   ListPlus,
 } from "lucide-react";
 
-import { Hero } from "@/components/shared/hero";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { WaitlistForm } from "@/components/shared/waitlist-form";
+import { events } from "@/lib/mock-data/events";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -24,29 +24,17 @@ const HERO_DEFAULT = {
   eyebrow: "Sponsorship OS for APAC + GCC",
   title: "Sponsorship that pays for itself.",
   subtitle:
-    "Discover events, deal directly with brands, settle on XRPL — and measure ROI in one place.",
+    "Discover events, deal directly with brands, settle on XRPL in three seconds, measure ROI on-chain.",
   primaryCta: { label: "Get early access", href: "#waitlist" },
-  secondaryLink: { label: "See how it works", href: "#how-it-works" },
-  trustLine: "Trusted by Ultra · Wanderlust · 12+ partners",
 };
 
 const HERO_EVENT = {
   eyebrow: "For event organizers",
   title: "Your sponsorship desk, simplified.",
   subtitle:
-    "List once. Match with vetted brands. Get paid faster — with milestone payouts settled on XRPL.",
+    "List once. Match with vetted brands. Get paid faster — settled on XRPL in three seconds.",
   primaryCta: { label: "List your event", href: "#waitlist" },
-  secondaryLink: { label: "See how it works", href: "#how-it-works" },
-  trustLine: "12+ events already on the list",
 };
-
-const PARTNERS = [
-  { name: "Ultra", placeholder: false },
-  { name: "Wanderlust", placeholder: false },
-  { name: "Coming soon", placeholder: true },
-  { name: "Coming soon", placeholder: true },
-  { name: "Coming soon", placeholder: true },
-];
 
 const PATHS = [
   {
@@ -120,6 +108,18 @@ const INSIGHTS = [
   },
 ];
 
+function formatAttendees(n: number) {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${Math.round(n / 1_000)}K`;
+  return String(n);
+}
+
+function formatTitlePrice(n: number) {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `$${Math.round(n / 1_000)}K`;
+  return `$${n}`;
+}
+
 type HomePageProps = {
   searchParams: {
     role?: string;
@@ -128,32 +128,124 @@ type HomePageProps = {
 
 export default function HomePage({ searchParams }: HomePageProps) {
   const hero = searchParams.role === "event" ? HERO_EVENT : HERO_DEFAULT;
+  const marqueeEvents = [...events, ...events];
 
   return (
     <>
-      <Hero {...hero} />
+      {/* STEP 0 — the hook */}
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-altr-pink/20 blur-3xl"
+        />
+        <div className="container px-6 pb-12 pt-20 text-center sm:pb-16 sm:pt-28 md:pt-36">
+          <div className="space-y-6">
+            <span className="inline-flex items-center gap-2 text-caption font-medium text-teal-700">
+              <span aria-hidden="true" className="h-2 w-2 bg-altr-pink" />
+              {hero.eyebrow}
+            </span>
+            <h1 className="mx-auto max-w-5xl text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] text-gray-900 sm:text-[64px] md:text-[80px]">
+              {hero.title}
+            </h1>
+            <p className="mx-auto max-w-xl text-body text-gray-600">
+              {hero.subtitle}
+            </p>
+          </div>
 
-      <section className="border-t border-gray-200 bg-white">
-        <div className="container py-10">
-          <p className="text-caption text-gray-500">Working with</p>
-          <div className="mt-4 flex flex-wrap items-center gap-x-10 gap-y-3">
-            {PARTNERS.map((partner, index) =>
-              partner.placeholder ? (
-                <span
-                  key={`partner-${index}`}
-                  className="rounded-md border border-dashed border-gray-200 px-3 py-1 text-caption text-gray-400"
-                >
-                  {partner.name}
-                </span>
-              ) : (
-                <span
-                  key={`partner-${index}`}
-                  className="text-h3 font-medium tracking-tight text-gray-400"
-                >
-                  {partner.name}
-                </span>
-              ),
-            )}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-5">
+            <Link
+              href={hero.primaryCta.href}
+              className="inline-flex h-12 items-center rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-colors hover:bg-teal-700"
+            >
+              {hero.primaryCta.label}
+            </Link>
+            <Link
+              href="#how-it-works"
+              className="inline-flex items-center gap-1.5 text-body font-medium text-gray-900 transition-colors hover:text-teal-700"
+            >
+              See how it works
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Live event marquee */}
+        <div className="border-y border-gray-200 bg-white py-8">
+          <div className="container mb-5 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-caption">
+              <span
+                aria-hidden="true"
+                className="relative inline-flex h-2 w-2 items-center justify-center"
+              >
+                <span className="absolute inset-0 animate-ping rounded-full bg-altr-pink opacity-60" />
+                <span className="relative inline-block h-2 w-2 rounded-full bg-altr-pink" />
+              </span>
+              <span className="font-medium text-gray-900">Live</span>
+              <span className="text-gray-400" aria-hidden="true">·</span>
+              <span className="text-gray-500">
+                {events.length} events accepting sponsors across APAC and GCC
+              </span>
+            </div>
+            <Link
+              href="/brands#events"
+              className="hidden text-caption font-medium text-teal-700 transition-colors hover:underline sm:inline"
+            >
+              Browse all →
+            </Link>
+          </div>
+
+          <div className="overflow-hidden">
+            <div className="flex w-max gap-4 pl-6 [animation:marquee_45s_linear_infinite] hover:[animation-play-state:paused]">
+              {marqueeEvents.map((event, index) => {
+                const titlePackage = event.sponsor_packages.find(
+                  (p) => p.tier === "Title",
+                );
+                return (
+                  <article
+                    key={`${event.id}-${index}`}
+                    aria-hidden={index >= events.length ? "true" : undefined}
+                    className="flex w-[300px] shrink-0 flex-col gap-3 rounded-lg border border-gray-200 bg-white p-5 transition-colors hover:border-gray-300"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-caption font-medium text-teal-700">
+                        {event.vertical}
+                      </span>
+                      <span className="font-mono text-caption text-gray-500">
+                        {event.region}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-base font-medium tracking-tight">
+                        {event.name}
+                      </h3>
+                      <p className="mt-1 text-caption text-gray-500">
+                        {event.location}, {event.country}
+                      </p>
+                    </div>
+                    <div className="mt-auto flex items-center justify-between border-t border-gray-200 pt-3">
+                      <div>
+                        <div className="font-mono text-caption text-gray-500">
+                          Audience
+                        </div>
+                        <div className="font-mono text-body tabular-nums text-gray-900">
+                          {formatAttendees(event.attendees)}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-mono text-caption text-gray-500">
+                          Title
+                        </div>
+                        <div className="font-mono text-body tabular-nums text-gray-900">
+                          {titlePackage
+                            ? formatTitlePrice(titlePackage.price)
+                            : "—"}
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
