@@ -9,6 +9,7 @@ type HeroLink = {
 };
 
 type HeroProps = {
+  eyebrow?: string;
   title: string;
   subtitle?: string;
   primaryCta: HeroLink;
@@ -18,6 +19,7 @@ type HeroProps = {
 };
 
 export function Hero({
+  eyebrow,
   title,
   subtitle,
   primaryCta,
@@ -32,7 +34,14 @@ export function Hero({
         className,
       )}
     >
-      <h1 className="max-w-3xl">{title}</h1>
+      <div className="flex max-w-3xl flex-col gap-3">
+        {eyebrow ? (
+          <span className="text-caption font-medium text-teal-700">
+            {eyebrow}
+          </span>
+        ) : null}
+        <h1>{title}</h1>
+      </div>
 
       {subtitle ? (
         <p className="max-w-2xl text-body text-gray-600">{subtitle}</p>
@@ -58,9 +67,7 @@ export function Hero({
       </div>
 
       {trustLine ? (
-        <p className="text-caption uppercase tracking-wider text-gray-500">
-          {trustLine}
-        </p>
+        <p className="text-caption text-gray-500">{trustLine}</p>
       ) : null}
     </section>
   );
