@@ -465,13 +465,22 @@ export function EventBriefClient() {
         >
           ← Back to demo entry
         </Link>
-        <Link
-          href="/demo/deals/new"
-          className="inline-flex h-11 items-center gap-2 rounded-md bg-altr-lime px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
-        >
-          Continue to Deal (Phase 02)
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/demo/event-dashboard/dl_pbw_samsung"
+            className="inline-flex h-11 items-center gap-2 rounded-md border border-altr-line2 px-5 font-mono text-[12px] font-bold uppercase tracking-[0.22em] text-altr-muteSoft transition-all hover:border-altr-mute hover:text-altr-white"
+          >
+            See sample ops dashboard
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/demo/deals/new"
+            className="inline-flex h-11 items-center gap-2 rounded-md bg-altr-lime px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
+          >
+            Continue to Deal (Phase 02)
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
     </div>
   );
