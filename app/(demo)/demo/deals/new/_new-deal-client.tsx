@@ -23,16 +23,16 @@ const DEFAULT_MILESTONES: Array<{
   { id: "m4", label: "M4", trigger: "Post-event ROI signed", percentage: 10 },
 ];
 
-type Rail = "RLUSD" | "USDC";
+type Rail = "USDC_XRPL" | "USDC_BASE";
 
 const RAILS: Array<{ value: Rail; label: string; subtitle: string }> = [
   {
-    value: "RLUSD",
-    label: "RLUSD on XRPL",
-    subtitle: "Recommended · 3s settlement · $0.000012 fee per release",
+    value: "USDC_XRPL",
+    label: "USDC on XRPL",
+    subtitle: "3s settlement · $0.000012 fee per release",
   },
   {
-    value: "USDC",
+    value: "USDC_BASE",
     label: "USDC on Base",
     subtitle: "EVM L2 · 2-4s settlement · $0.01-0.15 fee per release",
   },
@@ -52,7 +52,7 @@ type NewDealClientProps = {
 export function NewDealClient({ event, initialTier }: NewDealClientProps) {
   const router = useRouter();
   const [tier, setTier] = useState<SponsorTier>(initialTier);
-  const [rail, setRail] = useState<Rail>("RLUSD");
+  const [rail, setRail] = useState<Rail>("USDC_XRPL");
   const [initiating, setInitiating] = useState(false);
 
   const tiersForEvent = useMemo(
@@ -212,7 +212,7 @@ export function NewDealClient({ event, initialTier }: NewDealClientProps) {
                       <span className="text-[14px] font-medium text-altr-white">
                         {option.label}
                       </span>
-                      {option.value === "RLUSD" ? (
+                      {option.value === "USDC_XRPL" ? (
                         <Kbd tone={active ? "yellow" : "mute"}>Recommended</Kbd>
                       ) : null}
                     </div>
@@ -232,7 +232,11 @@ export function NewDealClient({ event, initialTier }: NewDealClientProps) {
             <Kbd>Deal preview</Kbd>
             <div className="space-y-3 font-mono text-[13px] tabular-nums">
               <PreviewRow label="Tier" value={tier} mono />
-              <PreviewRow label="Rail" value={rail} mono />
+              <PreviewRow
+                label="Rail"
+                value={RAILS.find((r) => r.value === rail)?.label ?? rail}
+                mono
+              />
               <PreviewRow label="Total" value={formatUsd(total)} mono />
               <PreviewRow
                 label={`ALTR fee (${(ALTR_FEE_BPS / 100).toFixed(2)}%)`}
