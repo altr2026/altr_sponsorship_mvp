@@ -416,6 +416,13 @@ export function PoeMintClient({
         >
           ← Back to settlement
         </Link>
+        <Link
+          href={`/demo/dashboard/${deal.brand_id}`}
+          className="inline-flex h-11 items-center gap-2 rounded-md border border-altr-line2 px-5 font-mono text-[12px] font-bold uppercase tracking-[0.22em] text-altr-muteSoft transition-all hover:border-altr-mute hover:text-altr-white"
+        >
+          View {deal.brand_name} portfolio (Step 15)
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
     </div>
   );
