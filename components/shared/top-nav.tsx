@@ -138,22 +138,27 @@ export function TopNav({ className }: TopNavProps) {
                 </button>
 
                 {isOpen ? (
-                  <div
-                    role="menu"
-                    aria-label={item.label}
-                    className="absolute left-1/2 top-full z-50 mt-2 w-44 -translate-x-1/2 overflow-hidden rounded-lg border border-altr-line2 bg-altr-panel/95 p-1 shadow-xl shadow-altr-black/40 backdrop-blur animate-in fade-in-0 slide-in-from-top-1"
-                  >
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        role="menuitem"
-                        onClick={() => setOpenMenu(null)}
-                        className="block rounded-md px-3 py-2 text-[13px] text-altr-muteSoft transition-colors hover:bg-altr-line2/60 hover:text-altr-white"
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
+                  // Outer wrapper absorbs the visual gap (pt-2) as hit area so
+                  // a hover-opened menu doesn't close mid-traverse when the
+                  // cursor crosses from the trigger to the panel.
+                  <div className="absolute left-1/2 top-full z-50 w-44 -translate-x-1/2 pt-2">
+                    <div
+                      role="menu"
+                      aria-label={item.label}
+                      className="overflow-hidden rounded-lg border border-altr-line2 bg-altr-panel/95 p-1 shadow-xl shadow-altr-black/40 backdrop-blur animate-in fade-in-0 slide-in-from-top-1"
+                    >
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          role="menuitem"
+                          onClick={() => setOpenMenu(null)}
+                          className="block rounded-md px-3 py-2 text-[13px] text-altr-muteSoft transition-colors hover:bg-altr-line2/60 hover:text-altr-white"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 ) : null}
               </div>
