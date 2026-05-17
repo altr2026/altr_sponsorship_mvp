@@ -247,6 +247,8 @@ Track A (Matching) and Track B (SaaS) run in parallel. The deal data from Track 
 
 ## Technical architecture
 
+> Full engineering reference (every dependency, the 18-step on-chain flow, what's wired vs. inherited from `altrdemo`, and known gaps) lives in [docs/TECH_STACK.md](./docs/TECH_STACK.md).
+
 ### Stack
 - Next.js 14 (App Router) + TypeScript + Tailwind + selective shadcn/ui primitives
 - Supabase (Postgres, Auth via `@supabase/ssr`, Realtime)
