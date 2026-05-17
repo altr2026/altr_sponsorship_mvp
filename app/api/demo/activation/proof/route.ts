@@ -30,16 +30,6 @@ function appUrl(request: NextRequest): string {
 }
 
 export async function POST(request: NextRequest) {
-  if (!process.env.PINATA_JWT) {
-    return NextResponse.json(
-      {
-        error:
-          "PINATA_JWT is not set. Add it to Vercel env (Production + Preview + Development) — create a JWT at https://app.pinata.cloud/developers/api-keys.",
-      },
-      { status: 503 },
-    );
-  }
-
   let body: { deal_id?: string; deliverables?: DeliverableInput[] };
   try {
     body = await request.json();
@@ -123,31 +113,47 @@ export async function POST(request: NextRequest) {
     issuer: "ALTR Sponsorship OS",
   };
 
-  let pinned;
-  try {
-    pinned = await pinJson(metadata, {
-      name: `activation-proof-${deal.id}-${Date.now()}.json`,
-      keyvalues: {
-        deal_id: deal.id,
-        brand: deal.brand_name,
-        event: deal.event_name,
-        kind: "altr.activation-proof.v1",
-      },
-    });
-  } catch (caught) {
-    console.error("Pinata pinJson failed (activation proof)", caught);
-    return NextResponse.json(
-      {
-        error: "Failed to pin proof to IPFS. Check PINATA_JWT scopes (pinJSONToIPFS required).",
-      },
-      { status: 502 },
-    );
+  // Pin to Pinata when configured. Otherwise compute a deterministic SHA-256
+  // evidence hash of the canonical JSON so the bundle still has a tamper-
+  // detectable identifier even without an IPFS pin.
+  let proof_source: "pinata" | "altr-fallback" = "altr-fallback";
+  let ipfs_hash: string | null = null;
+  let gateway_url: string | null = null;
+  let evidence_hash: string;
+
+  if (process.env.PINATA_JWT) {
+    try {
+      const pinned = await pinJson(metadata, {
+        name: `activation-proof-${deal.id}-${Date.now()}.json`,
+        keyvalues: {
+          deal_id: deal.id,
+          brand: deal.brand_name,
+          event: deal.event_name,
+          kind: "altr.activation-proof.v1",
+        },
+      });
+      proof_source = "pinata";
+      ipfs_hash = pinned.ipfsHash;
+      gateway_url = pinned.gatewayUrl;
+      evidence_hash = pinned.ipfsHash;
+    } catch (caught) {
+      console.error("Pinata pinJson failed (activation proof); falling back to SHA-256 hash", caught);
+      const { createHash } = await import("node:crypto");
+      const canonical = JSON.stringify(metadata);
+      evidence_hash = "sha256:" + createHash("sha256").update(canonical).digest("hex");
+    }
+  } else {
+    const { createHash } = await import("node:crypto");
+    const canonical = JSON.stringify(metadata);
+    evidence_hash = "sha256:" + createHash("sha256").update(canonical).digest("hex");
   }
 
   return NextResponse.json({
     ok: true,
-    ipfs_hash: pinned.ipfsHash,
-    gateway_url: pinned.gatewayUrl,
+    proof_source,
+    ipfs_hash,
+    gateway_url,
+    evidence_hash,
     pinned_at: pinnedAt,
     total_count: deliverables.length,
     delivered_count: deliveredCount,

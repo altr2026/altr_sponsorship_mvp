@@ -1,13 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
 import {
   EscrowCreate,
-  Wallet,
   xrpToDrops,
   unixTimeToRippleTime,
   type TxResponse,
 } from "xrpl";
 
 import { withXrplClient } from "@/lib/xrpl/client";
+import { getHotWallet, getDestinationAddress } from "@/lib/xrpl/auto-wallet";
 import { getDealById } from "@/lib/mock-data/deals";
 
 export const runtime = "nodejs";
@@ -16,42 +16,7 @@ const DEFAULT_DEMO_XRP = 10;
 const FINISH_AFTER_SECONDS = 60;
 const CANCEL_AFTER_SECONDS = 60 * 60 * 24 * 30;
 
-type Preflight =
-  | {
-      ok: true;
-      hotSeed: string;
-      destination: string;
-    }
-  | { ok: false; status: number; error: string };
-
-function preflight(): Preflight {
-  const hotSeed = process.env.XRPL_HOT_WALLET_SEED;
-  if (!hotSeed) {
-    return {
-      ok: false,
-      status: 503,
-      error:
-        "XRPL_HOT_WALLET_SEED is not set. Add a funded testnet wallet seed to Vercel env so the demo can sign EscrowCreate.",
-    };
-  }
-  const destination = process.env.NEXT_PUBLIC_XRPL_TESTNET_ADDRESS;
-  if (!destination) {
-    return {
-      ok: false,
-      status: 503,
-      error:
-        "NEXT_PUBLIC_XRPL_TESTNET_ADDRESS is not set. This is the destination (event) address the escrow releases to.",
-    };
-  }
-  return { ok: true, hotSeed, destination };
-}
-
 export async function POST(request: NextRequest) {
-  const pre = preflight();
-  if (!pre.ok) {
-    return NextResponse.json({ error: pre.error }, { status: pre.status });
-  }
-
   let body: { deal_id?: string; amount_xrp?: number };
   try {
     body = await request.json();
@@ -91,63 +56,58 @@ export async function POST(request: NextRequest) {
   const finishAfterRipple = unixTimeToRippleTime(finishAfterUnix);
   const cancelAfterRipple = unixTimeToRippleTime(cancelAfterUnix);
 
-  let wallet: Wallet;
-  try {
-    wallet = Wallet.fromSeed(pre.hotSeed);
-  } catch (caught) {
-    console.error("Wallet.fromSeed failed for XRPL_HOT_WALLET_SEED", caught);
-    return NextResponse.json(
-      { error: "XRPL_HOT_WALLET_SEED is not a valid wallet seed." },
-      { status: 500 },
-    );
-  }
-
-  if (wallet.classicAddress === pre.destination) {
-    return NextResponse.json(
-      {
-        error:
-          "Hot wallet address equals destination address — XRPL rejects self-escrows. Set NEXT_PUBLIC_XRPL_TESTNET_ADDRESS to a different account.",
-      },
-      { status: 400 },
-    );
-  }
-
   let txResult: TxResponse<EscrowCreate>;
+  let ownerAddress = "";
+  let destinationAddress = "";
+  let walletAutoFunded = false;
+  let destinationAutoFunded = false;
   try {
     txResult = await withXrplClient(async (client) => {
+      const hot = await getHotWallet(client);
+      const dest = await getDestinationAddress(client);
+
+      ownerAddress = hot.wallet.classicAddress;
+      destinationAddress = dest.address;
+      walletAutoFunded = hot.auto_funded;
+      destinationAutoFunded = dest.auto_funded;
+
+      if (ownerAddress === destinationAddress) {
+        throw new Error(
+          "Hot wallet address equals destination address — XRPL rejects self-escrows. Unset NEXT_PUBLIC_XRPL_TESTNET_ADDRESS to let the demo auto-generate a second wallet, or point it at a different account.",
+        );
+      }
+
       const tx: EscrowCreate = {
         TransactionType: "EscrowCreate",
-        Account: wallet.classicAddress,
-        Destination: pre.destination,
+        Account: hot.wallet.classicAddress,
+        Destination: dest.address,
         Amount: amountDrops,
         FinishAfter: finishAfterRipple,
         CancelAfter: cancelAfterRipple,
       };
-      return client.submitAndWait(tx, { wallet, autofill: true });
+      return client.submitAndWait(tx, { wallet: hot.wallet, autofill: true });
     });
   } catch (caught) {
     console.error("XRPL EscrowCreate failed", caught);
     const message = caught instanceof Error ? caught.message : "Unknown XRPL error";
     return NextResponse.json(
       {
-        error: `EscrowCreate failed on XRPL: ${message}. Common causes: hot wallet not funded (need ≥12 XRP — 10 base reserve + 2 owner reserve for the escrow), or destination account does not exist on the network.`,
+        error: `EscrowCreate failed on XRPL: ${message}. Common causes: testnet faucet temporarily rate-limited (wait 60s and retry), or the configured hot wallet is below the reserve (need ≥12 XRP — 10 base reserve + 2 owner reserve for the escrow).`,
       },
       { status: 502 },
     );
   }
 
   const txHash = txResult.result.hash;
-  // The escrow's OfferSequence (needed for EscrowFinish later) equals the
-  // Sequence of this EscrowCreate transaction after autofill.
   const escrowSequence = txResult.result.Sequence;
 
   return NextResponse.json({
     ok: true,
     deal_id: deal.id,
     tx_hash: txHash,
-    escrow_owner: wallet.classicAddress,
+    escrow_owner: ownerAddress,
     escrow_sequence: escrowSequence,
-    destination: pre.destination,
+    destination: destinationAddress,
     amount_xrp: amountXrp,
     amount_drops: amountDrops,
     finish_after_unix: finishAfterUnix,
@@ -155,5 +115,7 @@ export async function POST(request: NextRequest) {
     cancel_after_unix: cancelAfterUnix,
     cancel_after_iso: new Date(cancelAfterUnix * 1000).toISOString(),
     explorer_url: `https://testnet.xrpl.org/transactions/${txHash}`,
+    wallet_auto_funded: walletAutoFunded,
+    destination_auto_funded: destinationAutoFunded,
   });
 }
