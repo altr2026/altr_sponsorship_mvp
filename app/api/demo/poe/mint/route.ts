@@ -10,6 +10,7 @@ import {
 import { pinJson } from "@/lib/ipfs/pinata";
 import { withXrplClient } from "@/lib/xrpl/client";
 import { getDealById, type Deal } from "@/lib/mock-data/deals";
+import { getRoiReportByDealId, type RoiReport } from "@/lib/mock-data/roi-reports";
 
 export const runtime = "nodejs";
 
@@ -53,6 +54,7 @@ type PoeMetadata = {
     status: string;
     released_at?: string;
   }>;
+  roi_report?: RoiReport;
 };
 
 function appUrl(request: NextRequest): string {
@@ -65,37 +67,52 @@ function appUrl(request: NextRequest): string {
 function buildMetadata(deal: Deal, request: NextRequest): PoeMetadata {
   const issuedAt = new Date().toISOString();
   const externalUrl = `${appUrl(request)}/demo/deals/${deal.id}`;
+  const roi = getRoiReportByDealId(deal.id);
+
+  const baseAttributes: PoeAttribute[] = [
+    { trait_type: "Brand", value: deal.brand_name },
+    { trait_type: "Event", value: deal.event_name },
+    { trait_type: "Tier", value: deal.tier },
+    {
+      trait_type: "Total amount (USD)",
+      value: deal.total_amount,
+      display_type: "number",
+    },
+    { trait_type: "Currency", value: deal.currency },
+    { trait_type: "Settlement network", value: "XRPL testnet" },
+    { trait_type: "Escrow address", value: deal.escrow_address },
+    {
+      trait_type: "Contract signed",
+      value: Math.floor(new Date(deal.contract_signed_at).getTime() / 1000),
+      display_type: "date",
+    },
+    {
+      trait_type: "Event date",
+      value: Math.floor(new Date(deal.event_starts_at).getTime() / 1000),
+      display_type: "date",
+    },
+  ];
+
+  const roiAttributes: PoeAttribute[] = roi
+    ? [
+        { trait_type: "Total reach", value: roi.total_reach, display_type: "number" },
+        { trait_type: "Total impressions", value: roi.total_impressions, display_type: "number" },
+        { trait_type: "EMV (USD)", value: roi.emv_usd, display_type: "number" },
+        { trait_type: "ROI multiplier", value: roi.roi_multiplier, display_type: "number" },
+        { trait_type: "Benchmark percentile", value: roi.benchmark_percentile, display_type: "number" },
+      ]
+    : [];
 
   return {
     schema: "altr.poe.v1",
     name: `ALTR Proof of Engagement · ${deal.brand_name} × ${deal.event_name}`,
-    description: `Cryptographic proof that ${deal.brand_name} sponsored ${deal.event_name} at the ${deal.tier} tier for $${deal.total_amount.toLocaleString("en-US")} ${deal.currency}. Settled across ${deal.milestones.length} milestones on XRPL.`,
+    description: roi
+      ? `Immutable on-chain ROI receipt. ${deal.brand_name} × ${deal.event_name} (${deal.tier} tier, $${deal.total_amount.toLocaleString("en-US")} ${deal.currency}) delivered $${roi.emv_usd.toLocaleString("en-US")} EMV — a ${roi.roi_multiplier}× return at the ${roi.benchmark_percentile}th percentile of ${roi.benchmark_cohort_size} comparable ${roi.benchmark_cohort}.`
+      : `Cryptographic proof that ${deal.brand_name} sponsored ${deal.event_name} at the ${deal.tier} tier for $${deal.total_amount.toLocaleString("en-US")} ${deal.currency}. Settled across ${deal.milestones.length} milestones on XRPL.`,
     external_url: externalUrl,
     issued_at: issuedAt,
     issuer: "ALTR Sponsorship OS",
-    attributes: [
-      { trait_type: "Brand", value: deal.brand_name },
-      { trait_type: "Event", value: deal.event_name },
-      { trait_type: "Tier", value: deal.tier },
-      {
-        trait_type: "Total amount (USD)",
-        value: deal.total_amount,
-        display_type: "number",
-      },
-      { trait_type: "Currency", value: deal.currency },
-      { trait_type: "Settlement network", value: "XRPL testnet" },
-      { trait_type: "Escrow address", value: deal.escrow_address },
-      {
-        trait_type: "Contract signed",
-        value: Math.floor(new Date(deal.contract_signed_at).getTime() / 1000),
-        display_type: "date",
-      },
-      {
-        trait_type: "Event date",
-        value: Math.floor(new Date(deal.event_starts_at).getTime() / 1000),
-        display_type: "date",
-      },
-    ],
+    attributes: [...baseAttributes, ...roiAttributes],
     deal: {
       id: deal.id,
       brand: deal.brand_name,
@@ -118,6 +135,7 @@ function buildMetadata(deal: Deal, request: NextRequest): PoeMetadata {
       status: m.status,
       released_at: m.released_at,
     })),
+    roi_report: roi,
   };
 }
 

@@ -2,11 +2,19 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Copy, ExternalLink, Loader2 } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Copy,
+  ExternalLink,
+  Loader2,
+  TrendingUp,
+} from "lucide-react";
 
 import { Kbd } from "@/components/demo/kbd";
 import { cn } from "@/lib/utils";
 import type { Deal } from "@/lib/mock-data/deals";
+import type { RoiReport } from "@/lib/mock-data/roi-reports";
 
 type MintState =
   | { kind: "idle" }
@@ -22,8 +30,20 @@ type MintState =
       issued_at: string;
     };
 
-function formatUsd(n: number) {
+function formatUsd(n: number, opts: { compact?: boolean } = {}) {
+  if (opts.compact) {
+    if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
+    if (n >= 1_000) return `$${(n / 1_000).toFixed(1)}K`;
+  }
   return "$" + n.toLocaleString("en-US");
+}
+
+function formatNumber(n: number, opts: { compact?: boolean } = {}) {
+  if (opts.compact) {
+    if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}M`;
+    if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+  }
+  return n.toLocaleString("en-US");
 }
 
 function shorten(value: string, head = 8, tail = 6) {
@@ -31,7 +51,13 @@ function shorten(value: string, head = 8, tail = 6) {
   return `${value.slice(0, head)}…${value.slice(-tail)}`;
 }
 
-export function PoeMintClient({ deal }: { deal: Deal }) {
+export function PoeMintClient({
+  deal,
+  roi,
+}: {
+  deal: Deal;
+  roi: RoiReport | null;
+}) {
   const [state, setState] = useState<MintState>({ kind: "idle" });
 
   async function mint() {
@@ -76,27 +102,6 @@ export function PoeMintClient({ deal }: { deal: Deal }) {
   const isDone = state.kind === "done";
   const isError = state.kind === "error";
 
-  const metadataPreview = {
-    schema: "altr.poe.v1",
-    name: `ALTR Proof of Engagement · ${deal.brand_name} × ${deal.event_name}`,
-    description: `Cryptographic proof that ${deal.brand_name} sponsored ${deal.event_name} at the ${deal.tier} tier for ${formatUsd(deal.total_amount)} ${deal.currency}.`,
-    deal: {
-      id: deal.id,
-      brand: deal.brand_name,
-      event: deal.event_name,
-      tier: deal.tier,
-      total_amount_usd: deal.total_amount,
-      currency: deal.currency,
-      network: "xrpl-testnet",
-    },
-    milestones: deal.milestones.map((m) => ({
-      label: m.label,
-      trigger: m.trigger,
-      amount_usd: m.amount,
-      status: m.status,
-    })),
-  };
-
   return (
     <div className="mx-auto max-w-[1100px] px-6 py-8 md:px-10 md:py-10">
       <Link
@@ -109,61 +114,221 @@ export function PoeMintClient({ deal }: { deal: Deal }) {
       <header className="mt-5 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <Kbd>Phase 05 · Measurement</Kbd>
-          <Kbd tone="mute">Step 14 · NFTokenMint</Kbd>
+          <Kbd tone="mute">Step 13 · ROI report</Kbd>
+          <Kbd tone="mute">Step 14 · POE NFT</Kbd>
         </div>
-        <h1 className="text-[24px] font-medium leading-[1.15] tracking-tight text-altr-white sm:text-[30px]">
-          Mint Proof of Engagement
+        <h1 className="text-[26px] font-medium leading-[1.1] tracking-tight text-altr-white sm:text-[34px]">
+          Post-event ROI report
         </h1>
-        <p className="max-w-3xl text-[13px] text-altr-muteSoft">
-          Locks the {deal.brand_name} × {deal.event_name} sponsorship into a
-          permanent record. Metadata is pinned to IPFS via Pinata, then an
-          NFTokenMint transaction anchors the IPFS hash on XRPL. The token can
-          only be minted once and never edited — POE history lives only inside
-          ALTR.
+        <p className="font-mono text-[12px] text-altr-muteSoft">
+          {deal.brand_name} × {deal.event_name} ·{" "}
+          {roi
+            ? new Date(roi.period_start).toLocaleDateString() +
+              " → " +
+              new Date(roi.period_end).toLocaleDateString()
+            : new Date(deal.event_starts_at).toLocaleDateString()}
         </p>
       </header>
 
-      <section className="mt-8 grid gap-5 lg:grid-cols-[1.1fr_1fr]">
-        <article className="rounded-lg border border-altr-line bg-altr-panel p-5 sm:p-6">
-          <div className="mb-3">
-            <Kbd>Deal summary</Kbd>
-          </div>
-          <ul className="space-y-2 text-[12px]">
-            <Row label="Brand" value={deal.brand_name} />
-            <Row label="Event" value={deal.event_name} />
-            <Row label="Tier" value={deal.tier} />
-            <Row label="Total settled" value={`${formatUsd(deal.total_amount)} ${deal.currency}`} />
-            <Row label="Escrow" value={shorten(deal.escrow_address)} mono />
-            <Row label="Escrow tx" value={shorten(deal.xrpl_tx_hash)} mono />
-            <Row label="Milestones" value={`${deal.milestones.length} (4/4 settled)`} />
-            <Row label="Settlement network" value="XRPL testnet" />
-          </ul>
-        </article>
+      {roi ? (
+        <>
+          <section
+            aria-label="Headline ROI metrics"
+            className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            <BigStat
+              label="Total reach"
+              value={formatNumber(roi.total_reach, { compact: true })}
+              sub="unique people exposed"
+            />
+            <BigStat
+              label="Total impressions"
+              value={formatNumber(roi.total_impressions, { compact: true })}
+              sub="across all channels"
+            />
+            <BigStat
+              label="EMV"
+              value={formatUsd(roi.emv_usd, { compact: true })}
+              sub={`Equivalent Media Value · vs ${formatUsd(roi.spend_usd, { compact: true })} spend`}
+              accent="lime"
+            />
+            <BigStat
+              label="ROI multiplier"
+              value={`${roi.roi_multiplier.toFixed(1)}×`}
+              sub={`${roi.benchmark_percentile}th pct · cohort median ${roi.benchmark_median_roi_multiplier}×`}
+              accent="lime"
+            />
+          </section>
 
-        <article className="rounded-lg border border-altr-line bg-altr-panel p-5 sm:p-6">
-          <div className="mb-3 flex items-baseline justify-between gap-2">
-            <Kbd>Metadata preview</Kbd>
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
-              Pinned to IPFS as JSON
-            </span>
-          </div>
-          <pre className="max-h-[280px] overflow-auto rounded-md border border-altr-line2 bg-altr-black p-3 font-mono text-[10.5px] leading-relaxed text-altr-muteSoft">
-            {JSON.stringify(metadataPreview, null, 2)}
-          </pre>
-          <p className="mt-3 text-[11px] text-altr-mute">
-            Server adds the issued_at timestamp, full attributes block, and the
-            external_url back to this deal before pinning.
+          <section
+            aria-label="Performance summary"
+            className="mt-5 rounded-lg border border-altr-lime/30 bg-altr-lime/5 p-5 sm:p-6"
+          >
+            <div className="flex items-start gap-3">
+              <TrendingUp
+                className="mt-0.5 h-5 w-5 shrink-0 text-altr-lime"
+                aria-hidden="true"
+              />
+              <div className="space-y-2">
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-altr-lime">
+                  Summary
+                </div>
+                <p className="text-[13.5px] leading-relaxed text-altr-white">
+                  {roi.ai_summary}
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section
+            aria-label="Creator attribution"
+            className="mt-5 rounded-lg border border-altr-line bg-altr-panel p-5 sm:p-6"
+          >
+            <div className="mb-5 flex flex-wrap items-baseline justify-between gap-2">
+              <div>
+                <Kbd>Creator attribution</Kbd>
+                <h2 className="mt-2 text-h2 font-medium text-altr-white">
+                  Where the reach came from
+                </h2>
+                <p className="mt-1 font-mono text-[11.5px] text-altr-mute">
+                  Per-creator share of attributable reach. UTM + on-site
+                  intercept + survey-weighted.
+                </p>
+              </div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+                {roi.creator_attribution.length} contributors
+              </span>
+            </div>
+
+            <ul className="space-y-3.5">
+              {roi.creator_attribution.map((c) => (
+                <li key={c.creator_id} className="space-y-1.5">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <div className="flex flex-wrap items-baseline gap-2.5">
+                      <span className="text-[13px] font-medium text-altr-white">
+                        {c.creator_name}
+                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+                        {c.channel}
+                      </span>
+                    </div>
+                    <span className="font-mono text-[14px] font-medium tabular-nums text-altr-lime">
+                      {c.contribution_pct}%
+                    </span>
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-altr-line2/60">
+                    <div
+                      className="h-full rounded-full bg-altr-lime/80"
+                      style={{ width: `${Math.min(100, c.contribution_pct)}%` }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section
+            aria-label="Channel breakdown"
+            className="mt-5 rounded-lg border border-altr-line bg-altr-panel p-5 sm:p-6"
+          >
+            <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+              <Kbd>Channel breakdown</Kbd>
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+                Source data · activation telemetry
+              </span>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {roi.channel_breakdown.map((c) => (
+                <article
+                  key={c.channel}
+                  className="rounded-md border border-altr-line2 bg-altr-black p-4"
+                >
+                  <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+                    {c.channel}
+                  </div>
+                  <div className="mt-1.5 font-mono text-[16px] font-medium text-altr-white">
+                    {c.metric}
+                  </div>
+                  <p className="mt-1.5 text-[11.5px] text-altr-muteSoft">
+                    {c.description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section
+            aria-label="Benchmark"
+            className="mt-5 rounded-lg border border-altr-line bg-altr-panel p-5 sm:p-6"
+          >
+            <div className="mb-4">
+              <Kbd>Benchmark vs similar events</Kbd>
+              <h2 className="mt-2 text-h2 font-medium text-altr-white">
+                {roi.benchmark_percentile}th percentile vs the cohort
+              </h2>
+              <p className="mt-1 font-mono text-[11.5px] text-altr-mute">
+                Cohort: {roi.benchmark_cohort} ·{" "}
+                {roi.benchmark_cohort_size} comparable deals · last 18 months
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <BenchRow
+                label="EMV"
+                deal={formatUsd(roi.emv_usd, { compact: true })}
+                cohort={formatUsd(roi.benchmark_median_emv_usd, { compact: true })}
+                delta={`+${Math.round(((roi.emv_usd - roi.benchmark_median_emv_usd) / roi.benchmark_median_emv_usd) * 100)}%`}
+                positive
+              />
+              <BenchRow
+                label="ROI multiplier"
+                deal={`${roi.roi_multiplier.toFixed(1)}×`}
+                cohort={`${roi.benchmark_median_roi_multiplier.toFixed(1)}×`}
+                delta={`+${(roi.roi_multiplier - roi.benchmark_median_roi_multiplier).toFixed(1)}×`}
+                positive
+              />
+              <BenchRow
+                label="Percentile rank"
+                deal={`${roi.benchmark_percentile}th`}
+                cohort="50th"
+                delta={`+${roi.benchmark_percentile - 50} pts`}
+                positive
+              />
+            </div>
+          </section>
+        </>
+      ) : (
+        <section className="mt-8 rounded-lg border border-amber-400/30 bg-amber-400/5 p-5 sm:p-6 text-[12px] text-altr-muteSoft">
+          <Kbd tone="mute">ROI report not available</Kbd>
+          <p className="mt-2">
+            No ROI report has been generated for this deal yet. The Step 14
+            POE mint below will still anchor the deal record on-chain, but
+            without the ROI metrics block.
           </p>
-        </article>
-      </section>
+        </section>
+      )}
 
-      <section className="mt-8 rounded-lg border border-altr-lime/30 bg-altr-lime/5 p-5 sm:p-6">
+      <section
+        aria-label="Anchor on chain"
+        className={cn(
+          "mt-8 rounded-lg border p-5 sm:p-6",
+          isDone
+            ? "border-teal-500/30 bg-teal-600/5"
+            : "border-altr-line bg-altr-panel",
+        )}
+      >
         <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="space-y-1">
-            <Kbd>Mint Proof of Engagement</Kbd>
+          <div className="max-w-2xl space-y-1">
+            <Kbd>Step 14 · Anchor this report on-chain</Kbd>
+            <h2 className="text-h2 font-medium text-altr-white">
+              Mint the POE NFT.
+            </h2>
             <p className="text-[12.5px] text-altr-muteSoft">
-              One transaction. The hot wallet signs an NFTokenMint with URI =
-              ipfs://&lt;hash&gt;, NFTokenTaxon 0, tfTransferable flag.
+              Pins this full report — headline metrics, creator attribution,
+              channel breakdown, benchmarks, milestones — to IPFS, then mints
+              an NFTokenMint on XRPL with{" "}
+              <code className="font-mono">URI = ipfs://&lt;hash&gt;</code>{" "}
+              and a Memo carrying the deal id. The token is the immutable
+              receipt the brand keeps in its wallet forever.
             </p>
           </div>
           <button
@@ -191,7 +356,7 @@ export function PoeMintClient({ deal }: { deal: Deal }) {
             ) : isDone ? (
               <>
                 <Check className="h-4 w-4" />
-                Minted
+                Anchored
               </>
             ) : (
               <>
@@ -218,10 +383,28 @@ export function PoeMintClient({ deal }: { deal: Deal }) {
 
         {isDone ? (
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <ResultCard label="IPFS hash" value={state.ipfs_hash} link={state.gateway_url} linkLabel="Open gateway" />
-            <ResultCard label="NFTokenID" value={state.nftoken_id ?? "—"} />
-            <ResultCard label="XRPL tx hash" value={shorten(state.tx_hash, 10, 8)} link={state.explorer_url} linkLabel="Open in explorer" />
-            <ResultCard label="Issued at" value={new Date(state.issued_at).toLocaleString()} />
+            <ResultCard
+              label="IPFS hash"
+              value={state.ipfs_hash}
+              link={state.gateway_url}
+              linkLabel="Open gateway"
+            />
+            <ResultCard
+              label="NFTokenID"
+              value={state.nftoken_id ?? "—"}
+              mono
+            />
+            <ResultCard
+              label="XRPL tx hash"
+              value={shorten(state.tx_hash, 10, 8)}
+              link={state.explorer_url}
+              linkLabel="Open in explorer"
+              mono
+            />
+            <ResultCard
+              label="Anchored at"
+              value={new Date(state.issued_at).toLocaleString()}
+            />
           </div>
         ) : null}
       </section>
@@ -238,16 +421,79 @@ export function PoeMintClient({ deal }: { deal: Deal }) {
   );
 }
 
-function Row({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+function BigStat({
+  label,
+  value,
+  sub,
+  accent,
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  accent?: "lime";
+}) {
   return (
-    <li className="flex items-baseline justify-between gap-3 border-b border-altr-line2/60 pb-2 last:border-0 last:pb-0">
-      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+    <article
+      className={cn(
+        "rounded-lg border bg-altr-panel p-5",
+        accent === "lime"
+          ? "border-altr-lime/40"
+          : "border-altr-line",
+      )}
+    >
+      <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-altr-mute">
         {label}
-      </span>
-      <span className={cn("text-right text-altr-white", mono && "font-mono text-[11px]")}>
+      </div>
+      <div
+        className={cn(
+          "mt-2 font-mono text-[32px] font-medium leading-none tracking-tight tabular-nums sm:text-[36px]",
+          accent === "lime" ? "text-altr-lime" : "text-altr-white",
+        )}
+      >
         {value}
-      </span>
-    </li>
+      </div>
+      <div className="mt-2 text-[11.5px] leading-snug text-altr-muteSoft">
+        {sub}
+      </div>
+    </article>
+  );
+}
+
+function BenchRow({
+  label,
+  deal,
+  cohort,
+  delta,
+  positive,
+}: {
+  label: string;
+  deal: string;
+  cohort: string;
+  delta: string;
+  positive?: boolean;
+}) {
+  return (
+    <div className="rounded-md border border-altr-line2 bg-altr-black p-4">
+      <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+        {label}
+      </div>
+      <div className="mt-2 flex items-baseline gap-3">
+        <span className="font-mono text-[20px] font-medium tabular-nums text-altr-white">
+          {deal}
+        </span>
+        <span className="font-mono text-[11px] tabular-nums text-altr-mute">
+          vs {cohort}
+        </span>
+      </div>
+      <div
+        className={cn(
+          "mt-1.5 font-mono text-[11px] uppercase tracking-[0.18em]",
+          positive ? "text-altr-lime" : "text-red-300",
+        )}
+      >
+        {delta}
+      </div>
+    </div>
   );
 }
 
@@ -256,11 +502,13 @@ function ResultCard({
   value,
   link,
   linkLabel,
+  mono,
 }: {
   label: string;
   value: string;
   link?: string;
   linkLabel?: string;
+  mono?: boolean;
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -290,7 +538,14 @@ function ResultCard({
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
-      <div className="mt-1 break-all font-mono text-[11.5px] text-altr-white">{value}</div>
+      <div
+        className={cn(
+          "mt-1 break-all text-[11.5px] text-altr-white",
+          mono && "font-mono",
+        )}
+      >
+        {value}
+      </div>
       {link ? (
         <a
           href={link}
