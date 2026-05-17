@@ -29,6 +29,8 @@ function deriveCurrentStep(pathname: string | null): StepNum | null {
   if (pathname === "/demo/deals/new") return "02";
   // POE mint sits under /demo/deals/[id]/poe — Measurement (Step 14 NFTokenMint).
   if (/^\/demo\/deals\/[^/]+\/poe(\/|$)/.test(pathname)) return "05";
+  // Brand portfolio dashboard under /demo/dashboard/[brand_id] — Measurement (Step 15).
+  if (pathname.startsWith("/demo/dashboard/")) return "05";
   // Activation brief + proof under /demo/deals/[id]/activation — Steps 10 + 11.
   if (/^\/demo\/deals\/[^/]+\/activation(\/|$)/.test(pathname)) return "04";
   // Renewal proposal + negotiation + expansion under /demo/deals/[id]/renewal — Steps 16-18.
