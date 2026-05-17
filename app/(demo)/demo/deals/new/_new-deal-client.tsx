@@ -71,9 +71,18 @@ export function NewDealClient({ event, initialTier }: NewDealClientProps) {
 
   function handleInitiate() {
     setInitiating(true);
-    // mock testnet tx: route to the existing settlement screen after a short beat
+    // Pick the settlement deal that matches the chosen event so the demo
+    // narrative stays coherent (Ultra deal -> Ultra settlement, not the
+    // Samsung × PBW page). Falls back to PBW if the event has no mock deal.
+    const DEAL_BY_EVENT: Record<string, string> = {
+      evt_pbw_2026: "dl_pbw_samsung",
+      evt_ultra_korea_2026: "dl_ultra_samsung",
+      evt_soundstorm_2026: "dl_soundstorm_samsung",
+      evt_dubai_design_week_2026: "dl_dubai_design_samsung",
+    };
+    const dealId = DEAL_BY_EVENT[event.id] ?? "dl_pbw_samsung";
     setTimeout(() => {
-      router.push("/demo/deals/dl_pbw_samsung");
+      router.push(`/demo/deals/${dealId}`);
     }, 900);
   }
 
