@@ -175,7 +175,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
           <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
             <Kbd>Escrow transaction · XRPL testnet</Kbd>
             <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
-              Hash · {shortenHash(deal.xrpl_tx_hash)}
+              Demo summary · run the real testnet escrow to see a verifiable hash
             </span>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -205,16 +205,14 @@ export function SettlementClient({ deal }: { deal: Deal }) {
             </div>
             <div className="flex flex-col gap-1">
               <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
-                Explorer
+                Verify on-chain
               </div>
-              <a
-                href={`https://testnet.xrpl.org/transactions/${deal.xrpl_tx_hash}`}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                href={`/demo/deals/${deal.id}/escrow`}
                 className="font-mono text-[12px] uppercase tracking-[0.18em] text-altr-lime hover:underline"
               >
-                Open in explorer ↗
-              </a>
+                Run real testnet tx →
+              </Link>
             </div>
           </div>
         </section>
