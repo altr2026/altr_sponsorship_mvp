@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Philippine Blockchain Week 2026 · Demo",
   description:
-    "Blockchain in Action — DECODED: DEPLOYED. June 19-21, 2026 · SMX Convention Center Manila. 15,000 attendees, 250+ speakers, 80+ countries. 5 sponsor tiers from Title ($300K) to Bronze ($35K).",
+    "Blockchain in Action — DECODED: DEPLOYED. June 19-21, 2026 · SMX Convention Center Manila. 15,000 attendees, 250+ speakers, 80+ countries. 5 sponsor tiers from Title ($250K) to Bronze ($35K).",
   robots: { index: false, follow: false },
 };
 
@@ -26,7 +26,7 @@ const SPONSOR_TIERS: Tier[] = [
   {
     id: "title",
     name: "Title",
-    price: 300_000,
+    price: 250_000,
     tagline: "Presenting partner. Your name in front of every attendee.",
     highlight: true,
     remaining: "1 of 1 available",
@@ -59,7 +59,7 @@ const SPONSOR_TIERS: Tier[] = [
   {
     id: "gold",
     name: "Gold",
-    price: 85_000,
+    price: 80_000,
     tagline: "Speaker tier with a real stage and a real booth.",
     remaining: "4 of 5 available",
     perks: [
@@ -73,7 +73,7 @@ const SPONSOR_TIERS: Tier[] = [
   {
     id: "silver",
     name: "Silver",
-    price: 55_000,
+    price: 25_000,
     tagline: "Solid presence without the speaker price tag.",
     remaining: "6 of 8 available",
     perks: [
