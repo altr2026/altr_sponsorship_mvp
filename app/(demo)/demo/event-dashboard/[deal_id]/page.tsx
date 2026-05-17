@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Lock } from "lucide-react";
 
+import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
+
 import { Kbd } from "@/components/demo/kbd";
 import { cn } from "@/lib/utils";
 import { getDealById } from "@/lib/mock-data/deals";
@@ -75,25 +77,19 @@ export default function EventDashboardPage({ params }: PageProps) {
           <Kbd tone="mute">Private</Kbd>
         </div>
         <h1 className="text-[26px] font-medium leading-[1.1] tracking-tight text-altr-white sm:text-[34px]">
-          {deal.event_name} · vendor payouts
+          {deal.event_name} · event wallet
         </h1>
         <p className="max-w-3xl text-[13px] text-altr-muteSoft">
-          {deal.brand_name}&apos;s {formatUsd(deal.total_amount)} {deal.currency} escrow
-          unlocks per milestone. The split below is the event team&apos;s
-          operational view of how each release moves to vendors. The brand
-          only sees delivery PoE — not these line items.
+          {deal.brand_name}&apos;s {formatUsd(deal.total_amount)} {deal.currency} sponsorship
+          unlocks to your wallet per milestone. Track the balance, what came
+          in from the brand, and what went out to vendors. The brand only
+          sees delivery proof — not these line items.
         </p>
       </header>
 
-      <section
-        aria-label="Cash flow summary"
-        className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
-      >
-        <Stat label="Brand escrow total" value={formatUsd(deal.total_amount, { compact: true })} sub={`${deal.currency} on XRPL`} />
-        <Stat label="Released to vendors" value={formatUsd(releasedToVendors, { compact: true })} sub={`${allPayouts.filter((p) => p.status === "released").length} payouts settled`} accent="lime" />
-        <Stat label="Scheduled" value={formatUsd(scheduledToVendors, { compact: true })} sub={`${allPayouts.filter((p) => p.status === "scheduled").length} pending milestones`} />
-        <Stat label="Unallocated buffer" value={formatUsd(Math.max(0, unallocated), { compact: true })} sub={`${uniqueVendors} unique vendors`} />
-      </section>
+      <WalletSummary deal={deal} releasedToVendors={releasedToVendors} scheduledToVendors={scheduledToVendors} uniqueVendors={uniqueVendors} unallocated={unallocated} />
+
+      <InflowsTable deal={deal} />
 
       <section className="mt-5 space-y-5">
         {deal.milestones.map((milestone, idx) => {
@@ -197,6 +193,114 @@ export default function EventDashboardPage({ params }: PageProps) {
         </Link>
       </div>
     </div>
+  );
+}
+
+function WalletSummary({
+  deal,
+  releasedToVendors,
+  scheduledToVendors,
+  uniqueVendors,
+  unallocated,
+}: {
+  deal: ReturnType<typeof getDealById> & {};
+  releasedToVendors: number;
+  scheduledToVendors: number;
+  uniqueVendors: number;
+  unallocated: number;
+}) {
+  const releasedMilestones = deal.milestones.filter((m) => m.status === "released");
+  const totalReceived = releasedMilestones.reduce((s, m) => s + m.amount, 0);
+  const balance = totalReceived - releasedToVendors;
+
+  return (
+    <section
+      aria-label="Event wallet"
+      className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+    >
+      <Stat
+        label="Wallet balance"
+        value={formatUsd(balance, { compact: true })}
+        sub={`${deal.currency} on XRPL · received − paid out`}
+        accent="lime"
+      />
+      <Stat
+        label="Received from brand"
+        value={formatUsd(totalReceived, { compact: true })}
+        sub={`${releasedMilestones.length} of ${deal.milestones.length} milestones released`}
+      />
+      <Stat
+        label="Paid out to vendors"
+        value={formatUsd(releasedToVendors, { compact: true })}
+        sub={`${uniqueVendors} unique vendors`}
+      />
+      <Stat
+        label="Outstanding to vendors"
+        value={formatUsd(scheduledToVendors, { compact: true })}
+        sub={`+ ${formatUsd(Math.max(0, unallocated), { compact: true })} unallocated buffer`}
+      />
+    </section>
+  );
+}
+
+function InflowsTable({ deal }: { deal: ReturnType<typeof getDealById> & {} }) {
+  return (
+    <section
+      aria-label="Inflows"
+      className="mt-5 rounded-lg border border-altr-line bg-altr-panel p-5 sm:p-6"
+    >
+      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <ArrowDownLeft className="h-4 w-4 text-altr-lime" aria-hidden="true" />
+          <Kbd>Inflows · escrow releases</Kbd>
+        </div>
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+          {deal.milestones.filter((m) => m.status === "released").length} of {deal.milestones.length} released
+        </span>
+      </div>
+      <div className="overflow-x-auto rounded-md border border-altr-line2">
+        <table className="w-full min-w-[640px] text-left text-[12px]">
+          <thead>
+            <tr className="border-b border-altr-line2 bg-altr-black/40">
+              <th className="px-3 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">Milestone</th>
+              <th className="px-3 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">Trigger</th>
+              <th className="px-3 py-2.5 text-right font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">Amount</th>
+              <th className="px-3 py-2.5 text-right font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">Status</th>
+              <th className="px-3 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">Released</th>
+            </tr>
+          </thead>
+          <tbody>
+            {deal.milestones.map((m) => {
+              const tone =
+                m.status === "released"
+                  ? "text-altr-lime"
+                  : m.status === "pending"
+                    ? "text-altr-muteSoft"
+                    : "text-altr-mute";
+              return (
+                <tr key={m.id} className="border-b border-altr-line2/60 last:border-0">
+                  <td className="px-3 py-3 font-mono text-altr-white">{m.label}</td>
+                  <td className="px-3 py-3 text-altr-muteSoft">{m.trigger}</td>
+                  <td className={cn("px-3 py-3 text-right font-mono tabular-nums", m.status === "released" ? "text-altr-lime" : "text-altr-white")}>
+                    + {formatUsd(m.amount)}
+                  </td>
+                  <td className={cn("px-3 py-3 text-right font-mono text-[10.5px] uppercase tracking-[0.18em]", tone)}>
+                    {m.status}
+                  </td>
+                  <td className="px-3 py-3 font-mono text-[11px] text-altr-mute">
+                    {m.released_at ? new Date(m.released_at).toLocaleDateString() : "—"}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
+        <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+        Outflows to vendors broken down per milestone below
+      </p>
+    </section>
   );
 }
 
