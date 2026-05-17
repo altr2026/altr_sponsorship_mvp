@@ -6,7 +6,7 @@
 
 Production MVP — submitted for the XRP Grant Program
 
-[Demo](https://demo.altr.haus) · [Partners](https://altr.haus/events) · [Pitch](#pitch) · [Docs](#docs)
+[Demo](https://altr-sponsorship-mvp.vercel.app/demo) · [Partners](https://altr.haus/events) · [Pitch](#what-we-built) · [Docs](#technical-architecture)
 
 </div>
 
@@ -39,26 +39,31 @@ Anvara is solving this in the US for sports and OOH. APAC and GCC are wide open,
 ### The flow
 
 ```
-Brand (KR) → ALTR Hub (XRPL escrow) → Event (Ultra Korea)
+Brand → ALTR Hub (XRPL escrow) → Event
               ↓
-         Smart contract milestones
-         M1 Contract signed       20% release
-         M2 Pre-event (T-30d)     40% release  
-         M3 Event day delivered   30% release
-         M4 Post-event ROI signed 10% release
+         Delivery-gated milestone releases
+         M1 Booking confirmed · contract on-chain          20%
+         M2 Stage construction + artist lineup confirmed   40%
+         M3 Day 1 doors open · attendance verified         30%
+         M4 Post-event ROI report + audience verified      10%
 ```
 
-Settlement: **3 seconds. $0.20 fee. RLUSD on XRPL.**
-Versus SWIFT: 5 days, $5,000+, lump sum risk.
+Settlement: **~5 seconds. $0.000012 XRP per tx. USDC (or RLUSD) on XRPL.**
+Versus SWIFT: 5 days, $5,000+, lump sum risk, no recourse.
 
-### Six core screens
+### The demo backbone — 5 phases / 18 steps
 
-1. Discover — Brands browse curated events
-2. Deal flow — Initiate, configure milestones, lock RLUSD in XRPL escrow
-3. Live tx — Watch the actual XRPL transaction settle on testnet
-4. Event dashboard — Sponsor queue, audience insights, pricing benchmarks
-5. ROI dashboard — Post-event measurement
-6. Financing layer — On-chain reputation unlocks BNPL
+The live demo at `/demo` walks the full sponsorship lifecycle end-to-end on XRPL testnet:
+
+| Phase | Route(s) | On-chain |
+|---|---|---|
+| 01 Discovery | `/demo/discover` · `/demo/event-brief` (event-side intake) · `/demo/events/[id]` | — |
+| 02 Deal | `/demo/deals/new` | — |
+| 03 Settlement | `/demo/deals/[id]` (brand view) · `/demo/event-dashboard/[id]` (event-private vendor splits) · `/demo/deals/[id]/escrow` (Step 8 EscrowCreate + Step 12 EscrowFinish) · `/demo/deals/[id]/activation` (Steps 10-11 brief + proof to IPFS) | EscrowCreate · EscrowFinish |
+| 04 Measurement | `/demo/deals/[id]/poe` (Step 13 ROI report + Step 14 NFTokenMint) · `/demo/dashboard/[brand_id]` (Step 15 sponsor portfolio) | NFTokenMint |
+| 05 Renewal | `/demo/deals/[id]/renewal` (Steps 16-18 proposal + POE-anchored negotiation + expansion picks) | — |
+
+Each XRPL transaction settles for real on testnet — no setup needed. When `XRPL_HOT_WALLET_SEED` is unset, the routes auto-fund a wallet via the testnet faucet. When `PINATA_JWT` is unset, POE metadata is served from `/api/demo/poe/metadata/[deal_id]` instead of IPFS.
 
 ### Why XRPL
 
@@ -243,28 +248,59 @@ Track A (Matching) and Track B (SaaS) run in parallel. The deal data from Track 
 ## Technical architecture
 
 ### Stack
-- Next.js 14 (App Router) + TypeScript + Tailwind + shadcn/ui
-- Supabase (Postgres, Auth, Realtime)
-- xrpl@3.1.0 + RLUSD + XRPL EVM sidechain
-- Solidity milestone escrow
-- Ripple Payments SDK (production path)
-- Vercel + custom domain
+- Next.js 14 (App Router) + TypeScript + Tailwind + selective shadcn/ui primitives
+- Supabase (Postgres, Auth via `@supabase/ssr`, Realtime)
+- `xrpl@3.1.0` — native EscrowCreate / EscrowFinish / NFTokenMint (no Solidity)
+- `@pinata/sdk@2.1.0` — IPFS pinning (optional; falls back to ALTR-served metadata)
+- Xaman (XUMM) SDK for wallet authentication
+- Ripple Payments SDK (production path, not yet integrated)
+- Vercel hosting
 
 ### Repository structure
 
 ```
 altr_sponsorship_mvp/
-├── apps/
-│   ├── demo/              # demo.altr.haus
-│   ├── partners/          # altr.haus/events
-│   └── marketing/         # altr.haus
-├── packages/
-│   ├── ui/                # shared shadcn components
-│   ├── design-system/     # tokens, themes
-│   ├── xrpl-client/       # XRPL wrapper
-│   ├── contracts/         # Solidity milestone escrow
-│   └── db/                # Supabase schema + types
-└── docs/
+├── app/
+│   ├── (marketing)/                # Public marketing site
+│   │   ├── page.tsx                # Landing /
+│   │   ├── events/                 # For events
+│   │   ├── brands/                 # For brands
+│   │   ├── insights/               # /insights
+│   │   ├── about/                  # /about
+│   │   ├── manifesto/              # /manifesto
+│   │   ├── roadmap/                # /roadmap
+│   │   └── pricing/                # /pricing (anvara-style tiers)
+│   ├── (demo)/demo/                # Live 18-step demo backbone
+│   │   ├── discover/               # Phase 01 — sponsor-side event browse
+│   │   ├── event-brief/            # Phase 01 — event-side sponsor intake
+│   │   ├── events/[id]/            # Generic + PBW-specific event page
+│   │   ├── deals/new/              # Phase 02 — create deal
+│   │   ├── deals/[id]/             # Phase 03 — settlement hub (brand view)
+│   │   │   ├── escrow/             # Step 8 EscrowCreate + Step 12 EscrowFinish
+│   │   │   ├── activation/         # Steps 10-11 brief + proof to IPFS
+│   │   │   ├── poe/                # Step 13 ROI report + Step 14 POE NFT
+│   │   │   └── renewal/            # Steps 16-18
+│   │   ├── event-dashboard/[id]/   # Phase 03 — event-private vendor payouts
+│   │   └── dashboard/[brand_id]/   # Step 15 — sponsor portfolio
+│   ├── api/demo/                   # Server routes
+│   │   ├── escrow/{create,finish}/ # XRPL escrow tx
+│   │   ├── poe/{mint,metadata}/    # POE NFTokenMint + fallback metadata GET
+│   │   └── activation/proof/       # Activation proof IPFS pin
+│   ├── api/auth/xumm/              # Xaman wallet auth
+│   ├── auth/callback/              # Supabase OAuth callback
+│   └── connect/                    # Sign-in (Google / Apple / X / email)
+├── components/
+│   ├── shared/                     # TopNav (with About dropdown), Footer, Hero, etc.
+│   └── demo/                       # DemoHeader (5-phase stepper), DemoFooter, Kbd
+├── lib/
+│   ├── mock-data/                  # events, deals, roi-reports, vendors
+│   ├── xrpl/                       # client + auto-funded wallet helper
+│   ├── ipfs/                       # Pinata helper
+│   ├── poe/                        # POE metadata builder (shared by mint + GET)
+│   └── supabase/                   # SSR client + server
+├── content/                        # Typed copy.ts (no hardcoded strings in components)
+├── supabase/migrations/            # SQL migrations
+└── public/                         # Logos, favicons
 ```
 
 ### Multi-currency / multi-rail
@@ -282,14 +318,30 @@ altr_sponsorship_mvp/
 git clone https://github.com/altr2026/altr_sponsorship_mvp.git
 cd altr_sponsorship_mvp
 
-pnpm install
+# Project uses radix peer deps that npm flags; legacy-peer-deps is required.
+npm install --legacy-peer-deps
+
 cp .env.example .env.local
-# fill in XRPL_WALLET_SEED, SUPABASE_URL, SUPABASE_ANON_KEY
+# Every env var below is OPTIONAL — the demo degrades gracefully when missing:
+#   XRPL_HOT_WALLET_SEED              -> falls back to testnet faucet auto-fund
+#   NEXT_PUBLIC_XRPL_TESTNET_ADDRESS  -> falls back to a second faucet wallet
+#   PINATA_JWT                        -> falls back to ALTR-served metadata
+#   NEXT_PUBLIC_SUPABASE_URL          -> waitlist + OAuth become no-ops
+#   NEXT_PUBLIC_SUPABASE_ANON_KEY     -> ditto
+#   XUMM_API_KEY + XUMM_API_SECRET    -> Xaman wallet sign-in disabled
+#   PINATA_GATEWAY                    -> defaults to gateway.pinata.cloud
 
-pnpm db:migrate
-pnpm db:seed
+# Optional: run Supabase migrations from supabase/migrations/*.sql in your project's SQL editor
+# (only needed if you want waitlist + persona persistence to actually write).
 
-pnpm dev
+npm run dev
+```
+
+Build verification:
+
+```bash
+npx next build       # full type-check + production build
+npm run lint         # eslint
 ```
 
 ---
@@ -298,15 +350,24 @@ pnpm dev
 
 | | Status |
 |---|---|
+| 5-phase / 18-step demo backbone | ✅ Complete |
 | End-to-end deal flow | ✅ Working |
-| RLUSD escrow on XRPL testnet | ✅ Working |
-| Milestone-based release | ✅ Working (4 milestones) |
-| Live XRPL explorer integration | ✅ Working |
-| ROI dashboard (mock data) | ✅ Working |
-| On-chain reputation score | ✅ MVP (mock) |
-| Sponsorship BNPL/financing | ✅ MVP (mock) |
-| Event partner view | ✅ Working |
-| Real auth + KYC | ❌ Out of scope for MVP |
+| Real XRPL EscrowCreate (Step 8) on testnet | ✅ Working — no env vars required (auto-fund via faucet) |
+| Real XRPL EscrowFinish (Step 12) with 60s countdown | ✅ Working |
+| Real XRPL NFTokenMint POE (Step 14) | ✅ Working — IPFS via Pinata when configured, else ALTR-served metadata |
+| Live testnet.xrpl.org explorer integration | ✅ Working |
+| Milestone-based escrow (4 milestones, delivery-triggered copy) | ✅ Working |
+| Activation brief + IPFS-pinned proof of delivery (Steps 10-11) | ✅ Working |
+| ROI report dashboard with creator attribution + benchmarks (Step 13) | ✅ Working |
+| Sponsor portfolio dashboard with all-time POE history (Step 15) | ✅ Working |
+| Renewal flow (Steps 16-18): auto-proposal, POE-anchored chat, expansion picks | ✅ Working |
+| Event-side private vendor-payout dashboard | ✅ Working |
+| Multi-provider OAuth (Google + Apple + X) via Supabase | ✅ Working (needs provider config) |
+| Xaman (XUMM) wallet sign-in | ✅ Wired (needs XUMM API keys) |
+| Public marketing site + pricing + manifesto + roadmap pages | ✅ Working |
+| On-chain reputation score | ✅ MVP — POE history aggregated per brand |
+| Sponsorship BNPL / financing | ❌ Phase 3 design only |
+| Real KYC | ❌ Out of scope for MVP |
 | Production payment processing | ❌ Testnet only |
 
 ---
