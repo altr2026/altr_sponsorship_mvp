@@ -238,9 +238,9 @@ export function ActivationClient({
         </h1>
         <p className="max-w-3xl text-[13px] text-altr-muteSoft">
           The brand confirms the activation deliverables in advance, then the
-          event captures proof of each one during and after the show. The
-          proof bundle is pinned to IPFS so it cannot be tampered with — and
-          it becomes the reference the Step 14 POE NFT anchors on-chain.
+          event captures proof of each one during and after the show. Once
+          saved, the proof bundle becomes a permanent record neither side can
+          edit — and it feeds the Step 14 verified ROI report.
         </p>
       </header>
 
@@ -267,10 +267,10 @@ export function ActivationClient({
             Sponsorship deals usually have no objective record of what was
             delivered. ALTR fixes that with a two-step ritual: the brand
             approves the brief (Step 10) so both sides agree on scope, then
-            the event captures proof for each line item (Step 11). The proof
-            bundle is pinned to IPFS and referenced by the POE NFT — a
-            tamper-proof, machine-readable receipt the brand can show its
-            CFO and the event can show its next sponsor.
+            the event captures proof for each line item (Step 11). Once
+            saved, the proof becomes a permanent record neither side can
+            edit — a clean receipt the brand can show its CFO and the event
+            can show its next sponsor.
           </p>
         </article>
       </section>
@@ -349,8 +349,8 @@ export function ActivationClient({
               <Kbd>Step 11 · Capture proof of delivery</Kbd>
               <p className="text-[12.5px] text-altr-muteSoft">
                 Mark each deliverable. Add a note when status is partial or
-                missed so the brand sees context. The bundle pins to IPFS as
-                <code className="ml-1 font-mono text-[11px] text-altr-muteSoft">altr.activation-proof.v1</code>.
+                missed so the brand sees context. Once saved, the proof
+                becomes a permanent record neither side can edit.
               </p>
             </div>
             <button
@@ -373,16 +373,16 @@ export function ActivationClient({
               {pinning ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Pinning…
+                  Saving…
                 </>
               ) : pinDone ? (
                 <>
                   <Check className="h-4 w-4" />
-                  Proof pinned
+                  Proof saved
                 </>
               ) : (
                 <>
-                  Pin proof to IPFS
+                  Save proof of delivery
                   <ArrowRight className="h-4 w-4" />
                 </>
               )}
