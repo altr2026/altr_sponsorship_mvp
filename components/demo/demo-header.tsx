@@ -19,7 +19,7 @@ const STEPS: Array<{
   { num: "03", label: "Settle", href: "/demo/deals/dl_pbw_samsung", enabled: true },
   { num: "04", label: "Activation", href: "/demo", enabled: false },
   { num: "05", label: "Measurement", href: "/demo", enabled: false },
-  { num: "06", label: "Renewal", href: "/demo", enabled: false },
+  { num: "06", label: "Renewal", href: "/demo/deals/dl_pbw_samsung/renewal", enabled: true },
 ];
 
 function deriveCurrentStep(pathname: string | null): StepNum | null {
@@ -31,6 +31,8 @@ function deriveCurrentStep(pathname: string | null): StepNum | null {
   if (/^\/demo\/deals\/[^/]+\/poe(\/|$)/.test(pathname)) return "05";
   // Activation brief + proof under /demo/deals/[id]/activation — Steps 10 + 11.
   if (/^\/demo\/deals\/[^/]+\/activation(\/|$)/.test(pathname)) return "04";
+  // Renewal proposal + negotiation + expansion under /demo/deals/[id]/renewal — Steps 16-18.
+  if (/^\/demo\/deals\/[^/]+\/renewal(\/|$)/.test(pathname)) return "06";
   if (pathname.startsWith("/demo/deals/")) return "03";
   if (pathname.startsWith("/demo/activation")) return "04";
   if (pathname.startsWith("/demo/measurement")) return "05";
