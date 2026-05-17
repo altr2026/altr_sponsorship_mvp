@@ -95,7 +95,7 @@ export default function DemoEntryPage() {
           View settlement demo →
         </Link>
         <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-altr-mute">
-          Samsung × PBW 2026 · $250K RLUSD escrow
+          Samsung × PBW 2026 · $250K USDC escrow
         </span>
       </div>
     </div>

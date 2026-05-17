@@ -34,7 +34,7 @@ const POST_RELEASE: PostReleaseStep[] = [
     timepoint: "T+3.5s",
     title: "Funds delivered to event wallet",
     detail:
-      "$75,000 RLUSD arrives at the Philippine Blockchain Week receiving wallet on XRPL.",
+      "$75,000 USDC arrives at the Philippine Blockchain Week receiving wallet on XRPL.",
   },
   {
     id: "pr_c",
@@ -50,9 +50,9 @@ const POST_RELEASE: PostReleaseStep[] = [
     letter: "D",
     delay: 18000,
     timepoint: "T+18s",
-    title: "Optional · swap to local currency",
+    title: "Optional · off-ramp to USD or local fiat",
     detail:
-      "Event can off-ramp RLUSD to PHP or SGD via Ripple Payments partner. Default: hold RLUSD.",
+      "Event can off-ramp USDC to USD (Circle redemption) or local fiat via banking partners. Default: hold USDC on-chain.",
   },
   {
     id: "pr_e",
@@ -65,7 +65,7 @@ const POST_RELEASE: PostReleaseStep[] = [
   },
 ];
 
-type Destination = "RLUSD" | "XRP" | "FIAT";
+type Destination = "USDC" | "XRP" | "FIAT";
 
 const DESTINATIONS: Array<{
   value: Destination;
@@ -73,8 +73,8 @@ const DESTINATIONS: Array<{
   subtitle: string;
 }> = [
   {
-    value: "RLUSD",
-    label: "RLUSD",
+    value: "USDC",
+    label: "USDC",
     subtitle: "Stablecoin · hold on-chain",
   },
   {
@@ -84,8 +84,8 @@ const DESTINATIONS: Array<{
   },
   {
     value: "FIAT",
-    label: "PHP / SGD / KRW",
-    subtitle: "Bank cash-out · Ripple Payments",
+    label: "USD / Fiat",
+    subtitle: "USD redemption · local bank cash-out",
   },
 ];
 
@@ -106,7 +106,7 @@ function shortenAddress(addr: string) {
 export function SettlementClient({ deal }: { deal: Deal }) {
   const [released, setReleased] = useState(false);
   const [revealedCount, setRevealedCount] = useState(0);
-  const [destination, setDestination] = useState<Destination>("RLUSD");
+  const [destination, setDestination] = useState<Destination>("USDC");
 
   useEffect(() => {
     if (!released) return;
@@ -119,19 +119,19 @@ export function SettlementClient({ deal }: { deal: Deal }) {
   const m3Amount = deal.milestones[2].amount;
 
   const conversionLabel = (() => {
-    if (destination === "RLUSD")
-      return `${formatUsd(m3Amount)} RLUSD · held on-chain`;
+    if (destination === "USDC")
+      return `${formatUsd(m3Amount)} USDC · held on-chain`;
     if (destination === "XRP")
       return `swap via XRPL DEX (~${Math.round(m3Amount / 0.5).toLocaleString()} XRP at $0.50)`;
-    return `${formatUsd(m3Amount)} → PHP via Ripple Payments`;
+    return `${formatUsd(m3Amount)} → USD via Circle redemption`;
   })();
 
   const conversionNote = (() => {
-    if (destination === "RLUSD")
-      return "No additional fee. RLUSD sits on-chain in the PBW wallet, ready for any future move.";
+    if (destination === "USDC")
+      return "No additional fee. USDC sits on-chain in the PBW wallet, ready for any future move.";
     if (destination === "XRP")
       return "XRPL DEX spread typically under 0.3 percent. Crypto price exposure applies.";
-    return "Local fiat off-ramp via Ripple Payments partner. Usually settles same business day.";
+    return "USD off-ramp via Circle redemption, or local fiat via banking partners. Usually settles same business day.";
   })();
 
   return (
@@ -250,13 +250,13 @@ export function SettlementClient({ deal }: { deal: Deal }) {
             <TimelineRow
               state="done"
               day="Day -59"
-              title="Conversion · RLUSD minted"
+              title={`Conversion · ${deal.currency} minted`}
               detail={`${formatUsd(deal.total_amount)} USD converted to ${deal.currency} on XRPL and routed to the escrow address.`}
             />
             <TimelineRow
               state="done"
               day="Day -59"
-              title="RLUSD locked in on-chain escrow"
+              title={`${deal.currency} locked in on-chain escrow`}
               detail={`${formatUsd(deal.total_amount)} ${deal.currency} sits in escrow at ${shortenAddress(deal.escrow_address)} until milestone signatures release each tranche.`}
               chain="on-chain"
             />
