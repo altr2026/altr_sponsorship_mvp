@@ -229,7 +229,7 @@ export function ActivationClient({
 
       <header className="mt-5 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <Kbd>Phase 04 · Activation</Kbd>
+          <Kbd>Phase 03 · Settlement</Kbd>
           <Kbd tone="mute">Step 10 · Brief</Kbd>
           <Kbd tone="mute">Step 11 · Proof of delivery</Kbd>
         </div>

@@ -245,7 +245,7 @@ export function EscrowCreateClient({ deal }: { deal: Deal }) {
 
       <header className="mt-5 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <Kbd>Phase 03 · Settle</Kbd>
+          <Kbd>Phase 03 · Settlement</Kbd>
           <Kbd tone="mute">Step 08 · EscrowCreate</Kbd>
           <Kbd tone="mute">Step 12 · EscrowFinish</Kbd>
         </div>

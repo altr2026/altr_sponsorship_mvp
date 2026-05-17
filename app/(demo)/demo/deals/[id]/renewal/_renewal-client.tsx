@@ -116,7 +116,7 @@ export function RenewalClient({
 
       <header className="mt-5 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <Kbd>Phase 06 · Renewal</Kbd>
+          <Kbd>Phase 05 · Renewal</Kbd>
           <Kbd tone="mute">Step 16 · Proposal</Kbd>
           <Kbd tone="mute">Step 17 · Negotiation</Kbd>
           <Kbd tone="mute">Step 18 · Expansion</Kbd>
