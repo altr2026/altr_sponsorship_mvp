@@ -113,7 +113,7 @@ export function PoeMintClient({
 
       <header className="mt-5 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <Kbd>Phase 05 · Measurement</Kbd>
+          <Kbd>Phase 04 · Measurement</Kbd>
           <Kbd tone="mute">Step 13 · ROI report</Kbd>
           <Kbd tone="mute">Step 14 · POE NFT</Kbd>
         </div>

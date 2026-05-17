@@ -139,7 +139,7 @@ export default function PortfolioDashboardPage({ params }: PageProps) {
 
       <header className="mt-5 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <Kbd>Phase 05 · Measurement</Kbd>
+          <Kbd>Phase 04 · Measurement</Kbd>
           <Kbd tone="mute">Step 15 · Sponsor portfolio</Kbd>
         </div>
         <h1 className="text-[26px] font-medium leading-[1.1] tracking-tight text-altr-white sm:text-[34px]">

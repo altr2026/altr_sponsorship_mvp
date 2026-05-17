@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
-type StepNum = "01" | "02" | "03" | "04" | "05" | "06";
+type StepNum = "01" | "02" | "03" | "04" | "05";
 
 const STEPS: Array<{
   num: StepNum;
@@ -16,10 +16,12 @@ const STEPS: Array<{
 }> = [
   { num: "01", label: "Discovery", href: "/demo/discover", enabled: true },
   { num: "02", label: "Deal", href: "/demo/deals/new", enabled: true },
-  { num: "03", label: "Settle", href: "/demo/deals/dl_pbw_samsung", enabled: true },
-  { num: "04", label: "Activation", href: "/demo", enabled: false },
-  { num: "05", label: "Measurement", href: "/demo", enabled: false },
-  { num: "06", label: "Renewal", href: "/demo/deals/dl_pbw_samsung/renewal", enabled: true },
+  // Phase 03 Settlement absorbs the former Settle (Step 8/12 escrow) +
+  // Activation (Steps 10-11 brief + proof) chips — same logical phase,
+  // funds gated by delivery proof.
+  { num: "03", label: "Settlement", href: "/demo/deals/dl_pbw_samsung", enabled: true },
+  { num: "04", label: "Measurement", href: "/demo/deals/dl_pbw_samsung/poe", enabled: true },
+  { num: "05", label: "Renewal", href: "/demo/deals/dl_pbw_samsung/renewal", enabled: true },
 ];
 
 function deriveCurrentStep(pathname: string | null): StepNum | null {
@@ -27,18 +29,19 @@ function deriveCurrentStep(pathname: string | null): StepNum | null {
   if (pathname.startsWith("/demo/discover")) return "01";
   if (pathname.startsWith("/demo/events/")) return "01";
   if (pathname === "/demo/deals/new") return "02";
-  // POE mint sits under /demo/deals/[id]/poe — Measurement (Step 14 NFTokenMint).
-  if (/^\/demo\/deals\/[^/]+\/poe(\/|$)/.test(pathname)) return "05";
+  // POE mint sits under /demo/deals/[id]/poe — Measurement (Steps 13 + 14).
+  if (/^\/demo\/deals\/[^/]+\/poe(\/|$)/.test(pathname)) return "04";
   // Brand portfolio dashboard under /demo/dashboard/[brand_id] — Measurement (Step 15).
-  if (pathname.startsWith("/demo/dashboard/")) return "05";
-  // Activation brief + proof under /demo/deals/[id]/activation — Steps 10 + 11.
-  if (/^\/demo\/deals\/[^/]+\/activation(\/|$)/.test(pathname)) return "04";
+  if (pathname.startsWith("/demo/dashboard/")) return "04";
+  // Activation brief + proof under /demo/deals/[id]/activation — Steps 10 + 11,
+  // now part of the merged Settlement phase.
+  if (/^\/demo\/deals\/[^/]+\/activation(\/|$)/.test(pathname)) return "03";
   // Renewal proposal + negotiation + expansion under /demo/deals/[id]/renewal — Steps 16-18.
-  if (/^\/demo\/deals\/[^/]+\/renewal(\/|$)/.test(pathname)) return "06";
+  if (/^\/demo\/deals\/[^/]+\/renewal(\/|$)/.test(pathname)) return "05";
   if (pathname.startsWith("/demo/deals/")) return "03";
-  if (pathname.startsWith("/demo/activation")) return "04";
-  if (pathname.startsWith("/demo/measurement")) return "05";
-  if (pathname.startsWith("/demo/renewal")) return "06";
+  if (pathname.startsWith("/demo/activation")) return "03";
+  if (pathname.startsWith("/demo/measurement")) return "04";
+  if (pathname.startsWith("/demo/renewal")) return "05";
   return null;
 }
 
