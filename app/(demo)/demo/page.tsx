@@ -31,9 +31,9 @@ const ROLES: Role[] = [
     tag: "Role · 02",
     label: "I'm an event",
     description:
-      "Receive sponsor offers, accept milestones, watch funds settle to your wallet in three seconds.",
-    href: "/demo/events/evt_pbw_2026",
-    cta: "See your event page",
+      "Tell ALTR who you want at your event. We match brands by vertical, draft the pitch deck, and queue them into deal flow.",
+    href: "/demo/event-brief",
+    cta: "Build your sponsor brief",
   },
   {
     tag: "Role · 03",
