@@ -47,7 +47,7 @@ export const deals: Deal[] = [
     brand_name: "Samsung",
     tier: "Title",
     total_amount: 250_000,
-    currency: "RLUSD",
+    currency: "USDC",
     escrow_address: "rEScRoWxRplT3stN3tABCDEF1234567890xyz",
     status: "in_progress",
     contract_signed_at: "2026-04-20T09:00:00Z",

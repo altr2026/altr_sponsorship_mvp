@@ -267,7 +267,7 @@ export function EscrowCreateClient({ deal }: { deal: Deal }) {
         <p className="mt-1.5">
           This flow escrows {DEMO_AMOUNT_XRP} testnet XRP as a stand-in for
           the {formatUsd(deal.total_amount)} {deal.currency} headline figure.
-          Production uses the TokenEscrow amendment to escrow RLUSD directly.
+          Production uses the TokenEscrow amendment to escrow {deal.currency} directly.
         </p>
       </section>
 
