@@ -1,26 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 import {
   EscrowFinish,
-  Wallet,
   type TxResponse,
 } from "xrpl";
 
 import { withXrplClient } from "@/lib/xrpl/client";
+import { getHotWallet } from "@/lib/xrpl/auto-wallet";
 
 export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
-  const hotSeed = process.env.XRPL_HOT_WALLET_SEED;
-  if (!hotSeed) {
-    return NextResponse.json(
-      {
-        error:
-          "XRPL_HOT_WALLET_SEED is not set. The executor wallet that submits EscrowFinish is missing from Vercel env.",
-      },
-      { status: 503 },
-    );
-  }
-
   let body: { owner?: string; offer_sequence?: number | string };
   try {
     body = await request.json();
@@ -45,27 +34,25 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  let wallet: Wallet;
-  try {
-    wallet = Wallet.fromSeed(hotSeed);
-  } catch (caught) {
-    console.error("Wallet.fromSeed failed for XRPL_HOT_WALLET_SEED", caught);
-    return NextResponse.json(
-      { error: "XRPL_HOT_WALLET_SEED is not a valid wallet seed." },
-      { status: 500 },
-    );
-  }
-
+  // EscrowFinish can be submitted by ANY account (not only the owner). For the
+  // auto-funded demo path, the in-memory cached wallet from create may have
+  // been reset by a cold start — in that case getHotWallet generates a fresh
+  // wallet, which is still a valid executor.
   let txResult: TxResponse<EscrowFinish>;
+  let executor = "";
+  let walletAutoFunded = false;
   try {
     txResult = await withXrplClient(async (client) => {
+      const hot = await getHotWallet(client);
+      executor = hot.wallet.classicAddress;
+      walletAutoFunded = hot.auto_funded;
       const tx: EscrowFinish = {
         TransactionType: "EscrowFinish",
-        Account: wallet.classicAddress,
+        Account: hot.wallet.classicAddress,
         Owner: owner,
         OfferSequence: offerSequence,
       };
-      return client.submitAndWait(tx, { wallet, autofill: true });
+      return client.submitAndWait(tx, { wallet: hot.wallet, autofill: true });
     });
   } catch (caught) {
     console.error("XRPL EscrowFinish failed", caught);
@@ -83,10 +70,11 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({
     ok: true,
     tx_hash: txHash,
-    executor: wallet.classicAddress,
+    executor,
     owner,
     offer_sequence: offerSequence,
     finished_at: new Date().toISOString(),
     explorer_url: `https://testnet.xrpl.org/transactions/${txHash}`,
+    wallet_auto_funded: walletAutoFunded,
   });
 }

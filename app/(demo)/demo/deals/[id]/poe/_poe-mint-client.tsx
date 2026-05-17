@@ -16,17 +16,23 @@ import { cn } from "@/lib/utils";
 import type { Deal } from "@/lib/mock-data/deals";
 import type { RoiReport } from "@/lib/mock-data/roi-reports";
 
+type MetadataSource = "pinata" | "altr-fallback";
+
 type MintState =
   | { kind: "idle" }
   | { kind: "minting" }
-  | { kind: "error"; message: string; ipfs_hash?: string; gateway_url?: string }
+  | { kind: "error"; message: string; ipfs_hash?: string | null; gateway_url?: string | null }
   | {
       kind: "done";
-      ipfs_hash: string;
-      gateway_url: string;
+      metadata_source: MetadataSource;
+      metadata_url: string;
+      ipfs_hash: string | null;
+      gateway_url: string | null;
       tx_hash: string;
       nftoken_id?: string;
       explorer_url: string;
+      issuer_address: string;
+      wallet_auto_funded: boolean;
       issued_at: string;
     };
 
@@ -80,11 +86,15 @@ export function PoeMintClient({
       }
       setState({
         kind: "done",
-        ipfs_hash: payload.ipfs_hash,
-        gateway_url: payload.gateway_url,
+        metadata_source: payload.metadata_source ?? "altr-fallback",
+        metadata_url: payload.metadata_url,
+        ipfs_hash: payload.ipfs_hash ?? null,
+        gateway_url: payload.gateway_url ?? null,
         tx_hash: payload.tx_hash,
         nftoken_id: payload.nftoken_id,
         explorer_url: payload.explorer_url,
+        issuer_address: payload.issuer_address ?? "",
+        wallet_auto_funded: Boolean(payload.wallet_auto_funded),
         issued_at: payload.issued_at,
       });
     } catch (caught) {
@@ -382,30 +392,53 @@ export function PoeMintClient({
         ) : null}
 
         {isDone ? (
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <ResultCard
-              label="IPFS hash"
-              value={state.ipfs_hash}
-              link={state.gateway_url}
-              linkLabel="Open gateway"
-            />
-            <ResultCard
-              label="NFTokenID"
-              value={state.nftoken_id ?? "—"}
-              mono
-            />
-            <ResultCard
-              label="XRPL tx hash"
-              value={shorten(state.tx_hash, 10, 8)}
-              link={state.explorer_url}
-              linkLabel="Open in explorer"
-              mono
-            />
-            <ResultCard
-              label="Anchored at"
-              value={new Date(state.issued_at).toLocaleString()}
-            />
-          </div>
+          <>
+            <div className="mt-5 flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em]">
+              {state.metadata_source === "pinata" ? (
+                <span className="rounded border border-altr-lime/40 bg-altr-lime/10 px-2 py-0.5 text-altr-lime">
+                  Metadata pinned to IPFS (Pinata)
+                </span>
+              ) : (
+                <span className="rounded border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-amber-300">
+                  Metadata served from ALTR · set PINATA_JWT for real IPFS pin
+                </span>
+              )}
+              {state.wallet_auto_funded ? (
+                <span className="rounded border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-amber-300">
+                  Auto-funded testnet wallet · set XRPL_HOT_WALLET_SEED for persistence
+                </span>
+              ) : (
+                <span className="rounded border border-altr-lime/40 bg-altr-lime/10 px-2 py-0.5 text-altr-lime">
+                  Signed by configured XRPL_HOT_WALLET_SEED
+                </span>
+              )}
+            </div>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <ResultCard
+                label={state.metadata_source === "pinata" ? "IPFS hash" : "Metadata URI"}
+                value={state.metadata_source === "pinata" ? (state.ipfs_hash ?? "—") : state.metadata_url}
+                link={state.gateway_url ?? (state.metadata_source === "altr-fallback" ? state.metadata_url : undefined)}
+                linkLabel={state.metadata_source === "pinata" ? "Open gateway" : "Open metadata"}
+              />
+              <ResultCard
+                label="NFTokenID"
+                value={state.nftoken_id ?? "—"}
+                mono
+              />
+              <ResultCard
+                label="XRPL tx hash"
+                value={shorten(state.tx_hash, 10, 8)}
+                link={state.explorer_url}
+                linkLabel="Open in explorer"
+                mono
+              />
+              <ResultCard
+                label="Anchored at"
+                value={new Date(state.issued_at).toLocaleString()}
+              />
+            </div>
+          </>
         ) : null}
       </section>
 

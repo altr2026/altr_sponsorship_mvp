@@ -2,60 +2,21 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
   convertStringToHex,
   NFTokenMintFlags,
-  Wallet,
   type NFTokenMint,
   type TxResponse,
 } from "xrpl";
 
 import { pinJson } from "@/lib/ipfs/pinata";
 import { withXrplClient } from "@/lib/xrpl/client";
-import { getDealById, type Deal } from "@/lib/mock-data/deals";
-import { getRoiReportByDealId, type RoiReport } from "@/lib/mock-data/roi-reports";
+import { getHotWallet } from "@/lib/xrpl/auto-wallet";
+import { getDealById } from "@/lib/mock-data/deals";
+import { buildPoeMetadata } from "@/lib/poe/metadata";
 
 export const runtime = "nodejs";
 
 // xrpl exports NFTokenMintMetadata only from a deep path; mirror the shape
 // here so the top-level import stays clean.
 type NFTokenMintMetaShape = { nftoken_id?: string };
-
-type PoeAttribute = {
-  trait_type: string;
-  value: string | number;
-  display_type?: "date" | "number";
-};
-
-type PoeMetadata = {
-  schema: "altr.poe.v1";
-  name: string;
-  description: string;
-  external_url: string;
-  issued_at: string;
-  issuer: string;
-  attributes: PoeAttribute[];
-  deal: {
-    id: string;
-    brand: string;
-    event: string;
-    tier: string;
-    total_amount_usd: number;
-    currency: string;
-    escrow_address: string;
-    escrow_tx_hash: string;
-    contract_signed_at: string;
-    event_starts_at: string;
-    network: "xrpl-testnet";
-  };
-  milestones: Array<{
-    id: string;
-    label: string;
-    trigger: string;
-    amount_usd: number;
-    percentage: number;
-    status: string;
-    released_at?: string;
-  }>;
-  roi_report?: RoiReport;
-};
 
 function appUrl(request: NextRequest): string {
   return (
@@ -64,111 +25,7 @@ function appUrl(request: NextRequest): string {
   );
 }
 
-function buildMetadata(deal: Deal, request: NextRequest): PoeMetadata {
-  const issuedAt = new Date().toISOString();
-  const externalUrl = `${appUrl(request)}/demo/deals/${deal.id}`;
-  const roi = getRoiReportByDealId(deal.id);
-
-  const baseAttributes: PoeAttribute[] = [
-    { trait_type: "Brand", value: deal.brand_name },
-    { trait_type: "Event", value: deal.event_name },
-    { trait_type: "Tier", value: deal.tier },
-    {
-      trait_type: "Total amount (USD)",
-      value: deal.total_amount,
-      display_type: "number",
-    },
-    { trait_type: "Currency", value: deal.currency },
-    { trait_type: "Settlement network", value: "XRPL testnet" },
-    { trait_type: "Escrow address", value: deal.escrow_address },
-    {
-      trait_type: "Contract signed",
-      value: Math.floor(new Date(deal.contract_signed_at).getTime() / 1000),
-      display_type: "date",
-    },
-    {
-      trait_type: "Event date",
-      value: Math.floor(new Date(deal.event_starts_at).getTime() / 1000),
-      display_type: "date",
-    },
-  ];
-
-  const roiAttributes: PoeAttribute[] = roi
-    ? [
-        { trait_type: "Total reach", value: roi.total_reach, display_type: "number" },
-        { trait_type: "Total impressions", value: roi.total_impressions, display_type: "number" },
-        { trait_type: "EMV (USD)", value: roi.emv_usd, display_type: "number" },
-        { trait_type: "ROI multiplier", value: roi.roi_multiplier, display_type: "number" },
-        { trait_type: "Benchmark percentile", value: roi.benchmark_percentile, display_type: "number" },
-      ]
-    : [];
-
-  return {
-    schema: "altr.poe.v1",
-    name: `ALTR Proof of Engagement · ${deal.brand_name} × ${deal.event_name}`,
-    description: roi
-      ? `Immutable on-chain ROI receipt. ${deal.brand_name} × ${deal.event_name} (${deal.tier} tier, $${deal.total_amount.toLocaleString("en-US")} ${deal.currency}) delivered $${roi.emv_usd.toLocaleString("en-US")} EMV — a ${roi.roi_multiplier}× return at the ${roi.benchmark_percentile}th percentile of ${roi.benchmark_cohort_size} comparable ${roi.benchmark_cohort}.`
-      : `Cryptographic proof that ${deal.brand_name} sponsored ${deal.event_name} at the ${deal.tier} tier for $${deal.total_amount.toLocaleString("en-US")} ${deal.currency}. Settled across ${deal.milestones.length} milestones on XRPL.`,
-    external_url: externalUrl,
-    issued_at: issuedAt,
-    issuer: "ALTR Sponsorship OS",
-    attributes: [...baseAttributes, ...roiAttributes],
-    deal: {
-      id: deal.id,
-      brand: deal.brand_name,
-      event: deal.event_name,
-      tier: deal.tier,
-      total_amount_usd: deal.total_amount,
-      currency: deal.currency,
-      escrow_address: deal.escrow_address,
-      escrow_tx_hash: deal.xrpl_tx_hash,
-      contract_signed_at: deal.contract_signed_at,
-      event_starts_at: deal.event_starts_at,
-      network: "xrpl-testnet",
-    },
-    milestones: deal.milestones.map((m) => ({
-      id: m.id,
-      label: m.label,
-      trigger: m.trigger,
-      amount_usd: m.amount,
-      percentage: m.percentage,
-      status: m.status,
-      released_at: m.released_at,
-    })),
-    roi_report: roi,
-  };
-}
-
-function ipfsUri(hash: string): string {
-  return `ipfs://${hash}`;
-}
-
-function preflight(): { ok: true } | { ok: false; status: number; error: string } {
-  if (!process.env.PINATA_JWT) {
-    return {
-      ok: false,
-      status: 503,
-      error:
-        "PINATA_JWT is not set. Add it to Vercel env (Production + Preview + Development) — create a JWT at https://app.pinata.cloud/developers/api-keys.",
-    };
-  }
-  if (!process.env.XRPL_HOT_WALLET_SEED) {
-    return {
-      ok: false,
-      status: 503,
-      error:
-        "XRPL_HOT_WALLET_SEED is not set. Add it to Vercel env so the demo can sign NFTokenMint transactions.",
-    };
-  }
-  return { ok: true };
-}
-
 export async function POST(request: NextRequest) {
-  const pre = preflight();
-  if (!pre.ok) {
-    return NextResponse.json({ error: pre.error }, { status: pre.status });
-  }
-
   let body: { deal_id?: string };
   try {
     body = await request.json();
@@ -186,38 +43,52 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `Unknown deal: ${dealId}` }, { status: 404 });
   }
 
-  const metadata = buildMetadata(deal, request);
+  const origin = appUrl(request);
+  const metadata = buildPoeMetadata(deal, { app_url: origin });
 
-  let pinned;
-  try {
-    pinned = await pinJson(metadata, {
-      name: `poe-${deal.id}-${Date.now()}.json`,
-      keyvalues: {
-        deal_id: deal.id,
-        brand: deal.brand_name,
-        event: deal.event_name,
-        kind: "altr.poe.v1",
-      },
-    });
-  } catch (caught) {
-    console.error("Pinata pinJson failed", caught);
-    return NextResponse.json(
-      {
-        error: "Failed to pin metadata to IPFS. Check PINATA_JWT scopes (pinJSONToIPFS required).",
-      },
-      { status: 502 },
-    );
+  // ── 1. Metadata source: Pinata if configured, otherwise our own HTTPS endpoint ──
+  let metadata_source: "pinata" | "altr-fallback" = "altr-fallback";
+  let ipfs_hash: string | null = null;
+  let gateway_url: string | null = null;
+  let metadata_url: string;
+
+  if (process.env.PINATA_JWT) {
+    try {
+      const pinned = await pinJson(metadata, {
+        name: `poe-${deal.id}-${Date.now()}.json`,
+        keyvalues: {
+          deal_id: deal.id,
+          brand: deal.brand_name,
+          event: deal.event_name,
+          kind: "altr.poe.v1",
+        },
+      });
+      metadata_source = "pinata";
+      ipfs_hash = pinned.ipfsHash;
+      gateway_url = pinned.gatewayUrl;
+      metadata_url = `ipfs://${pinned.ipfsHash}`;
+    } catch (caught) {
+      console.error("Pinata pinJson failed; falling back to ALTR-served metadata", caught);
+      metadata_url = `${origin}/api/demo/poe/metadata/${deal.id}`;
+    }
+  } else {
+    metadata_url = `${origin}/api/demo/poe/metadata/${deal.id}`;
   }
 
+  // ── 2. XRPL NFTokenMint with the metadata URI ──
   let txResult: TxResponse<NFTokenMint>;
+  let walletAutoFunded = false;
+  let issuerAddress: string;
   try {
     txResult = await withXrplClient(async (client) => {
-      const wallet = Wallet.fromSeed(process.env.XRPL_HOT_WALLET_SEED!);
+      const { wallet, auto_funded } = await getHotWallet(client);
+      walletAutoFunded = auto_funded;
+      issuerAddress = wallet.classicAddress;
       const tx: NFTokenMint = {
         TransactionType: "NFTokenMint",
         Account: wallet.classicAddress,
         NFTokenTaxon: 0,
-        URI: convertStringToHex(ipfsUri(pinned.ipfsHash)).toUpperCase(),
+        URI: convertStringToHex(metadata_url).toUpperCase(),
         Flags: NFTokenMintFlags.tfTransferable,
         Memos: [
           {
@@ -232,12 +103,14 @@ export async function POST(request: NextRequest) {
     });
   } catch (caught) {
     console.error("XRPL NFTokenMint failed", caught);
+    const message = caught instanceof Error ? caught.message : "Unknown XRPL error";
     return NextResponse.json(
       {
-        error:
-          "NFTokenMint failed on XRPL. Ensure the hot wallet has reserve XRP (10+) on the configured network.",
-        ipfs_hash: pinned.ipfsHash,
-        gateway_url: pinned.gatewayUrl,
+        error: `NFTokenMint failed on XRPL: ${message}. Common causes: testnet faucet temporarily rate-limited (wait 60s and retry), or the configured XRPL_HOT_WALLET_SEED account is below the reserve.`,
+        ipfs_hash,
+        gateway_url,
+        metadata_url,
+        metadata_source,
       },
       { status: 502 },
     );
@@ -249,11 +122,15 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({
     ok: true,
-    ipfs_hash: pinned.ipfsHash,
-    gateway_url: pinned.gatewayUrl,
+    metadata_source,
+    metadata_url,
+    ipfs_hash,
+    gateway_url,
     tx_hash: txHash,
     nftoken_id: nftokenId,
     explorer_url: `https://testnet.xrpl.org/transactions/${txHash}`,
+    issuer_address: issuerAddress!,
+    wallet_auto_funded: walletAutoFunded,
     issued_at: metadata.issued_at,
     metadata,
   });
