@@ -20,7 +20,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
   const brandName = deals[0]?.brand_name ?? "Brand";
   return {
     title: `${brandName} · Sponsor portfolio`,
-    description: `Cumulative sponsor dashboard for ${brandName}. All-time POE history, cross-event ROI trends, and creator performance index across every ALTR-anchored deal.`,
+    description: `Cumulative sponsor dashboard for ${brandName}. All-time verified sponsorship record, cross-event ROI trends, and creator performance index across every deal closed through ALTR.`,
     robots: { index: false, follow: false },
   };
 }
@@ -146,9 +146,9 @@ export default function PortfolioDashboardPage({ params }: PageProps) {
           {brandName} · Sponsor portfolio
         </h1>
         <p className="max-w-3xl font-mono text-[12px] text-altr-muteSoft">
-          All-time POE history across every ALTR-anchored deal. Each row is a
-          minted POE NFT — the immutable, machine-readable record this dashboard
-          aggregates from.
+          Every sponsorship deal you&apos;ve closed through ALTR, with the
+          verified ROI report attached. Each row is a permanent record neither
+          side can edit — the source of truth this dashboard aggregates from.
         </p>
       </header>
 
@@ -181,18 +181,18 @@ export default function PortfolioDashboardPage({ params }: PageProps) {
       </section>
 
       <section
-        aria-label="POE history"
+        aria-label="Sponsorship history"
         className="mt-5 rounded-lg border border-altr-line bg-altr-panel p-5 sm:p-6"
       >
         <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
           <div>
-            <Kbd>POE history</Kbd>
+            <Kbd>Sponsorship history</Kbd>
             <h2 className="mt-2 text-h2 font-medium text-altr-white">
-              All-time POE NFTs
+              Your full sponsorship record
             </h2>
             <p className="mt-1 font-mono text-[11.5px] text-altr-mute">
-              Each row anchors to one minted POE. Click through to see the
-              full ROI report for that deal.
+              One row per closed deal, each with its verified ROI report.
+              Click through for the full report.
             </p>
           </div>
           <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-altr-mute">
@@ -250,7 +250,7 @@ export default function PortfolioDashboardPage({ params }: PageProps) {
                         href={`/demo/deals/${deal.id}/poe`}
                         className="inline-flex items-center gap-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-altr-lime hover:underline"
                       >
-                        Open POE
+                        Open report
                         <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
                       </Link>
                     </Td>
@@ -337,7 +337,7 @@ export default function PortfolioDashboardPage({ params }: PageProps) {
               Who has driven the most attributable value
             </h2>
             <p className="mt-1 font-mono text-[11.5px] text-altr-mute">
-              Aggregated across every POE in the portfolio. Ranked by total
+              Aggregated across every report in the portfolio. Ranked by total
               weighted EMV slice.
             </p>
           </div>
