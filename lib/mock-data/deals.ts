@@ -59,7 +59,7 @@ export const deals: Deal[] = [
       {
         id: "ms_pbw_m1",
         label: "M1",
-        trigger: "Contract signed",
+        trigger: "Booking confirmed · contract on-chain",
         amount: 50_000,
         percentage: 20,
         status: "released",
@@ -68,7 +68,7 @@ export const deals: Deal[] = [
       {
         id: "ms_pbw_m2",
         label: "M2",
-        trigger: "Pre-event (T-30d)",
+        trigger: "Stage construction + artist lineup confirmed",
         amount: 100_000,
         percentage: 40,
         status: "released",
@@ -77,7 +77,7 @@ export const deals: Deal[] = [
       {
         id: "ms_pbw_m3",
         label: "M3",
-        trigger: "Event day delivered",
+        trigger: "Day 1 doors open · attendance verified",
         amount: 75_000,
         percentage: 30,
         status: "pending",
@@ -85,7 +85,7 @@ export const deals: Deal[] = [
       {
         id: "ms_pbw_m4",
         label: "M4",
-        trigger: "Post-ROI signed",
+        trigger: "Post-event ROI report + audience data verified",
         amount: 25_000,
         percentage: 10,
         status: "locked",

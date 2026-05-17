@@ -328,17 +328,17 @@ export function PoeMintClient({
       >
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl space-y-1">
-            <Kbd>Step 14 · Anchor this report on-chain</Kbd>
+            <Kbd>Step 14 · Lock this report permanently</Kbd>
             <h2 className="text-h2 font-medium text-altr-white">
-              Mint the POE NFT.
+              Lock this report. Build your track record.
             </h2>
             <p className="text-[12.5px] text-altr-muteSoft">
-              Pins this full report — headline metrics, creator attribution,
-              channel breakdown, benchmarks, milestones — to IPFS, then mints
-              an NFTokenMint on XRPL with{" "}
-              <code className="font-mono">URI = ipfs://&lt;hash&gt;</code>{" "}
-              and a Memo carrying the deal id. The token is the immutable
-              receipt the brand keeps in its wallet forever.
+              Saves the full report — headline reach, creator credit, channel
+              breakdown, benchmarks, milestones — as a permanent receipt
+              neither side can edit. Each report you bank here grows your
+              event&apos;s verified track record: sponsors use it to price
+              renewals, and ALTR uses it to recommend larger packages next
+              year.
             </p>
           </div>
           <button
@@ -361,12 +361,12 @@ export function PoeMintClient({
             {isMinting ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Pinning + minting…
+                Saving report…
               </>
             ) : isDone ? (
               <>
                 <Check className="h-4 w-4" />
-                Anchored
+                Locked
               </>
             ) : (
               <>
