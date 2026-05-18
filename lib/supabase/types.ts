@@ -68,6 +68,62 @@ export type UserWalletInsert = {
   created_at?: string;
 };
 
+// Phase C1 — vendors directory (owner-scoped payee records).
+export type VendorRow = {
+  id: string;
+  owner_user_id: string;
+  name: string;
+  service: string | null;
+  xrp_address: string;
+  note: string | null;
+  created_at: string;
+};
+
+export type VendorInsert = {
+  id?: string;
+  owner_user_id: string;
+  name: string;
+  service?: string | null;
+  xrp_address: string;
+  note?: string | null;
+  created_at?: string;
+};
+
+// Phase C1 — settlement ledger between an event wallet + its vendors.
+export type VendorPayoutStatus =
+  | "scheduled"
+  | "released"
+  | "withheld"
+  | "disputed";
+
+export type VendorPayoutRow = {
+  id: string;
+  owner_user_id: string;
+  vendor_id: string;
+  deal_id: string;
+  milestone_id: string | null;
+  amount_drops: number; // bigint comes back as number in JS; postgrest returns it as string when > MAX_SAFE_INTEGER, but our demo amounts are tiny.
+  status: VendorPayoutStatus;
+  tx_hash: string | null;
+  released_at: string | null;
+  note: string | null;
+  created_at: string;
+};
+
+export type VendorPayoutInsert = {
+  id?: string;
+  owner_user_id: string;
+  vendor_id: string;
+  deal_id: string;
+  milestone_id?: string | null;
+  amount_drops: number;
+  status?: VendorPayoutStatus;
+  tx_hash?: string | null;
+  released_at?: string | null;
+  note?: string | null;
+  created_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -81,6 +137,18 @@ export type Database = {
         Row: UserWalletRow;
         Insert: UserWalletInsert;
         Update: Partial<UserWalletInsert>;
+        Relationships: [];
+      };
+      vendors: {
+        Row: VendorRow;
+        Insert: VendorInsert;
+        Update: Partial<VendorInsert>;
+        Relationships: [];
+      };
+      vendor_payouts: {
+        Row: VendorPayoutRow;
+        Insert: VendorPayoutInsert;
+        Update: Partial<VendorPayoutInsert>;
         Relationships: [];
       };
     };
