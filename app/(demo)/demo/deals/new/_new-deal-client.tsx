@@ -40,8 +40,8 @@ const RAILS: Array<{ value: Rail; label: string; subtitle: string }> = [
   },
   {
     value: "USDC",
-    label: "USDC on Base",
-    subtitle: "EVM L2 · 2-4s settlement · $0.01-0.15 fee per release",
+    label: "USDC on XRP",
+    subtitle: "Circle stablecoin on XRPL · 3s settlement · $0.000012 fee per release",
   },
 ];
 

@@ -59,7 +59,7 @@ const SPONSOR_TIERS: Tier[] = [
   {
     id: "gold",
     name: "Gold",
-    price: 85_000,
+    price: 80_000,
     tagline: "Speaker tier with a real stage and a real booth.",
     remaining: "4 of 5 available",
     perks: [
@@ -73,7 +73,7 @@ const SPONSOR_TIERS: Tier[] = [
   {
     id: "silver",
     name: "Silver",
-    price: 55_000,
+    price: 25_000,
     tagline: "Solid presence without the speaker price tag.",
     remaining: "6 of 8 available",
     perks: [
