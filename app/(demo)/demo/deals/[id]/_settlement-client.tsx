@@ -489,7 +489,7 @@ export function SettlementClient({ deal }: { deal: Deal }) {
               href={`/demo/deals/${deal.id}/poe`}
               className="inline-flex h-11 items-center gap-2 rounded-md bg-altr-lime px-6 font-mono text-[12px] font-bold uppercase tracking-[0.18em] text-altr-black transition-all hover:brightness-110"
             >
-              Mint Proof of Engagement →
+              View post-event report →
             </Link>
           </div>
         </div>
