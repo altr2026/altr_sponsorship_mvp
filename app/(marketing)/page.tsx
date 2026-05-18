@@ -178,24 +178,33 @@ export default function HomePage({ searchParams }: HomePageProps) {
             </p>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <EarlyAccessDialog
-              source="hero_see_how"
-              defaultPersona={hero.defaultPersona}
-            >
-              <button
-                type="button"
-                className="inline-flex h-12 items-center gap-1.5 rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-all hover:brightness-110"
+          <div className="mt-10 flex flex-col items-start gap-3">
+            <div className="flex flex-wrap items-center gap-4">
+              <EarlyAccessDialog
+                source="hero_browse_altr_free"
+                defaultPersona={hero.defaultPersona}
               >
-                See how it works
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </EarlyAccessDialog>
+                <button
+                  type="button"
+                  className="inline-flex h-12 items-center gap-1.5 rounded-md bg-teal-600 px-6 text-body font-medium text-white transition-all hover:brightness-110"
+                >
+                  Browse ALTR Free
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </EarlyAccessDialog>
+              <Link
+                href="#waitlist"
+                className="inline-flex h-12 items-center rounded-md border border-altr-line2 px-6 text-body font-medium text-altr-white transition-colors hover:border-altr-mute"
+              >
+                Get early access
+              </Link>
+            </div>
             <Link
-              href="#waitlist"
-              className="inline-flex h-12 items-center rounded-md border border-altr-line2 px-6 text-body font-medium text-altr-white transition-colors hover:border-altr-mute"
+              href="/demo"
+              className="inline-flex items-center gap-1.5 text-[13px] text-altr-muteSoft transition-colors hover:text-altr-white"
             >
-              Get early access
+              Continue to Demo
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </div>
         </div>
