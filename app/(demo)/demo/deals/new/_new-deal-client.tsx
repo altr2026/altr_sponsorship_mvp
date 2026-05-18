@@ -45,7 +45,7 @@ const RAILS: Array<{ value: Rail; label: string; subtitle: string }> = [
   },
 ];
 
-const ALTR_FEE_BPS = 50; // 0.5%
+const ALTR_FEE_BPS = 500; // 5%
 
 function formatUsd(n: number) {
   return "$" + Math.round(n).toLocaleString("en-US");
