@@ -19,6 +19,7 @@ import {
   getBalanceForAddress,
   getWalletForUser,
 } from "@/lib/wallets/read";
+import { PayoutsSection } from "./_payouts-section";
 import { VendorDirectory } from "./_vendor-directory";
 import { WalletPanel, type WalletPanelData } from "./_wallet-panel";
 
@@ -115,6 +116,21 @@ export default async function EventDashboardPage({ params }: PageProps) {
       {ownWallet ? <WalletPanel wallet={ownWallet} /> : null}
 
       {userId ? <VendorDirectory dealId={deal.id} userId={userId} /> : null}
+
+      {userId ? (
+        <PayoutsSection
+          dealId={deal.id}
+          userId={userId}
+          milestones={deal.milestones.map((m) => ({
+            id: m.id,
+            label: `${m.label} · ${m.trigger}`,
+          }))}
+          network={
+            (ownWallet?.network as "testnet" | "mainnet" | undefined) ??
+            "testnet"
+          }
+        />
+      ) : null}
 
       <header className="mt-5 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
