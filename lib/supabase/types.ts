@@ -42,6 +42,32 @@ export type WaitlistInsert = {
   source?: string | null;
 };
 
+// One row per Supabase auth.users user, written server-side by the
+// provisioning route at lib/wallets/provision.ts. RLS allows the owner to
+// read their own row; only service-role writes. Bytea columns are returned
+// by postgrest as `\x...` hex string literals — adapters in provision.ts.
+export type UserWalletRow = {
+  user_id: string;
+  xrpl_address: string;
+  seed_ciphertext: string;
+  seed_iv: string;
+  seed_tag: string;
+  network: string;
+  auto_funded: boolean;
+  created_at: string;
+};
+
+export type UserWalletInsert = {
+  user_id: string;
+  xrpl_address: string;
+  seed_ciphertext: string;
+  seed_iv: string;
+  seed_tag: string;
+  network?: string;
+  auto_funded?: boolean;
+  created_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -49,6 +75,12 @@ export type Database = {
         Row: WaitlistRow;
         Insert: WaitlistInsert;
         Update: Partial<WaitlistInsert>;
+        Relationships: [];
+      };
+      user_wallets: {
+        Row: UserWalletRow;
+        Insert: UserWalletInsert;
+        Update: Partial<UserWalletInsert>;
         Relationships: [];
       };
     };
