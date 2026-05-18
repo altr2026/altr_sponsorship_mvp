@@ -246,6 +246,10 @@ export function NewDealClient({ event, initialTier }: NewDealClientProps) {
                 value={`-${formatUsd(fee)}`}
                 mono
               />
+              <p className="text-[10.5px] leading-snug text-altr-mute">
+                Significantly below the typical sponsorship-sales commission;
+                final rate may vary by deal.
+              </p>
               <div className="my-1 h-px bg-altr-line2" />
               <PreviewRow
                 label="Net to event"
