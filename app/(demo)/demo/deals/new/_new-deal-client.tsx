@@ -9,7 +9,14 @@ import { Kbd } from "@/components/demo/kbd";
 import { cn } from "@/lib/utils";
 import type { Event, SponsorTier } from "@/lib/mock-data/events";
 
-const TIER_ORDER: SponsorTier[] = ["Title", "Gold", "Silver", "Booth"];
+const TIER_ORDER: SponsorTier[] = [
+  "Title",
+  "Platinum",
+  "Gold",
+  "Silver",
+  "Bronze",
+  "Booth",
+];
 
 const DEFAULT_MILESTONES: Array<{
   id: string;

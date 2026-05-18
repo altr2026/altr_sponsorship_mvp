@@ -2,7 +2,13 @@ export type EventVertical = "Music" | "Conference" | "Fashion" | "Wellness";
 
 export type Region = "APAC" | "GCC";
 
-export type SponsorTier = "Title" | "Gold" | "Silver" | "Booth";
+export type SponsorTier =
+  | "Title"
+  | "Platinum"
+  | "Gold"
+  | "Silver"
+  | "Bronze"
+  | "Booth";
 
 export type SponsorPackage = {
   tier: SponsorTier;
@@ -69,36 +75,47 @@ export const events: Event[] = [
         ],
       },
       {
-        tier: "Gold",
-        price: 80_000,
+        tier: "Platinum",
+        price: 150_000,
         perks: [
-          "Branded breakout room (full day)",
-          "Panel slot on main stage",
-          "8 VIP all-access passes",
-          "24 m² activation footprint, premium hall location",
+          "Naming rights on a dedicated track (Builders / Capital / Enterprise)",
+          "Keynote slot + 2 panel slots",
+          "20 VIP passes",
+          "36 m² activation footprint, premium hall location",
+          "Logo on stage backdrop + agenda",
+          "Branded lunch on chosen day",
+        ],
+      },
+      {
+        tier: "Gold",
+        price: 85_000,
+        perks: [
+          "Panel slot on a main track",
+          "12 VIP passes",
+          "24 m² activation footprint",
           "Logo on agenda + select signage",
-          "Co-branded lunch on chosen day",
+          "Co-branded breakout session (45 min)",
         ],
       },
       {
         tier: "Silver",
-        price: 25_000,
+        price: 55_000,
         perks: [
-          "Exhibitor booth (12 m²)",
           "Workshop slot (45 min, side stage)",
-          "4 VIP all-access passes",
+          "6 VIP passes",
+          "12 m² booth in the expo",
           "Logo on agenda",
           "Inclusion in sponsor email sequence (3 sends)",
         ],
       },
       {
-        tier: "Booth",
-        price: 7_000,
+        tier: "Bronze",
+        price: 35_000,
         perks: [
-          "Exhibitor booth (6 m²)",
-          "2 exhibitor passes",
-          "Listing in event directory",
-          "Logo on sponsor wall",
+          "6 m² booth in the expo",
+          "3 VIP passes",
+          "Logo on website + sponsor wall",
+          "Inclusion in sponsor email sequence (1 send)",
         ],
       },
     ],
