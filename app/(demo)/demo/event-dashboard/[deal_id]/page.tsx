@@ -14,6 +14,12 @@ import {
   serviceLabel,
   type VendorPaymentStatus,
 } from "@/lib/mock-data/vendors";
+import { createClient as createServerSupabase } from "@/lib/supabase/server";
+import {
+  getBalanceForAddress,
+  getWalletForUser,
+} from "@/lib/wallets/read";
+import { WalletPanel, type WalletPanelData } from "./_wallet-panel";
 
 type PageProps = { params: { deal_id: string } };
 
@@ -42,7 +48,28 @@ const STATUS_TONE: Record<VendorPaymentStatus, string> = {
   disputed: "text-red-300",
 };
 
-export default function EventDashboardPage({ params }: PageProps) {
+async function loadOwnWallet(): Promise<WalletPanelData | null> {
+  // Only attempt the live-balance fetch when an authenticated session exists.
+  // Logged-out visitors keep getting the mock-data view below, instantly.
+  try {
+    const supabase = createServerSupabase();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return null;
+    const wallet = await getWalletForUser(user.id);
+    if (!wallet) return null;
+    const balance = await getBalanceForAddress(wallet.xrpl_address);
+    return { ...wallet, ...balance };
+  } catch (e) {
+    // Never let a wallet/XRPL hiccup break the dashboard render — the
+    // user can still see the mock vendor view. Log so we notice in prod.
+    console.error("[event-dashboard] wallet panel load failed:", e);
+    return null;
+  }
+}
+
+export default async function EventDashboardPage({ params }: PageProps) {
   const deal = getDealById(params.deal_id);
   if (!deal) notFound();
 
@@ -57,6 +84,8 @@ export default function EventDashboardPage({ params }: PageProps) {
   const unallocated = deal.total_amount - totalAllocated;
   const uniqueVendors = new Set(allPayouts.map((p) => p.vendor_id)).size;
 
+  const ownWallet = await loadOwnWallet();
+
   return (
     <div className="mx-auto max-w-[1100px] px-6 py-8 md:px-10 md:py-10">
       <Link
@@ -70,6 +99,8 @@ export default function EventDashboardPage({ params }: PageProps) {
         <Lock className="h-3 w-3" aria-hidden="true" />
         Internal · event team only · sponsor does not see this view
       </div>
+
+      {ownWallet ? <WalletPanel wallet={ownWallet} /> : null}
 
       <header className="mt-5 space-y-3">
         <div className="flex flex-wrap items-center gap-2">
