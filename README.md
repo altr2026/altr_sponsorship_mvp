@@ -65,6 +65,8 @@ The live demo at `/demo` walks the full sponsorship lifecycle end-to-end on XRPL
 
 Each XRPL transaction settles for real on testnet — no setup needed. When `XRPL_HOT_WALLET_SEED` is unset, the routes auto-fund a wallet via the testnet faucet. When `PINATA_JWT` is unset, POE metadata is served from `/api/demo/poe/metadata/[deal_id]` instead of IPFS.
 
+**When signed in, the event-ops dashboard also runs a real per-user payout flow:** on first OAuth sign-in, `app/auth/callback/route.ts` provisions a dedicated XRPL testnet wallet for the user via `client.fundWallet()` and stores the seed AES-256-GCM-encrypted in `user_wallets` (Supabase, `WALLET_ENC_MASTER_KEY` required). `/demo/event-dashboard/[deal_id]` then surfaces a live balance panel, a vendor directory CRUD'd against `vendors`, and a payout scheduler. Clicking **Pay vendor** decrypts the seed server-side, signs a Payment tx, and writes the resulting `tx_hash` back to `vendor_payouts`. Marked as demo-only with an upgrade-to-Xaman link in the UI.
+
 ### Why XRPL
 
 | | USDC (Base) | XRPL (RLUSD) | SWIFT |
@@ -328,6 +330,10 @@ cp .env.example .env.local
 #   XRPL_HOT_WALLET_SEED              -> falls back to testnet faucet auto-fund
 #   NEXT_PUBLIC_XRPL_TESTNET_ADDRESS  -> falls back to a second faucet wallet
 #   PINATA_JWT                        -> falls back to ALTR-served metadata
+#
+# Required for the signed-in per-user wallet flow (silently disabled when absent):
+#   WALLET_ENC_MASTER_KEY    -> base64 of 32 random bytes (`openssl rand -base64 32`)
+#   SUPABASE_SERVICE_ROLE_KEY -> used by the admin client to write user_wallets
 #   NEXT_PUBLIC_SUPABASE_URL          -> waitlist + OAuth become no-ops
 #   NEXT_PUBLIC_SUPABASE_ANON_KEY     -> ditto
 #   XUMM_API_KEY + XUMM_API_SECRET    -> Xaman wallet sign-in disabled

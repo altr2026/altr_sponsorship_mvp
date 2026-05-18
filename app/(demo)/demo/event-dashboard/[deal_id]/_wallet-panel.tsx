@@ -1,4 +1,5 @@
-import { ExternalLink, Wallet as WalletIcon } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, ExternalLink, Wallet as WalletIcon } from "lucide-react";
 
 import { Kbd } from "@/components/demo/kbd";
 
@@ -34,9 +35,17 @@ export function WalletPanel({ wallet }: { wallet: WalletPanelData }) {
             </span>
           </div>
           <p className="max-w-xl text-[12.5px] leading-snug text-altr-muteSoft">
-            Auto-provisioned for you on sign-in. The vendor-payout flow
-            (Phase C) will sign Payment transactions from this address to
-            vendor wallets you configure.
+            Auto-provisioned for you on sign-in. Vendor payouts scheduled
+            below are signed from this address and submitted to XRPL.
+            Custodial means ALTR holds the encrypted seed —{" "}
+            <Link
+              href="/connect"
+              className="inline-flex items-center gap-0.5 text-altr-lime hover:underline"
+            >
+              upgrade to Xaman self-custody
+              <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+            </Link>{" "}
+            if you want to hold your own keys.
           </p>
         </div>
 
